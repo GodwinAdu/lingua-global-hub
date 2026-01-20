@@ -1,16 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* First Grade Lingua Consult - Ultra Premium Design System */
 
-/* First Grade Lingua Consult - Premium Corporate Design System */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 20px currentColor; }
+  50% { opacity: 0.8; box-shadow: 0 0 40px currentColor; }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes grid-move {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, 40px); }
+}
 
 @layer base {
   :root {
     /* Core Brand Colors - Deep Navy Foundation */
-    --background: 210 33% 98%;
-    --foreground: 210 50% 10%;
+    --background: 220 40% 98%;
+    --foreground: 220 50% 8%;
 
     --card: 0 0% 100%;
     --card-foreground: 210 50% 10%;
@@ -19,16 +54,16 @@
     --popover-foreground: 210 50% 10%;
 
     /* Deep Navy Primary */
-    --primary: 210 60% 11%;
-    --primary-foreground: 45 100% 96%;
+    --primary: 220 70% 8%;
+    --primary-foreground: 45 100% 97%;
 
-    /* Royal Blue Accent */
-    --secondary: 217 91% 50%;
+    /* Royal Blue Accent - More vibrant */
+    --secondary: 217 91% 55%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Soft Gold Highlight */
-    --accent: 43 74% 49%;
-    --accent-foreground: 210 50% 10%;
+    /* Soft Gold Highlight - Enhanced */
+    --accent: 38 92% 50%;
+    --accent-foreground: 220 50% 10%;
 
     --muted: 210 20% 96%;
     --muted-foreground: 210 15% 45%;
@@ -42,20 +77,25 @@
 
     --radius: 0.75rem;
 
-    /* Premium Gradients */
-    --gradient-navy: linear-gradient(135deg, hsl(210 60% 11%) 0%, hsl(210 50% 18%) 100%);
-    --gradient-royal: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(217 91% 60%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(43 74% 49%) 0%, hsl(43 74% 59%) 100%);
-    --gradient-mesh: radial-gradient(ellipse at 20% 0%, hsl(217 91% 50% / 0.15) 0%, transparent 50%),
-                     radial-gradient(ellipse at 80% 100%, hsl(43 74% 49% / 0.1) 0%, transparent 50%);
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(0 0% 100% / 0.7) 100%);
+    /* Premium Gradients - Enhanced */
+    --gradient-navy: linear-gradient(135deg, hsl(220 70% 8%) 0%, hsl(220 60% 15%) 100%);
+    --gradient-royal: linear-gradient(135deg, hsl(217 91% 55%) 0%, hsl(230 85% 65%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(45 100% 60%) 100%);
+    --gradient-sunset: linear-gradient(135deg, hsl(217 91% 55%) 0%, hsl(280 70% 60%) 50%, hsl(38 92% 50%) 100%);
+    --gradient-mesh: radial-gradient(ellipse at 20% 0%, hsl(217 91% 55% / 0.2) 0%, transparent 50%),
+                     radial-gradient(ellipse at 80% 100%, hsl(38 92% 50% / 0.15) 0%, transparent 50%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.95) 0%, hsl(0 0% 100% / 0.8) 100%);
+    --gradient-glass-dark: linear-gradient(135deg, hsl(220 70% 8% / 0.8) 0%, hsl(220 60% 12% / 0.6) 100%);
     
-    /* Premium Shadows */
-    --shadow-sm: 0 1px 2px hsl(210 50% 10% / 0.05);
-    --shadow-md: 0 4px 12px hsl(210 50% 10% / 0.08);
-    --shadow-lg: 0 12px 40px hsl(210 50% 10% / 0.12);
-    --shadow-glow: 0 0 40px hsl(217 91% 50% / 0.15);
-    --shadow-gold: 0 0 30px hsl(43 74% 49% / 0.2);
+    /* Premium Shadows - Enhanced */
+    --shadow-sm: 0 1px 3px hsl(220 50% 10% / 0.06);
+    --shadow-md: 0 4px 16px hsl(220 50% 10% / 0.1);
+    --shadow-lg: 0 12px 48px hsl(220 50% 10% / 0.15);
+    --shadow-xl: 0 20px 60px hsl(220 50% 10% / 0.2);
+    --shadow-glow: 0 0 40px hsl(217 91% 55% / 0.3);
+    --shadow-glow-lg: 0 0 60px hsl(217 91% 55% / 0.4);
+    --shadow-gold: 0 0 30px hsl(38 92% 50% / 0.3);
+    --shadow-premium: 0 8px 32px hsl(220 50% 10% / 0.12), 0 2px 8px hsl(220 50% 10% / 0.08);
 
     /* Sidebar (keeping defaults) */
     --sidebar-background: 0 0% 98%;
@@ -135,8 +175,14 @@
 
   .glass-card {
     background: var(--gradient-glass);
-    backdrop-filter: blur(20px);
-    @apply border border-white/20 rounded-2xl;
+    backdrop-filter: blur(24px) saturate(180%);
+    @apply border border-white/30 rounded-2xl shadow-xl;
+  }
+
+  .glass-navbar {
+    background: linear-gradient(135deg, hsl(var(--background) / 0.7) 0%, hsl(var(--background) / 0.5) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    @apply border-b border-border/40;
   }
 
   .gradient-text {
@@ -147,6 +193,13 @@
   .gradient-text-gold {
     @apply bg-clip-text text-transparent;
     background-image: var(--gradient-gold);
+  }
+
+  .gradient-text-sunset {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-sunset);
+    background-size: 200% auto;
+    animation: gradient-shift 3s ease infinite;
   }
 
   .btn-premium {
@@ -163,14 +216,87 @@
     @apply opacity-100;
   }
 
+  .btn-shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+
   .section-divider {
     @apply h-px w-full;
     background: linear-gradient(90deg, transparent 0%, hsl(var(--border)) 50%, transparent 100%);
+  }
+
+  .nav-link {
+    @apply relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg;
+  }
+
+  .nav-link::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, hsl(var(--secondary) / 0.1) 0%, hsl(var(--accent) / 0.05) 100%);
+  }
+
+  .nav-link:hover::before {
+    @apply opacity-100;
+  }
+
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .glow-effect {
+    animation: glow-pulse 2s ease-in-out infinite;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .shadow-premium-sm {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .shadow-premium-md {
+    box-shadow: var(--shadow-md);
+  }
+
+  .shadow-premium-lg {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .shadow-premium-xl {
+    box-shadow: var(--shadow-xl);
+  }
+
+  .shadow-premium {
+    box-shadow: var(--shadow-premium);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-glow-lg {
+    box-shadow: var(--shadow-glow-lg);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.5s ease-out;
   }
 }

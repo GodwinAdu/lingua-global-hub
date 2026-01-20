@@ -88,27 +88,28 @@ export const Hero = () => {
       {/* Animated Gradient Mesh Overlay */}
       <div className="absolute inset-0 z-[1]">
         <motion.div 
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,_hsl(217_91%_50%_/_0.2)_0%,_transparent_50%)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,_hsl(217_91%_55%_/_0.4)_0%,_transparent_50%)]"
           animate={{ 
-            opacity: [0.3, 0.6, 0.3],
-            scale: [1, 1.2, 1],
+            opacity: [0.5, 0.8, 0.5],
+            scale: [1, 1.3, 1],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div 
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,_hsl(43_74%_49%_/_0.15)_0%,_transparent_50%)]"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,_hsl(38_92%_50%_/_0.3)_0%,_transparent_50%)]"
+          animate={{ 
+            opacity: [0.4, 0.7, 0.4],
+            scale: [1.3, 1, 1.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        />
+        <motion.div 
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_hsl(280_70%_60%_/_0.2)_0%,_transparent_40%)]"
           animate={{ 
             opacity: [0.2, 0.5, 0.2],
-            scale: [1.2, 1, 1.2],
+            scale: [1, 1.2, 1],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        />
-        <motion.div 
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_hsl(217_91%_60%_/_0.1)_0%,_transparent_30%)]"
-          animate={{ 
-            opacity: [0.1, 0.3, 0.1],
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
         />
       </div>
 
@@ -117,24 +118,24 @@ export const Hero = () => {
         <motion.div
           key={index}
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
-          animate={{ opacity: 0.2, scale: 1, rotate: 0 }}
+          animate={{ opacity: 0.5, scale: 1, rotate: 0 }}
           transition={{ delay: delay + 0.8, duration: 1, type: 'spring' }}
           className="absolute hidden lg:block z-[2]"
           style={{ left: x, top: y }}
         >
           <motion.div
             animate={{ 
-              y: [0, -25, 0],
-              rotate: [0, 5, -5, 0],
+              y: [0, -30, 0],
+              rotate: [0, 10, -10, 0],
             }}
             transition={{ 
-              duration: 5 + index, 
+              duration: 4 + index, 
               repeat: Infinity, 
               ease: 'easeInOut',
             }}
           >
-            <div className={`${size} rounded-2xl bg-primary-foreground/10 backdrop-blur-sm flex items-center justify-center border border-primary-foreground/10`}>
-              <Icon className="w-1/2 h-1/2 text-primary-foreground" />
+            <div className={`${size} rounded-2xl bg-gradient-to-br from-secondary/30 to-accent/20 backdrop-blur-md flex items-center justify-center border-2 border-primary-foreground/30 shadow-glow`}>
+              <Icon className="w-1/2 h-1/2 text-primary-foreground drop-shadow-lg" />
             </div>
           </motion.div>
         </motion.div>
@@ -142,22 +143,24 @@ export const Hero = () => {
 
       {/* Animated Particles */}
       <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(30)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 rounded-full bg-accent/50"
+            className="absolute w-2 h-2 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              background: i % 2 === 0 ? 'hsl(var(--accent))' : 'hsl(var(--secondary))',
             }}
             animate={{
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
+              y: [0, -150, 0],
+              opacity: [0, 0.8, 0],
+              scale: [0, 1.5, 0],
             }}
             transition={{
-              duration: 3 + Math.random() * 4,
+              duration: 4 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 5,
+              delay: Math.random() * 3,
               ease: 'easeInOut',
             }}
           />

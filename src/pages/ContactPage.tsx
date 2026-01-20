@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import InteractiveMap from '@/components/sections/InteractiveMap';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,12 +13,12 @@ const contactInfo = [
   {
     icon: MapPin,
     title: 'Visit Our Office',
-    details: ['123 Business District', 'Victoria Island, Lagos', 'Nigeria'],
+    details: ['HNO. BE 37, Dandellon Street', 'Danfa, Accra', 'P.O. Box AF 1350, Adenta', 'Digital Address: GM-244-5169'],
   },
   {
     icon: Phone,
     title: 'Call Us',
-    details: ['+234 123 456 7890', '+234 098 765 4321'],
+    details: ['+233 24 217 8378', '+233 54 821 8019'],
   },
   {
     icon: Mail,
@@ -244,20 +245,15 @@ const ContactPage = () => {
                     Get instant responses to your inquiries via WhatsApp.
                   </p>
                   <Button variant="outline" asChild>
-                    <a href="https://wa.me/2341234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/233242178378" target="_blank" rel="noopener noreferrer">
                       Start Chat
                     </a>
                   </Button>
                 </div>
 
                 {/* Map */}
-                <div className="mt-8 rounded-2xl overflow-hidden border border-border h-64 bg-muted">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center text-muted-foreground">
-                      <MapPin className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">Map Location</p>
-                    </div>
-                  </div>
+                <div className="mt-8">
+                  <InteractiveMap />
                 </div>
               </motion.div>
             </div>
