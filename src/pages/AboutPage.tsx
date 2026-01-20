@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
+import { useRef } from 'react';
 import { Target, Eye, Heart, Users, Lightbulb, Shield } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CTA from '@/components/sections/CTA';
+import aboutTeamImg from '@/assets/about-team.jpg';
 
 const values = [
   {
@@ -54,16 +56,31 @@ const AboutPage = () => {
               transition={{ duration: 0.8 }}
               className="max-w-3xl"
             >
-              <span className="inline-block text-sm font-semibold text-accent uppercase tracking-wider mb-4">
+              <motion.span 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="inline-block text-sm font-semibold text-accent uppercase tracking-wider mb-4"
+              >
                 About Us
-              </span>
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              </motion.span>
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+              >
                 Setting the Global Standard in Language Services
-              </h1>
-              <p className="text-xl text-primary-foreground/70 leading-relaxed">
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-xl text-primary-foreground/70 leading-relaxed"
+              >
                 For over a decade, First Grade Lingua Consult has been the trusted partner 
                 for organizations seeking exceptional language and media solutions.
-              </p>
+              </motion.p>
             </motion.div>
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
@@ -110,12 +127,24 @@ const AboutPage = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="relative"
               >
-                <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-secondary/20 to-accent/10 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="text-6xl font-bold text-secondary mb-2">10+</div>
-                    <div className="text-muted-foreground">Years of Excellence</div>
-                  </div>
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
+                  <img 
+                    src={aboutTeamImg} 
+                    alt="Our professional team"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+                {/* Stats overlay */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="absolute -bottom-8 -left-8 bg-card rounded-2xl p-6 shadow-premium-lg border border-border"
+                >
+                  <div className="text-4xl font-bold text-secondary mb-1">10+</div>
+                  <div className="text-sm text-muted-foreground">Years of Excellence</div>
+                </motion.div>
               </motion.div>
             </div>
           </div>
@@ -130,11 +159,14 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="p-10 rounded-2xl bg-card border border-border"
+                className="p-10 rounded-2xl bg-card border border-border hover:shadow-premium-md transition-all duration-300"
               >
-                <div className="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center mb-6">
+                <motion.div 
+                  className="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center mb-6"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
                   <Target className="w-7 h-7 text-secondary" />
-                </div>
+                </motion.div>
                 <h3 className="font-display text-2xl font-bold text-foreground mb-4">
                   Our Mission
                 </h3>
@@ -150,11 +182,14 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="p-10 rounded-2xl bg-card border border-border"
+                className="p-10 rounded-2xl bg-card border border-border hover:shadow-premium-md transition-all duration-300"
               >
-                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
+                <motion.div 
+                  className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6"
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                >
                   <Eye className="w-7 h-7 text-accent" />
-                </div>
+                </motion.div>
                 <h3 className="font-display text-2xl font-bold text-foreground mb-4">
                   Our Vision
                 </h3>
@@ -199,11 +234,15 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
+                    whileHover={{ y: -5 }}
                     className="group p-8 rounded-2xl bg-card border border-border hover:border-secondary/30 hover:shadow-premium-md transition-all duration-300"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors duration-300">
+                    <motion.div 
+                      className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors duration-300"
+                      whileHover={{ scale: 1.1, rotate: 10 }}
+                    >
                       <Icon className="w-6 h-6 text-secondary" />
-                    </div>
+                    </motion.div>
                     <h3 className="font-display text-xl font-semibold text-foreground mb-3">
                       {value.title}
                     </h3>
