@@ -6,11 +6,22 @@ import {
   Music, 
   FileEdit, 
   PenTool,
-  Check
+  Check,
+  ArrowRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CTA from '@/components/sections/CTA';
+import { Button } from '@/components/ui/button';
+
+// Import service images
+import translationImg from '@/assets/service-translation.jpg';
+import interpretationImg from '@/assets/service-interpretation.jpg';
+import voiceoverImg from '@/assets/service-voiceover.jpg';
+import jingleImg from '@/assets/service-jingle.jpg';
+import editingImg from '@/assets/service-editing.jpg';
+import scriptwritingImg from '@/assets/service-scriptwriting.jpg';
 
 const services = [
   {
@@ -18,6 +29,7 @@ const services = [
     icon: Languages,
     title: 'Translation Services',
     description: 'Accurate, culturally-sensitive translations that preserve meaning and intent across 50+ languages.',
+    image: translationImg,
     features: [
       'Document translation (legal, medical, technical)',
       'Website and software localization',
@@ -31,6 +43,7 @@ const services = [
     icon: Mic2,
     title: 'Interpretation Services',
     description: 'Professional interpretation for conferences, meetings, and events with seamless communication.',
+    image: interpretationImg,
     features: [
       'Simultaneous interpretation',
       'Consecutive interpretation',
@@ -44,6 +57,7 @@ const services = [
     icon: PlayCircle,
     title: 'Voice-over Production',
     description: 'Studio-quality voice-over in multiple languages for all your audio and video content needs.',
+    image: voiceoverImg,
     features: [
       'Commercial voice-over',
       'Documentary narration',
@@ -57,6 +71,7 @@ const services = [
     icon: Music,
     title: 'Jingle Recording',
     description: 'Custom jingle creation and recording with professional vocalists and sound engineering.',
+    image: jingleImg,
     features: [
       'Original jingle composition',
       'Jingle adaptation and translation',
@@ -70,6 +85,7 @@ const services = [
     icon: FileEdit,
     title: 'Editing & Proofreading',
     description: 'Comprehensive editing services ensuring your content is polished, accurate, and impactful.',
+    image: editingImg,
     features: [
       'Copy editing',
       'Proofreading',
@@ -83,6 +99,7 @@ const services = [
     icon: PenTool,
     title: 'Script Writing',
     description: 'Creative and professional script development for all media formats and purposes.',
+    image: scriptwritingImg,
     features: [
       'Commercial scripts',
       'Corporate video scripts',
@@ -110,16 +127,31 @@ const ServicesPage = () => {
               transition={{ duration: 0.8 }}
               className="max-w-3xl"
             >
-              <span className="inline-block text-sm font-semibold text-accent uppercase tracking-wider mb-4">
+              <motion.span 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="inline-block text-sm font-semibold text-accent uppercase tracking-wider mb-4"
+              >
                 Our Services
-              </span>
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              </motion.span>
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+              >
                 Comprehensive Language & Media Solutions
-              </h1>
-              <p className="text-xl text-primary-foreground/70 leading-relaxed">
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="text-xl text-primary-foreground/70 leading-relaxed"
+              >
                 From translation to voice production, we provide end-to-end services 
                 that help your message resonate across cultures and borders.
-              </p>
+              </motion.p>
             </motion.div>
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
@@ -128,7 +160,7 @@ const ServicesPage = () => {
         {/* Services List */}
         <section className="py-24 bg-background">
           <div className="container-premium">
-            <div className="space-y-20">
+            <div className="space-y-24">
               {services.map((service, index) => {
                 const Icon = service.icon;
                 const isEven = index % 2 === 0;
@@ -137,40 +169,73 @@ const ServicesPage = () => {
                   <motion.div
                     key={service.id}
                     id={service.id}
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8 }}
-                    className={`grid lg:grid-cols-2 gap-12 items-center ${
-                      isEven ? '' : 'lg:flex-row-reverse'
-                    }`}
+                    className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
                   >
-                    <div className={isEven ? '' : 'lg:order-2'}>
-                      <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6">
-                        <Icon className="w-8 h-8 text-secondary" />
+                    {/* Image */}
+                    <motion.div 
+                      className={`relative ${isEven ? '' : 'lg:order-2'}`}
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
+                        <motion.img
+                          src={service.image}
+                          alt={service.title}
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.6 }}
+                        />
                       </div>
+                      {/* Accent decorations */}
+                      <div className={`absolute -z-10 w-full h-full rounded-2xl bg-secondary/10 ${isEven ? '-bottom-6 -right-6' : '-bottom-6 -left-6'}`} />
+                    </motion.div>
+
+                    {/* Content */}
+                    <div className={isEven ? 'lg:order-2' : ''}>
+                      <motion.div 
+                        className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-6"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                      >
+                        <Icon className="w-8 h-8 text-secondary" />
+                      </motion.div>
                       <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
                         {service.title}
                       </h2>
                       <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                         {service.description}
                       </p>
-                      <ul className="space-y-3">
-                        {service.features.map((feature) => (
-                          <li key={feature} className="flex items-start gap-3">
+                      <ul className="space-y-3 mb-8">
+                        {service.features.map((feature, fIndex) => (
+                          <motion.li 
+                            key={feature} 
+                            className="flex items-start gap-3"
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: fIndex * 0.1 }}
+                          >
                             <div className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center mt-0.5 flex-shrink-0">
                               <Check className="w-3 h-3 text-secondary" />
                             </div>
                             <span className="text-foreground/80">{feature}</span>
-                          </li>
+                          </motion.li>
                         ))}
                       </ul>
-                    </div>
-                    
-                    <div className={`${isEven ? 'lg:order-2' : ''}`}>
-                      <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center border border-border">
-                        <Icon className="w-24 h-24 text-secondary/20" />
-                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button variant="premium" size="lg" asChild>
+                          <Link to={`/services/${service.id}`}>
+                            Learn More
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </Button>
+                      </motion.div>
                     </div>
                   </motion.div>
                 );

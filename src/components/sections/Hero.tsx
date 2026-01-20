@@ -1,46 +1,172 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, Play, Globe, Languages, Mic } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { ArrowRight, Play, Globe, Languages, Mic, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import heroBg from '@/assets/hero-bg.jpg';
 
 const floatingIcons = [
-  { Icon: Globe, delay: 0, x: '10%', y: '20%' },
-  { Icon: Languages, delay: 0.5, x: '85%', y: '30%' },
-  { Icon: Mic, delay: 1, x: '15%', y: '70%' },
+  { Icon: Globe, delay: 0, x: '8%', y: '25%', size: 'w-14 h-14' },
+  { Icon: Languages, delay: 0.3, x: '88%', y: '20%', size: 'w-12 h-12' },
+  { Icon: Mic, delay: 0.6, x: '12%', y: '75%', size: 'w-10 h-10' },
+  { Icon: Sparkles, delay: 0.9, x: '85%', y: '70%', size: 'w-8 h-8' },
 ];
 
-export const Hero = () => {
+const textRevealVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.02,
+    },
+  },
+};
+
+const letterVariants = {
+  hidden: { opacity: 0, y: 50, rotateX: -90 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: {
+      type: 'spring' as const,
+      damping: 12,
+      stiffness: 100,
+    },
+  },
+};
+
+const AnimatedText = ({ text, className }: { text: string; className?: string }) => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-primary">
-      {/* Gradient Mesh Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,_hsl(217_91%_50%_/_0.15)_0%,_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,_hsl(43_74%_49%_/_0.1)_0%,_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,_hsl(210_60%_20%_/_0.5)_0%,_transparent_70%)]" />
+    <motion.span
+      variants={textRevealVariants}
+      initial="hidden"
+      animate="visible"
+      className={className}
+    >
+      {text.split('').map((char, index) => (
+        <motion.span
+          key={index}
+          variants={letterVariants}
+          className="inline-block"
+          style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+};
+
+export const Hero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
+
+  return (
+    <section ref={containerRef} className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Parallax Background Image */}
+      <motion.div 
+        className="absolute inset-0 z-0"
+        style={{ y, scale }}
+      >
+        <img 
+          src={heroBg} 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-primary/70" />
+      </motion.div>
+
+      {/* Animated Gradient Mesh Overlay */}
+      <div className="absolute inset-0 z-[1]">
+        <motion.div 
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,_hsl(217_91%_50%_/_0.2)_0%,_transparent_50%)]"
+          animate={{ 
+            opacity: [0.3, 0.6, 0.3],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div 
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,_hsl(43_74%_49%_/_0.15)_0%,_transparent_50%)]"
+          animate={{ 
+            opacity: [0.2, 0.5, 0.2],
+            scale: [1.2, 1, 1.2],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        />
+        <motion.div 
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_hsl(217_91%_60%_/_0.1)_0%,_transparent_30%)]"
+          animate={{ 
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
       </div>
 
-      {/* Floating Icons */}
-      {floatingIcons.map(({ Icon, delay, x, y }, index) => (
+      {/* Floating Animated Icons */}
+      {floatingIcons.map(({ Icon, delay, x, y, size }, index) => (
         <motion.div
           key={index}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 0.15, scale: 1 }}
-          transition={{ delay: delay + 0.5, duration: 0.8 }}
-          className="absolute hidden lg:block"
+          initial={{ opacity: 0, scale: 0, rotate: -180 }}
+          animate={{ opacity: 0.2, scale: 1, rotate: 0 }}
+          transition={{ delay: delay + 0.8, duration: 1, type: 'spring' }}
+          className="absolute hidden lg:block z-[2]"
           style={{ left: x, top: y }}
         >
           <motion.div
-            animate={{ y: [0, -20, 0] }}
-            transition={{ duration: 4 + index, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ 
+              y: [0, -25, 0],
+              rotate: [0, 5, -5, 0],
+            }}
+            transition={{ 
+              duration: 5 + index, 
+              repeat: Infinity, 
+              ease: 'easeInOut',
+            }}
           >
-            <Icon className="w-16 h-16 text-primary-foreground" />
+            <div className={`${size} rounded-2xl bg-primary-foreground/10 backdrop-blur-sm flex items-center justify-center border border-primary-foreground/10`}>
+              <Icon className="w-1/2 h-1/2 text-primary-foreground" />
+            </div>
           </motion.div>
         </motion.div>
       ))}
 
+      {/* Animated Particles */}
+      <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full bg-accent/50"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
+      </div>
+
       {/* Grid Pattern Overlay */}
       <div 
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.03] z-[2]"
         style={{
           backgroundImage: `linear-gradient(hsl(var(--primary-foreground)) 1px, transparent 1px),
                            linear-gradient(90deg, hsl(var(--primary-foreground)) 1px, transparent 1px)`,
@@ -48,90 +174,133 @@ export const Hero = () => {
         }}
       />
 
-      <div className="container-premium relative z-10 pt-32 pb-20">
+      <motion.div 
+        className="container-premium relative z-10 pt-32 pb-20"
+        style={{ opacity }}
+      >
         <div className="max-w-4xl">
-          {/* Badge */}
+          {/* Animated Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 backdrop-blur-sm mb-8"
           >
-            <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <motion.div 
+              className="w-2 h-2 rounded-full bg-accent"
+              animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
             <span className="text-sm text-primary-foreground/80 font-medium">
               Trusted by 500+ Global Clients
             </span>
           </motion.div>
 
-          {/* Main Headline */}
+          {/* Main Headline with Letter Animation */}
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
             className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-primary-foreground leading-[1.1] mb-6"
           >
-            Professional Language & Media Solutions for a{' '}
-            <span className="relative">
+            <motion.span
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="block"
+            >
+              Professional Language
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="block"
+            >
+              & Media Solutions for a{' '}
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="relative inline-block"
+            >
               <span className="relative z-10 text-accent">Global Audience</span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: 1 }}
+                transition={{ duration: 0.8, delay: 1.2 }}
                 className="absolute bottom-2 left-0 right-0 h-3 bg-accent/20 -z-0 origin-left"
               />
-            </span>
+            </motion.span>
           </motion.h1>
 
           {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
             className="text-lg md:text-xl text-primary-foreground/70 leading-relaxed max-w-2xl mb-10"
           >
             We deliver exceptional translation, interpretation, voice-over, and media production services 
             to organizations across Africa and beyond. Excellence in every word.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons with Stagger */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <Button variant="hero-primary" size="xl" asChild>
-              <Link to="/contact">
-                Request a Quote
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </Button>
-            <Button variant="hero-secondary" size="xl" asChild>
-              <Link to="/services">
-                <Play className="w-4 h-4" />
-                Explore Our Services
-              </Link>
-            </Button>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button variant="hero-primary" size="xl" asChild>
+                <Link to="/contact">
+                  Request a Quote
+                  <motion.span
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </Link>
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button variant="hero-secondary" size="xl" asChild>
+                <Link to="/services">
+                  <Play className="w-4 h-4" />
+                  Explore Our Services
+                </Link>
+              </Button>
+            </motion.div>
           </motion.div>
 
-          {/* Trust Indicators */}
+          {/* Trust Indicators with Stagger */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
+            transition={{ duration: 0.8, delay: 1.3 }}
             className="mt-16 pt-10 border-t border-primary-foreground/10"
           >
             <p className="text-sm text-primary-foreground/50 mb-6 uppercase tracking-wider font-medium">
               Trusted by Industry Leaders
             </p>
-            <div className="flex flex-wrap gap-x-12 gap-y-6 items-center opacity-60">
+            <div className="flex flex-wrap gap-x-12 gap-y-6 items-center">
               {['UN Agency', 'World Bank', 'African Union', 'NGO Partners', 'Corporate Clients'].map((client, index) => (
                 <motion.div
                   key={client}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 + index * 0.1 }}
-                  className="text-primary-foreground/70 font-display font-semibold text-sm tracking-wide"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 0.6, y: 0 }}
+                  transition={{ delay: 1.5 + index * 0.1 }}
+                  whileHover={{ opacity: 1, scale: 1.05 }}
+                  className="text-primary-foreground/70 font-display font-semibold text-sm tracking-wide cursor-default transition-all"
                 >
                   {client}
                 </motion.div>
@@ -139,10 +308,30 @@ export const Hero = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="w-6 h-10 rounded-full border-2 border-primary-foreground/30 flex items-start justify-center p-2"
+        >
+          <motion.div
+            animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-1 h-2 rounded-full bg-primary-foreground/50"
+          />
+        </motion.div>
+      </motion.div>
 
       {/* Bottom Gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-[5]" />
     </section>
   );
 };
