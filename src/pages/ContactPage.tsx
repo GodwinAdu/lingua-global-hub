@@ -46,16 +46,37 @@ const ContactPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll respond within 24 hours.",
-    });
-    
-    setFormData({ name: '', email: '', company: '', subject: '', message: '' });
-    setIsSubmitting(false);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "✅ Message Sent Successfully!",
+          description: "Thank you for contacting us. We'll respond within 24 hours.",
+        });
+        setFormData({ name: '', email: '', company: '', subject: '', message: '' });
+      } else {
+        toast({
+          title: "❌ Error",
+          description: result.error || "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "❌ Connection Error",
+        description: "Unable to reach server. Please check your connection or contact us directly at info@firstgradelingua.com",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
