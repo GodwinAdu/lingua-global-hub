@@ -97,12 +97,18 @@ export const Navbar = () => {
             
             <div className="flex flex-col">
               <motion.span 
-                className="font-display font-bold text-xl bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent leading-tight"
+                className={`font-display font-bold text-xl bg-gradient-to-r bg-clip-text leading-tight transition-colors duration-300 ${
+                  isScrolled 
+                    ? 'from-foreground to-foreground/80 text-transparent' 
+                    : 'from-primary-foreground to-primary-foreground/90 text-transparent'
+                }`}
                 whileHover={{ scale: 1.02 }}
               >
                 First Grade
               </motion.span>
-              <span className="text-xs text-muted-foreground font-semibold tracking-[0.2em] uppercase">
+              <span className={`text-xs font-semibold tracking-[0.2em] uppercase transition-colors duration-300 ${
+                isScrolled ? 'text-muted-foreground' : 'text-primary-foreground/70'
+              }`}>
                 Lingua Consult
               </span>
             </div>
@@ -214,7 +220,9 @@ export const Navbar = () => {
           {/* Mobile Menu Button with animation */}
           <motion.button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2.5 rounded-xl hover:bg-muted/50 transition-all duration-300 relative z-10"
+            className={`lg:hidden p-2.5 rounded-xl transition-all duration-300 relative z-10 ${
+              isScrolled ? 'bg-muted/50' : 'bg-primary-foreground/10'
+            }`}
             aria-label="Toggle menu"
             whileTap={{ scale: 0.9 }}
           >
@@ -227,7 +235,9 @@ export const Navbar = () => {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X className="w-6 h-6 text-foreground" />
+                  <X className={`w-6 h-6 transition-colors duration-300 ${
+                    isScrolled ? 'text-foreground' : 'text-primary-foreground'
+                  }`} />
                 </motion.div>
               ) : (
                 <motion.div
@@ -237,7 +247,9 @@ export const Navbar = () => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu className="w-6 h-6 text-foreground" />
+                  <Menu className={`w-6 h-6 transition-colors duration-300 ${
+                    isScrolled ? 'text-foreground' : 'text-primary-foreground'
+                  }`} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -265,7 +277,7 @@ export const Navbar = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute top-full left-0 right-0 mt-2 mx-4 lg:hidden bg-background/95 backdrop-blur-2xl border border-border/50 rounded-2xl shadow-premium-xl overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 mt-2 mx-4 lg:hidden  backdrop-blur-2xl border border-border/50 rounded-2xl shadow-premium-xl overflow-hidden z-50"
             >
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-accent/5 pointer-events-none" />
