@@ -3,10 +3,10 @@ import { useEffect, useRef } from 'react';
 import { TrendingUp, Users, Globe2, Award } from 'lucide-react';
 
 const stats = [
+  { value: 50, suffix: '+', label: 'Ghanaian Languages', icon: Globe2, color: 'text-accent' },
   { value: 500, suffix: '+', label: 'Projects Completed', icon: Award, color: 'text-secondary' },
-  { value: 50, suffix: '+', label: 'Languages', icon: Globe2, color: 'text-accent' },
-  { value: 100, suffix: '+', label: 'Happy Clients', icon: Users, color: 'text-secondary' },
-  { value: 98, suffix: '%', label: 'Success Rate', icon: TrendingUp, color: 'text-accent' },
+  { value: 100, suffix: '+', label: 'Happy Clients', icon: Users, color: 'text-accent' },
+  { value: 10, suffix: '+', label: 'Years Experience', icon: TrendingUp, color: 'text-secondary' },
 ];
 
 const AnimatedCounter = ({ value, suffix }: { value: number; suffix: string }) => {

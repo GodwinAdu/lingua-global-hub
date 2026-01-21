@@ -82,11 +82,11 @@ const ContactPage = () => {
                 Contact Us
               </span>
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Let's Start a Conversation
+                Let's Preserve & Promote Ghana's Languages Together
               </h1>
               <p className="text-xl text-primary-foreground/70 leading-relaxed">
-                Have a project in mind? Get in touch with our team to discuss 
-                how we can help you achieve your communication goals.
+                Have a language documentation or translation project? Get in touch with our team 
+                to discuss how we can help preserve Ghana's linguistic heritage and achieve your communication goals.
               </p>
             </motion.div>
           </div>
@@ -108,7 +108,7 @@ const ContactPage = () => {
                   Send Us a Message
                 </h2>
                 <p className="text-muted-foreground mb-8">
-                  Fill out the form below and we'll get back to you within 24 hours.
+                  Whether it's translation, interpretation, or language documentation, we're here to help.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-6">

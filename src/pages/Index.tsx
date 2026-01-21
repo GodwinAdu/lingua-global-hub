@@ -3,6 +3,7 @@ import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
 import StatsCounter from '@/components/sections/StatsCounter';
 import LanguageMarquee from '@/components/sections/LanguageMarquee';
+import GhanaLanguages from '@/components/sections/GhanaLanguages';
 import About from '@/components/sections/About';
 import Services from '@/components/sections/Services';
 import FeaturesShowcase from '@/components/sections/FeaturesShowcase';
@@ -21,6 +22,7 @@ const Index = () => {
         <Hero />
         <StatsCounter />
         <LanguageMarquee />
+        <GhanaLanguages />
         <About />
         <Services />
         <FeaturesShowcase />

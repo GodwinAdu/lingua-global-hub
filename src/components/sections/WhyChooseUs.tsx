@@ -5,33 +5,33 @@ import { Shield, Zap, HeartHandshake, BadgeCheck, Clock4, Headphones } from 'luc
 const features = [
   {
     icon: BadgeCheck,
-    title: 'Certified Experts',
-    description: 'Our linguists hold internationally recognized certifications and bring years of specialized experience.',
+    title: 'Native Language Experts',
+    description: 'Our team includes native speakers of all major Ghanaian languages with deep cultural understanding and linguistic expertise.',
   },
   {
     icon: Shield,
-    title: 'Confidentiality Guaranteed',
-    description: 'Rigorous data protection protocols ensure your sensitive information remains secure at all times.',
+    title: 'Cultural Authenticity',
+    description: 'We preserve cultural context and nuances, ensuring translations honor the traditions and values of each language community.',
   },
   {
     icon: Zap,
-    title: 'Fast Turnaround',
-    description: 'Efficient processes and dedicated teams ensure timely delivery without compromising quality.',
+    title: 'Language Documentation',
+    description: 'Specialized in documenting and preserving endangered Ghanaian languages for future generations.',
   },
   {
     icon: HeartHandshake,
-    title: 'Client-Centric Approach',
-    description: 'We tailor every project to your specific needs, ensuring complete satisfaction and lasting partnerships.',
+    title: 'Community-Focused',
+    description: 'We work closely with local communities to ensure linguistic accuracy and cultural sensitivity in every project.',
   },
   {
     icon: Clock4,
-    title: '24/7 Availability',
-    description: 'Round-the-clock support means we\'re ready whenever you need us, across any time zone.',
+    title: 'Ghana-Wide Coverage',
+    description: 'From Greater Accra to Northern Region, we provide services across all 16 regions of Ghana.',
   },
   {
     icon: Headphones,
     title: 'Dedicated Support',
-    description: 'Personal project managers guide you through every step, from briefing to final delivery.',
+    description: 'Personal project managers who understand both local and international communication needs guide you through every step.',
   },
 ];
 
@@ -96,8 +96,8 @@ export const WhyChooseUs = () => {
             </span>
           </h2>
           <p className="text-lg text-primary-foreground/70 leading-relaxed">
-            Experience the difference that commitment to excellence makes. 
-            We don't just meet expectations—we exceed them.
+            Experience Ghana's premier language consultancy. We combine linguistic expertise 
+            with deep cultural knowledge to preserve and promote our nation's linguistic heritage.
           </p>
         </motion.div>
 

@@ -24,42 +24,42 @@ const services = [
   {
     icon: Languages,
     title: 'Translation',
-    description: 'Accurate, culturally-sensitive translations across 50+ languages for documents, websites, and marketing materials.',
+    description: 'Accurate translations in 50+ Ghanaian languages including Akan, Ga, Ewe, Dagbani, and major international languages for documents, websites, and marketing materials.',
     image: translationImg,
     href: '/services/translation',
   },
   {
     icon: Mic2,
     title: 'Interpretation',
-    description: 'Professional simultaneous and consecutive interpretation for conferences, meetings, and official events.',
+    description: 'Professional simultaneous and consecutive interpretation in Ghanaian languages for conferences, meetings, community events, and official proceedings.',
     image: interpretationImg,
     href: '/services/interpretation',
   },
   {
     icon: PlayCircle,
     title: 'Voice-over',
-    description: 'Studio-quality voice-over production in multiple languages for commercials, documentaries, and e-learning.',
+    description: 'Studio-quality voice-over production in multiple Ghanaian languages for radio, TV commercials, documentaries, and educational content.',
     image: voiceoverImg,
     href: '/services/voiceover',
   },
   {
     icon: Music,
     title: 'Jingle Recording',
-    description: 'Custom jingle creation and recording with professional vocalists and sound engineers.',
+    description: 'Custom jingle creation and recording in local languages with professional vocalists who understand Ghanaian musical traditions and sound engineering.',
     image: jingleImg,
     href: '/services/jingle',
   },
   {
     icon: FileEdit,
-    title: 'Editing',
-    description: 'Comprehensive editing and proofreading services ensuring flawless content delivery.',
+    title: 'Language Documentation',
+    description: 'Comprehensive documentation and preservation of indigenous Ghanaian languages, including grammar guides, dictionaries, and digital archives.',
     image: editingImg,
     href: '/services/editing',
   },
   {
     icon: PenTool,
     title: 'Script Writing',
-    description: 'Creative script development for commercials, corporate videos, and multimedia productions.',
+    description: 'Creative script development in Ghanaian languages for commercials, educational videos, cultural programs, and multimedia productions.',
     image: scriptwritingImg,
     href: '/services/scriptwriting',
   },
@@ -117,7 +117,7 @@ export const Services = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6"
           >
-            Comprehensive Language & Media Solutions
+            Comprehensive Language Documentation & Media Solutions
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -125,8 +125,8 @@ export const Services = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed"
           >
-            From translation to voice production, we provide end-to-end services 
-            that help your message resonate across cultures and borders.
+            From translation to voice production in Ghana's diverse languages, we provide end-to-end services 
+            that help preserve linguistic heritage and ensure your message resonates across cultures.
           </motion.p>
         </motion.div>
 

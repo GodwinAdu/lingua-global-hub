@@ -47,9 +47,9 @@ export const CTA = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6"
             >
-              Ready to Take Your Communications{' '}
+              Ready to Preserve Ghana's{' '}
               <span className="relative inline-block">
-                <span className="gradient-text-gold">Global</span>
+                <span className="gradient-text-gold">Linguistic Heritage</span>
                 <motion.span
                   className="absolute -bottom-2 left-0 right-0 h-3 bg-accent/30 -z-10 rounded"
                   initial={{ scaleX: 0 }}
@@ -66,7 +66,7 @@ export const CTA = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-primary-foreground/70 mb-10 max-w-2xl mx-auto"
             >
-              Let's discuss how we can help you connect with audiences worldwide. 
+              Let's discuss how we can help document, translate, and promote Ghana's diverse languages. 
               Get a free consultation and quote today.
             </motion.p>
             

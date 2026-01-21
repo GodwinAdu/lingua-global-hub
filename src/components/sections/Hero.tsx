@@ -195,7 +195,7 @@ export const Hero = () => {
               transition={{ duration: 2, repeat: Infinity }}
             />
             <span className="text-sm text-primary-foreground/80 font-medium">
-              Trusted by 500+ Global Clients
+              Ghana's Premier Language Consultancy
             </span>
           </motion.div>
 
@@ -220,7 +220,7 @@ export const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="block"
             >
-              & Media Solutions for a{' '}
+             & Media Solutions for{' '}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 40 }}
@@ -228,7 +228,7 @@ export const Hero = () => {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="relative inline-block"
             >
-              <span className="relative z-10 text-accent">Global Audience</span>
+              <span className="relative z-10 text-accent">Ghana & Beyond</span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -245,8 +245,9 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.9 }}
             className="text-lg md:text-xl text-primary-foreground/70 leading-relaxed max-w-2xl mb-10"
           >
+            Specializing in Ghana's diverse languages including Akan, Ga, Ewe, Dagbani, and 50+ more. 
             We deliver exceptional translation, interpretation, voice-over, and media production services 
-            to organizations across Africa and beyond. Excellence in every word.
+            to preserve and promote linguistic heritage across Ghana and Africa.
           </motion.p>
 
           {/* CTA Buttons with Stagger */}
@@ -296,7 +297,7 @@ export const Hero = () => {
               Trusted by Industry Leaders
             </p>
             <div className="flex flex-wrap gap-x-12 gap-y-6 items-center">
-              {['UN Agency', 'World Bank', 'African Union', 'NGO Partners', 'Corporate Clients'].map((client, index) => (
+              {['Ghana Gov Agencies', 'NGOs', 'Cultural Institutions', 'Media Houses', 'Corporate Clients'].map((client, index) => (
                 <motion.div
                   key={client}
                   initial={{ opacity: 0, y: 20 }}

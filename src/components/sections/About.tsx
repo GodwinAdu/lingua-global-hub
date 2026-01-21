@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const stats = [
+  { value: '50+', label: 'Ghanaian Languages', icon: Globe2 },
   { value: '500+', label: 'Projects Delivered', icon: Award },
-  { value: '50+', label: 'Languages Covered', icon: Globe2 },
   { value: '100+', label: 'Corporate Clients', icon: Users },
   { value: '10+', label: 'Years Experience', icon: Clock },
 ];
@@ -58,9 +58,9 @@ export const About = () => {
             </motion.span>
             
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
-              Setting the Standard in{' '}
+              Preserving Ghana's{' '}
               <span className="relative inline-block">
-                <span className="gradient-text-sunset">Language Excellence</span>
+                <span className="gradient-text-sunset">Linguistic Heritage</span>
                 <motion.span
                   className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-secondary/20 via-accent/20 to-secondary/20 -z-10 rounded"
                   initial={{ scaleX: 0 }}
@@ -76,10 +76,9 @@ export const About = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              First Grade Lingua Consult is a premier language and media consultancy 
-              dedicated to bridging communication gaps across cultures and continents. 
-              We combine linguistic expertise with cutting-edge technology to deliver 
-              solutions that exceed expectations.
+              First Grade Lingua Consult is Ghana's premier language and media consultancy, 
+              dedicated to documenting, preserving, and promoting the rich linguistic diversity 
+              of Ghana's 50+ indigenous languages while bridging communication across cultures.
             </motion.p>
             
             <motion.p 
@@ -88,10 +87,10 @@ export const About = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              Our team of certified professionals brings decades of combined experience 
-              in translation, interpretation, and media production. We serve multinational 
-              corporations, international organizations, government agencies, and NGOs 
-              with the same commitment to excellence.
+              From Akan to Dagbani, Ga to Ewe, we combine deep cultural understanding with 
+              cutting-edge technology to deliver language solutions that honor tradition while 
+              embracing innovation. We serve government agencies, NGOs, cultural institutions, 
+              and businesses committed to linguistic inclusivity.
             </motion.p>
             
             <motion.div

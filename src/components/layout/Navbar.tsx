@@ -71,28 +71,9 @@ export const Navbar = () => {
                 className="absolute inset-0 rounded-xl bg-gradient-to-br from-secondary to-accent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"
               />
               
-              <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-secondary to-accent flex items-center justify-center shadow-premium group-hover:shadow-glow transition-all duration-500">
-                <Globe className="w-6 h-6 text-primary-foreground" />
-                
-                {/* Rotating ring */}
-                <motion.div
-                  className="absolute inset-0 rounded-xl border-2 border-accent/30"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                />
+              <div className="relative w-12 h-12 rounded-xl flex items-center justify-center shadow-premium group-hover:shadow-glow transition-all duration-500">
+                <img src="/icon0.svg" alt="First Grade Lingua Consult" className="w-full h-full rounded-xl object-cover" />
               </div>
-              
-              {/* Sparkle badge */}
-              <motion.div
-                className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-gradient-to-br from-accent to-yellow-400 flex items-center justify-center shadow-gold"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 180, 360]
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <Sparkles className="w-2 h-2 text-white" />
-              </motion.div>
             </motion.div>
             
             <div className="flex flex-col">

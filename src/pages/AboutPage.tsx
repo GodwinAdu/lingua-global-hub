@@ -70,7 +70,7 @@ const AboutPage = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
               >
-                Setting the Global Standard in Language Services
+                Documenting & Preserving Ghana's Linguistic Diversity
               </motion.h1>
               <motion.p 
                 initial={{ opacity: 0, y: 30 }}
@@ -79,7 +79,8 @@ const AboutPage = () => {
                 className="text-xl text-primary-foreground/70 leading-relaxed"
               >
                 For over a decade, First Grade Lingua Consult has been the trusted partner 
-                for organizations seeking exceptional language and media solutions.
+                for organizations seeking exceptional language documentation and media solutions 
+                across Ghana's 50+ indigenous languages.
               </motion.p>
             </motion.div>
           </div>
@@ -101,21 +102,23 @@ const AboutPage = () => {
                 </h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    First Grade Lingua Consult was founded with a singular vision: to bridge 
-                    communication gaps and connect businesses with global audiences through 
-                    the power of language.
+                    First Grade Lingua Consult was founded with a singular vision: to document, 
+                    preserve, and promote Ghana's rich linguistic heritage while bridging 
+                    communication gaps across the nation's diverse language communities.
                   </p>
                   <p>
-                    What began as a small translation service has grown into a comprehensive 
-                    language and media consultancy, serving multinational corporations, 
-                    international organizations, government agencies, and NGOs across Africa 
-                    and beyond.
+                    What began as a translation service has grown into Ghana's leading 
+                    language documentation and media consultancy. We specialize in all major 
+                    Ghanaian languages—Akan (Twi/Fante), Ga, Ewe, Dagbani, Dangme, Nzema, 
+                    Gonja, and 40+ others—serving government agencies, NGOs, cultural institutions, 
+                    media houses, and businesses across Ghana and West Africa.
                   </p>
                   <p>
-                    Our team of certified linguists, interpreters, and media professionals 
-                    brings together decades of combined experience and a shared passion for 
-                    excellence. We don't just translate words—we convey meaning, culture, 
-                    and intent with precision and authenticity.
+                    Our team of native-speaking linguists, certified interpreters, and media 
+                    professionals brings deep cultural understanding and decades of combined 
+                    experience. We don't just translate words—we preserve cultural context, 
+                    honor linguistic traditions, and ensure authentic communication that 
+                    resonates with local communities.
                   </p>
                 </div>
               </motion.div>
@@ -171,10 +174,14 @@ const AboutPage = () => {
                   Our Mission
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To empower organizations to communicate effectively across linguistic and 
-                  cultural boundaries by providing world-class language and media services 
-                  that set the standard for excellence in the industry.
+                  To document, preserve, and promote Ghana's linguistic diversity by providing 
+                  world-class language services that empower communities, honor cultural heritage, 
+                  and facilitate effective communication across all of Ghana's 50+ indigenous languages.
                 </p>
+                <div className="mt-6 pt-6 border-t border-border">
+                  <p className="text-sm font-semibold text-secondary mb-2">Core Values:</p>
+                  <p className="text-muted-foreground italic">Cultural Preservation, Linguistic Accuracy & Community Empowerment</p>
+                </div>
               </motion.div>
 
               <motion.div
@@ -194,10 +201,14 @@ const AboutPage = () => {
                   Our Vision
                 </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To be the most trusted and respected language consultancy in Africa and 
-                  beyond, recognized for our commitment to quality, innovation, and the 
-                  success of our clients on the global stage.
+                  To be Ghana's most trusted language consultancy and a leading voice in African 
+                  linguistic preservation, recognized for our commitment to cultural authenticity, 
+                  innovation, and the empowerment of local language communities.
                 </p>
+                <div className="mt-6 pt-6 border-t border-border">
+                  <p className="text-sm font-semibold text-accent mb-2">Core Values:</p>
+                  <p className="text-muted-foreground italic">Cultural Preservation, Linguistic Accuracy & Community Empowerment</p>
+                </div>
               </motion.div>
             </div>
           </div>

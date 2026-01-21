@@ -5,28 +5,28 @@ import { Button } from '@/components/ui/button';
 
 const testimonials = [
   {
-    quote: "First Grade Lingua Consult has been instrumental in our regional expansion. Their translation accuracy and cultural sensitivity have helped us connect with audiences across West Africa.",
-    author: 'Sarah Chen',
-    role: 'Director of Communications',
-    company: 'Global Development Partners',
-  },
-  {
-    quote: "The voice-over quality exceeded our expectations. The team understood our brand voice perfectly and delivered on an extremely tight deadline.",
-    author: 'Michael Adebayo',
-    role: 'Marketing Manager',
-    company: 'TechVentures Africa',
-  },
-  {
-    quote: "Their interpretation services during our international conference were flawless. Professional, punctual, and highly skilled interpreters.",
-    author: 'Dr. Fatima Hassan',
+    quote: "First Grade Lingua Consult's expertise in Ghanaian languages has been invaluable. Their Akan and Ewe translations helped us reach communities we couldn't connect with before.",
+    author: 'Kwame Mensah',
     role: 'Program Director',
-    company: 'African Health Initiative',
+    company: 'Ghana Health Education Initiative',
   },
   {
-    quote: "We've worked with many language service providers, but First Grade stands out for their commitment to quality and client service.",
-    author: 'James Okonkwo',
-    role: 'CEO',
-    company: 'Pan-African Media Group',
+    quote: "The voice-over quality in Ga and Twi exceeded our expectations. The team's cultural understanding made our radio campaign authentic and impactful across Greater Accra.",
+    author: 'Ama Osei',
+    role: 'Marketing Manager',
+    company: 'Ghana Broadcasting Corporation',
+  },
+  {
+    quote: "Their interpretation services in Dagbani during our Northern Region conference were flawless. Professional, culturally sensitive, and highly skilled native speakers.",
+    author: 'Dr. Fatima Alhassan',
+    role: 'Regional Coordinator',
+    company: 'Ministry of Local Government',
+  },
+  {
+    quote: "First Grade's language documentation work is preserving our linguistic heritage. Their commitment to accuracy in documenting indigenous languages is unmatched in Ghana.",
+    author: 'Prof. Kofi Agyekum',
+    role: 'Director',
+    company: 'Institute of African Studies, University of Ghana',
   },
 ];
 
@@ -76,7 +76,7 @@ export const Testimonials = () => {
             <span className="gradient-text">Say</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Don't just take our word for it—hear from the organizations we've helped succeed.
+            Hear from organizations across Ghana who trust us with their language needs.
           </p>
         </motion.div>
 

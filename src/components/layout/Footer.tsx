@@ -48,8 +48,8 @@ export const Footer = () => {
                 className="relative"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary to-secondary/80 flex items-center justify-center shadow-glow">
-                  <Globe className="w-6 h-6 text-secondary-foreground" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-glow">
+                  <img src="/icon0.svg" alt="First Grade Lingua Consult" className="w-full h-full rounded-xl object-cover" />
                 </div>
                 <motion.div 
                   className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-accent"

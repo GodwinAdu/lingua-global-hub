@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 
 const languages = [
-  'English', 'French', 'Spanish', 'Arabic', 'Swahili', 'Portuguese',
-  'Mandarin', 'German', 'Italian', 'Russian', 'Japanese', 'Korean',
-  'Hindi', 'Yoruba', 'Igbo', 'Hausa', 'Amharic', 'Zulu'
+  'Akan (Twi)', 'Ga', 'Ewe', 'Dagbani', 'Dangme', 'Nzema',
+  'Gonja', 'Kasem', 'Fante', 'Dagaare', 'Hausa', 'English',
+  'French', 'Arabic', 'Portuguese', 'Spanish', 'Swahili', 'Mandarin'
 ];
 
 export const LanguageMarquee = () => {
@@ -11,7 +11,7 @@ export const LanguageMarquee = () => {
     <section className="py-12 bg-muted/30 overflow-hidden border-y border-border/50">
       <div className="mb-6 text-center">
         <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-          We Speak Your Language
+          Ghana's Languages & Beyond - We Speak Your Language
         </span>
       </div>
       
