@@ -12,7 +12,7 @@ const languageGroups = [
   },
   {
     name: 'Ga-Dangme Languages',
-    languages: ['Ga', 'Dangme (Krobo)', 'Ada'],
+    languages: ['Ga', 'Dangme '],
     speakers: '1.5+ million',
     icon: Globe2,
     color: 'from-green-500 to-emerald-500',
