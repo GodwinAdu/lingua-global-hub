@@ -194,10 +194,10 @@ export const Footer = () => {
               >
                 <Mail className="w-4 h-4 text-accent flex-shrink-0" />
                 <a
-                  href="mailto:info@firstgradelingua.com"
+                  href="mailto:firstlingualconsult@gmail.com"
                   className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
                 >
-                  info@firstgradelingua.com
+                  firstlingualconsult@gmail.com
                 </a>
               </motion.li>
             </ul>

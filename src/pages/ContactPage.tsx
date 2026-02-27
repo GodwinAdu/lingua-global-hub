@@ -23,7 +23,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email Us',
-    details: ['info@firstgradelingua.com', 'support@firstgradelingua.com'],
+    details: ['firstlingualconsult@gmail.com'],
   },
   {
     icon: Clock,
@@ -71,7 +71,7 @@ const ContactPage = () => {
     } catch (error) {
       toast({
         title: "❌ Connection Error",
-        description: "Unable to reach server. Please check your connection or contact us directly at info@firstgradelingua.com",
+        description: "Unable to reach server. Please check your connection or contact us directly at firstlingualconsult@gmail.com",
         variant: "destructive",
       });
     } finally {

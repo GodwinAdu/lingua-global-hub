@@ -52,7 +52,7 @@ const createEmailTemplate = (data) => `
     </div>
     <div class="footer">
       <p>First Grade Lingua Consult | Ghana's Premier Language Consultancy</p>
-      <p>HNO. BE 37, Dandellon Street, Danfa, Accra | +233 24 217 8378</p>
+      <p>HNO. BE 37, Dandellon Street, Danfa, Accra | firstlingualconsult@gmail.com</p>
     </div>
   </div>
 </body>
@@ -139,7 +139,7 @@ export default async function handler(req, res) {
     </div>
     <div class="footer">
       <p>First Grade Lingua Consult | Ghana's Premier Language Consultancy</p>
-      <p>HNO. BE 37, Dandellon Street, Danfa, Accra | info@firstgradelingua.com</p>
+      <p>HNO. BE 37, Dandellon Street, Danfa, Accra | firstlingualconsult@gmail.com</p>
     </div>
   </div>
 </body>
