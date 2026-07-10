@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Menu, X, Globe, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import NewsTicker from '@/components/layout/NewsTicker';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -10,6 +11,7 @@ const navLinks = [
   { name: 'Services', href: '/services' },
   // { name: 'Team', href: '/team' },
   { name: 'Portfolio', href: '/portfolio' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -34,16 +36,22 @@ export const Navbar = () => {
   }, [location]);
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        isScrolled
-          ? 'py-2'
-          : 'py-4'
-      }`}
-    >
+    <>
+      {/* News Ticker Bar */}
+      <div className="fixed top-0 left-0 right-0 z-[60]">
+        <NewsTicker />
+      </div>
+
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
+        className={`fixed top-9 left-0 right-0 z-50 transition-all duration-700 ${
+          isScrolled
+            ? 'py-2'
+            : 'py-4'
+        }`}
+      >
       {/* Glassmorphism Background */}
       <motion.div
         style={{ opacity: navbarOpacity }}
@@ -333,6 +341,7 @@ export const Navbar = () => {
         )}
       </AnimatePresence>
     </motion.header>
+    </>
   );
 };
 
