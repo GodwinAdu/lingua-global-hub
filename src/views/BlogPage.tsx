@@ -9,9 +9,15 @@ import Footer from '@/components/layout/Footer';
 import FloatingChat from '@/components/sections/FloatingChat';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { blogPosts, blogCategories, blogLanguages } from '@/data/blogPosts';
+import { blogLanguages, type BlogCategory, type BlogPost } from '@/lib/content/types';
 
-const BlogPage = () => {
+type Props = { posts: BlogPost[]; categories: BlogCategory[] };
+
+const BlogPage = ({ posts: blogPosts, categories }: Props) => {
+  const blogCategories = useMemo(
+    () => [{ id: 'all', label: 'All', labelTwi: 'Nyinaa' }, ...categories],
+    [categories],
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLanguage, setSelectedLanguage] = useState('all');
@@ -29,7 +35,7 @@ const BlogPage = () => {
 
       return matchesSearch && matchesCategory && matchesLanguage;
     });
-  }, [searchQuery, selectedCategory, selectedLanguage]);
+  }, [blogPosts, searchQuery, selectedCategory, selectedLanguage]);
 
   return (
     <div className="min-h-screen">

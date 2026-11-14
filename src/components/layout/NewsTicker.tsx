@@ -3,9 +3,12 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Newspaper } from 'lucide-react';
-import { blogPosts } from '@/data/blogPosts';
+import { useTickerItems } from '@/components/layout/news-ticker-context';
 
 const NewsTicker = () => {
+  const blogPosts = useTickerItems();
+  if (blogPosts.length === 0) return null;
+
   // Duplicate posts enough times to create seamless infinite scroll
   const tickerItems = [...blogPosts, ...blogPosts, ...blogPosts, ...blogPosts];
 

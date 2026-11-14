@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, UserCog, Users, type LucideIcon } from 'lucide-react';
+import { ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -35,6 +35,13 @@ const NAV: { label: string; items: NavItem[] }[] = [
   {
     label: 'Overview',
     items: [{ title: 'Dashboard', href: '/admin', icon: LayoutDashboard, minRole: 'author' }],
+  },
+  {
+    label: 'Content',
+    items: [
+      { title: 'Posts & news', href: '/admin/posts', icon: Newspaper, minRole: 'author' },
+      { title: 'Categories', href: '/admin/categories', icon: Tags, minRole: 'editor' },
+    ],
   },
   {
     label: 'Administration',

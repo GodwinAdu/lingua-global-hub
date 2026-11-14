@@ -173,6 +173,57 @@
     @apply max-w-7xl mx-auto px-6 lg:px-8;
   }
 
+  /* Article HTML from the dashboard editor (public site and editor preview). */
+  .article-body {
+    @apply text-lg leading-relaxed text-foreground/85;
+  }
+  .article-body > * + * {
+    @apply mt-6;
+  }
+  .article-body h2 {
+    @apply font-display text-2xl font-bold text-foreground mt-10;
+  }
+  .article-body h3 {
+    @apply font-display text-xl font-semibold text-foreground mt-8;
+  }
+  .article-body h4 {
+    @apply font-semibold text-foreground mt-6;
+  }
+  .article-body a {
+    @apply text-secondary underline underline-offset-2 hover:text-secondary/80;
+  }
+  .article-body ul {
+    @apply list-disc pl-6 space-y-2;
+  }
+  .article-body ol {
+    @apply list-decimal pl-6 space-y-2;
+  }
+  .article-body blockquote {
+    @apply border-l-4 border-secondary pl-4 italic text-foreground/70;
+  }
+  .article-body img {
+    @apply rounded-xl w-full h-auto;
+  }
+  .article-body hr {
+    @apply border-border my-10;
+  }
+  .article-body code {
+    @apply rounded bg-muted px-1.5 py-0.5 text-base;
+  }
+  .article-body pre {
+    @apply rounded-xl bg-muted p-4 overflow-x-auto text-base;
+  }
+  .article-body pre code {
+    @apply bg-transparent p-0;
+  }
+  .article-body strong {
+    @apply font-semibold text-foreground;
+  }
+  .article-body .is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply text-muted-foreground float-left h-0 pointer-events-none;
+  }
+
   .glass-card {
     background: var(--gradient-glass);
     backdrop-filter: blur(24px) saturate(180%);

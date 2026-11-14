@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { blogPosts } from '@/data/blogPosts';
+import { getPublishedPosts } from '@/lib/content/posts';
 import { serviceSummaries } from '@/data/services';
 import { absoluteUrl } from '@/lib/site';
 
@@ -16,13 +16,11 @@ const staticRoutes = [
   '/cookie-policy',
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const posts = await getPublishedPosts();
   return [
     ...staticRoutes.map((path) => ({ url: absoluteUrl(path) })),
     ...serviceSummaries.map((s) => ({ url: absoluteUrl(`/services/${s.id}`) })),
-    ...blogPosts.map((post) => ({
-      url: absoluteUrl(`/blog/${post.slug}`),
-      lastModified: post.publishedAt,
-    })),
+    ...posts.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`), lastModified: post.publishedAt })),
   ];
 }

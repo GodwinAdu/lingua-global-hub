@@ -1,6 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
 import { redirect } from 'next/navigation';
+import { connection } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { hasRole, isRole, type Role } from '@/lib/roles';
 
@@ -20,6 +21,8 @@ export type StaffUser = {
  * Memoized per request with React.cache.
  */
 export const getCurrentUser = cache(async (): Promise<StaffUser | null> => {
+  // Session checks compare token expiry with the clock: always run per request, never prerender.
+  await connection();
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   const userId = data?.claims?.sub;

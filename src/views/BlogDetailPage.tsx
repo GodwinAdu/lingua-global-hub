@@ -22,32 +22,12 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FloatingChat from '@/components/sections/FloatingChat';
 import { Button } from '@/components/ui/button';
-import { getBlogPostBySlug, getRelatedPosts, blogCategories } from '@/data/blogPosts';
+import type { BlogCategory, BlogPost } from '@/lib/content/types';
 
-const BlogDetailPage = ({ slug }: { slug: string }) => {
-  const post = getBlogPostBySlug(slug || '');
-  const relatedPosts = getRelatedPosts(slug || '');
+type Props = { post: BlogPost; relatedPosts: BlogPost[]; categories: BlogCategory[] };
+
+const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Props) => {
   const [copied, setCopied] = useState(false);
-
-  if (!post) {
-    return (
-      <div className="min-h-screen">
-        <Navbar />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
-            <p className="text-muted-foreground mb-6">
-              The article you're looking for doesn't exist or has been removed.
-            </p>
-            <Button asChild>
-              <Link href="/blog">Back to Blog</Link>
-            </Button>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   const postUrl = absoluteUrl(`/blog/${post.slug}`);
 
@@ -60,7 +40,6 @@ const BlogDetailPage = ({ slug }: { slug: string }) => {
   const shareUrl = encodeURIComponent(postUrl);
   const shareTitle = encodeURIComponent(post.title);
 
-  const contentParagraphs = post.content.split('\n\n').filter((p) => p.trim());
 
   return (
     <div className="min-h-screen">
@@ -181,42 +160,32 @@ const BlogDetailPage = ({ slug }: { slug: string }) => {
                     />
                   </div>
 
-                  {/* Article Body */}
-                  <div className="space-y-6">
-                    {contentParagraphs.map((paragraph, index) => (
-                      <motion.p
-                        key={index}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
-                        className="text-foreground/85 text-lg leading-relaxed"
-                      >
-                        {paragraph}
-                      </motion.p>
-                    ))}
-                  </div>
+                  {/* Article Body: HTML sanitized on save (src/lib/content/html.ts) */}
+                  <div className="article-body" dangerouslySetInnerHTML={{ __html: post.content }} />
 
-                  {/* Secondary Image */}
-                  {post.images.length > 1 && (
+                  {/* Gallery */}
+                  {post.images.slice(1).map((src, index) => (
                     <motion.div
+                      key={src}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
+                      transition={{ delay: index * 0.05 }}
                       className="mt-10 rounded-2xl overflow-hidden shadow-premium-md"
                     >
                       <img
-                        src={post.images[1]}
-                        alt="Article image"
+                        src={src}
+                        alt={`${post.title} — image ${index + 2}`}
                         className="w-full h-auto object-contain bg-muted/30 max-h-[400px]"
                       />
                     </motion.div>
-                  )}
+                  ))}
 
                   {/* Tags */}
                   <div className="mt-12 pt-8 border-t border-border">
                     <div className="flex flex-wrap items-center gap-2">
                       <Tag className="w-4 h-4 text-muted-foreground" />
-                      {post.tags.map((tag) => (
+                      {post.tags.length > 0 && post.tags.map((tag) => (
                         <span
                           key={tag}
                           className="px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground"
