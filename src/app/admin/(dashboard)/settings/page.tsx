@@ -7,6 +7,10 @@ import { SettingsForm } from './settings-form';
 
 export const metadata: Metadata = { title: 'Site settings' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function SettingsPage() {
   await requireStaff('super_admin');
   const supabase = await createClient();

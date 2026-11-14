@@ -6,6 +6,10 @@ import { SimpleItemDialog, type FieldDef } from '../site/simple-item-dialog';
 
 export const metadata: Metadata = { title: 'Testimonials' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 const FIELDS: FieldDef[] = [
   { name: 'quote', label: 'Quote', type: 'textarea', required: true, maxLength: 1000 },
   { name: 'author', label: 'Name', required: true, maxLength: 120 },

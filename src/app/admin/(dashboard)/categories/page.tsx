@@ -5,6 +5,10 @@ import { CategoryRow, NewCategoryForm } from './category-forms';
 
 export const metadata: Metadata = { title: 'Categories' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function CategoriesPage() {
   await requireStaff('editor');
   const supabase = await createClient();

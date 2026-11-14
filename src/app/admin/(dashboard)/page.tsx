@@ -12,6 +12,10 @@ import { StatusBadge, type PostStatus } from './posts/status-badge';
 
 export const metadata: Metadata = { title: 'Overview' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function DashboardPage({ searchParams }: PageProps<'/admin'>) {
   const [user, params] = await Promise.all([requireStaff(), searchParams]);
   const isEditor = hasRole(user.role, 'editor');

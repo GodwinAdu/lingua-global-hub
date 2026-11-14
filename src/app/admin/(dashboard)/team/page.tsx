@@ -6,6 +6,10 @@ import { SimpleItemDialog, type FieldDef } from '../site/simple-item-dialog';
 
 export const metadata: Metadata = { title: 'Team' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 const FIELDS: FieldDef[] = [
   { name: 'image_url', label: 'Photo', type: 'image' },
   { name: 'name', label: 'Name', required: true, maxLength: 120 },

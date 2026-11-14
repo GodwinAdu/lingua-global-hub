@@ -6,6 +6,10 @@ import { ServiceForm } from '../service-form';
 
 export const metadata: Metadata = { title: 'Edit service' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function EditServicePage({ params, searchParams }: PageProps<'/admin/services/[id]'>) {
   const [, { id }, query] = await Promise.all([requireStaff('editor'), params, searchParams]);
   if (!/^\d+$/.test(id)) notFound();

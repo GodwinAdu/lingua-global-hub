@@ -12,6 +12,10 @@ import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = { title: 'Orders' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'paid', label: 'Paid' },

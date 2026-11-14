@@ -14,6 +14,10 @@ import { StatusBadge, type PostStatus } from './status-badge';
 
 export const metadata: Metadata = { title: 'Posts & news' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 const TABS: { id: 'all' | PostStatus; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'published', label: 'Published' },

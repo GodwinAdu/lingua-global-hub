@@ -10,6 +10,10 @@ import { ContentList, PageHeader } from '../site/content-list';
 
 export const metadata: Metadata = { title: 'Services' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function ServicesAdminPage({ searchParams }: PageProps<'/admin/services'>) {
   const [, query] = await Promise.all([requireStaff('editor'), searchParams]);
   const supabase = await createClient();

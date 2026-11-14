@@ -8,6 +8,10 @@ import type { PostStatus } from '../status-badge';
 
 export const metadata: Metadata = { title: 'Edit post' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 const SAVED: Record<string, string> = {
   draft: 'Draft created.',
   review: 'Submitted for review. An editor will publish it.',

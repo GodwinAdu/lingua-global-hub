@@ -11,6 +11,10 @@ import { RoleSelect } from './role-select';
 
 export const metadata: Metadata = { title: 'Users & roles' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 type AuthInfo = { invitedAt: string | null; lastSignInAt: string | null };
 
 export default async function UsersPage() {

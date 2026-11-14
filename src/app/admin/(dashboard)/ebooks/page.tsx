@@ -11,6 +11,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 export const metadata: Metadata = { title: 'Ebooks' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function EbooksAdminPage({ searchParams }: PageProps<'/admin/ebooks'>) {
   const [, query] = await Promise.all([requireStaff('admin'), searchParams]);
   const supabase = await createClient();

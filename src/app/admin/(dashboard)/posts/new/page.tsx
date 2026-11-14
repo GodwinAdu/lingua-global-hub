@@ -6,6 +6,10 @@ import { PostForm } from '../post-form';
 
 export const metadata: Metadata = { title: 'New post' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 export default async function NewPostPage() {
   const user = await requireStaff('author');
   const supabase = await createClient();

@@ -6,6 +6,10 @@ import { SimpleItemDialog, type FieldDef } from '../site/simple-item-dialog';
 
 export const metadata: Metadata = { title: 'Portfolio' };
 
+// Per-user, permission-checked data on every visit: render on request rather than
+// validating for instant client navigation (see the Next.js instant navigation guide).
+export const instant = false;
+
 const FIELDS: FieldDef[] = [
   { name: 'title', label: 'Project title', required: true, maxLength: 160 },
   {
