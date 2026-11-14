@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import View from '@/views/TeamPage';
-import { getTeam } from '@/lib/content/site';
+import { getTeam, getTeamStats } from '@/lib/content/site';
 
 export const metadata: Metadata = {
   title: 'Our Team',
@@ -9,5 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <View members={await getTeam()} />;
+  const [members, stats] = await Promise.all([getTeam(), getTeamStats()]);
+  return <View members={members} stats={stats} />;
 }

@@ -10,12 +10,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ImageField } from '@/components/admin/image-field';
 import { SubmitButton } from '@/components/admin/submit-button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getIcon, ICON_NAMES } from '@/lib/content/icons';
 import { saveSimpleItem, type ActionState } from './actions';
 
 export type FieldDef = {
   name: string;
   label: string;
-  type?: 'text' | 'textarea' | 'image' | 'email' | 'url';
+  type?: 'text' | 'textarea' | 'image' | 'email' | 'url' | 'icon';
   placeholder?: string;
   hint?: string;
   maxLength?: number;
@@ -30,7 +32,7 @@ export function SimpleItemDialog({
   initial,
   imageFolder = 'site',
 }: {
-  table: 'team_members' | 'portfolio_items' | 'testimonials';
+  table: 'team_members' | 'team_stats' | 'portfolio_items' | 'testimonials';
   title: string;
   fields: FieldDef[];
   initial?: { id: number } & Record<string, string>;
@@ -39,6 +41,9 @@ export function SimpleItemDialog({
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState<Record<string, string>>(() =>
     Object.fromEntries(fields.filter((f) => f.type === 'image').map((f) => [f.name, initial?.[f.name] ?? ''])),
+  );
+  const [icons, setIcons] = useState<Record<string, string>>(() =>
+    Object.fromEntries(fields.filter((f) => f.type === 'icon').map((f) => [f.name, initial?.[f.name] || 'Users'])),
   );
   const [state, action] = useActionState(async (prev: ActionState, fd: FormData) => {
     const result = await saveSimpleItem(prev, fd);
@@ -80,7 +85,28 @@ export function SimpleItemDialog({
                   {f.label}
                   {f.required && <span className="text-destructive"> *</span>}
                 </Label>
-                {f.type === 'image' ? (
+                {f.type === 'icon' ? (
+                  <>
+                    <input type="hidden" name={f.name} value={icons[f.name]} />
+                    <Select value={icons[f.name]} onValueChange={(v) => setIcons((s) => ({ ...s, [f.name]: v }))}>
+                      <SelectTrigger id={id}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ICON_NAMES.map((name) => {
+                          const Icon = getIcon(name);
+                          return (
+                            <SelectItem key={name} value={name}>
+                              <span className="flex items-center gap-2">
+                                <Icon className="h-4 w-4" /> {name}
+                              </span>
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  </>
+                ) : f.type === 'image' ? (
                   <>
                     <input type="hidden" name={f.name} value={images[f.name]} />
                     <ImageField

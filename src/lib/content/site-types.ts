@@ -38,6 +38,8 @@ export type PortfolioItem = {
   image_url: string | null;
 };
 
+export type TeamStat = { id: number; value: string; label: string; icon: string };
+
 export type Testimonial = { id: number; quote: string; author: string; role: string; company: string };
 
 export type SiteSettings = {

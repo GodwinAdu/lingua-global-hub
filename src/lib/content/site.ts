@@ -2,7 +2,7 @@ import 'server-only';
 import { cacheLife, cacheTag } from 'next/cache';
 import { createClient } from '@supabase/supabase-js';
 import { getSupabaseEnv } from '@/lib/supabase/env';
-import type { PortfolioItem, Service, SiteSettings, TeamMember, Testimonial } from './site-types';
+import type { PortfolioItem, Service, SiteSettings, TeamMember, TeamStat, Testimonial } from './site-types';
 
 // Cache tags, refreshed by the dashboard's Server Actions with updateTag().
 export const SITE_TAGS = {
@@ -49,6 +49,13 @@ export async function getTeam(): Promise<TeamMember[]> {
   cacheTag(SITE_TAGS.team);
   cacheLife('days');
   return list<TeamMember>('team_members', 'id, name, role, bio, image_url, specialties, linkedin_url, email');
+}
+
+export async function getTeamStats(): Promise<TeamStat[]> {
+  'use cache';
+  cacheTag(SITE_TAGS.team);
+  cacheLife('days');
+  return list<TeamStat>('team_stats', 'id, value, label, icon');
 }
 
 export async function getPortfolio(): Promise<PortfolioItem[]> {

@@ -15,6 +15,7 @@ export type ActionState = { error?: string; success?: string; fieldErrors?: Reco
 const TABLES = {
   services: SITE_TAGS.services,
   team_members: SITE_TAGS.team,
+  team_stats: SITE_TAGS.team,
   portfolio_items: SITE_TAGS.portfolio,
   testimonials: SITE_TAGS.testimonials,
 } as const;
@@ -122,8 +123,15 @@ const testimonialSchema = z.object({
   company: text(160),
 });
 
+const teamStatSchema = z.object({
+  value: required(20, 'the number, e.g. 50+'),
+  label: required(60, 'a label'),
+  icon: z.string().refine((v) => ICON_NAMES.includes(v), 'Choose an icon.'),
+});
+
 const SCHEMAS = {
   team_members: teamSchema,
+  team_stats: teamStatSchema,
   portfolio_items: portfolioSchema,
   testimonials: testimonialSchema,
 } as const;

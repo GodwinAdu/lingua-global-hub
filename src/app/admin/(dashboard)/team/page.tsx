@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { requireStaff } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
+import { getIcon } from '@/lib/content/icons';
 import { ContentList, PageHeader } from '../site/content-list';
 import { SimpleItemDialog, type FieldDef } from '../site/simple-item-dialog';
 
@@ -20,11 +21,21 @@ const FIELDS: FieldDef[] = [
   { name: 'email', label: 'Email', type: 'email' },
 ];
 
+const STAT_FIELDS: FieldDef[] = [
+  { name: 'value', label: 'Number', placeholder: 'e.g. 50+', required: true, maxLength: 20 },
+  { name: 'label', label: 'Label', placeholder: 'e.g. Team Members', required: true, maxLength: 60 },
+  { name: 'icon', label: 'Icon', type: 'icon' },
+];
+
 export default async function TeamAdminPage() {
   await requireStaff('editor');
   const supabase = await createClient();
-  const { data } = await supabase.from('team_members').select('*').order('sort_order').order('id');
+  const [{ data }, { data: statData }] = await Promise.all([
+    supabase.from('team_members').select('*').order('sort_order').order('id'),
+    supabase.from('team_stats').select('*').order('sort_order').order('id'),
+  ]);
   const rows = data ?? [];
+  const stats = statData ?? [];
 
   const asInitial = (r: (typeof rows)[number]) => ({
     id: r.id,
@@ -38,9 +49,39 @@ export default async function TeamAdminPage() {
   });
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="max-w-4xl space-y-10">
+      <section className="space-y-4">
+        <PageHeader
+          title="Team page numbers"
+          description="The figures at the top of the Team page, e.g. 50+ Team Members."
+          action={<SimpleItemDialog table="team_stats" title="Number" fields={STAT_FIELDS} />}
+        />
+        <ContentList
+          table="team_stats"
+          rows={stats}
+          empty="No numbers. The section is hidden on the Team page."
+          label={(r) => `${r.value} ${r.label}`}
+          edit={(r) => (
+            <SimpleItemDialog table="team_stats" title="Number" fields={STAT_FIELDS} initial={{ id: r.id, value: r.value, label: r.label, icon: r.icon }} />
+          )}
+          render={(r) => {
+            const Icon = getIcon(r.icon);
+            return (
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <span className="font-display text-xl font-bold">{r.value}</span>
+                <span className="text-muted-foreground">{r.label}</span>
+              </div>
+            );
+          }}
+        />
+      </section>
+
+      <section className="space-y-4">
       <PageHeader
-        title="Team"
+        title="Team members"
         description="People shown on the Team page. Hidden members stay here but aren't shown on the site."
         action={<SimpleItemDialog table="team_members" title="Team member" fields={FIELDS} imageFolder="team" />}
       />
@@ -61,6 +102,7 @@ export default async function TeamAdminPage() {
           </div>
         )}
       />
+      </section>
     </div>
   );
 }

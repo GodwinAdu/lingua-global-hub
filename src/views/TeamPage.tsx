@@ -3,18 +3,14 @@
 import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import { Users, Linkedin, Mail, Award, Globe2, Languages } from 'lucide-react';
-import type { TeamMember } from '@/lib/content/site-types';
+import { Users, Linkedin, Mail } from 'lucide-react';
+import type { TeamMember, TeamStat } from '@/lib/content/site-types';
+import { getIcon } from '@/lib/content/icons';
 
 
-const stats = [
-  { value: '50+', label: 'Team Members', icon: Users },
-  { value: '30+', label: 'Languages', icon: Languages },
-  { value: '15+', label: 'Countries', icon: Globe2 },
-  { value: '20+', label: 'Certifications', icon: Award },
-];
 
-const TeamPage = ({ members }: { members: TeamMember[] }) => {
+const TeamPage = ({ members, stats: statRows }: { members: TeamMember[]; stats: TeamStat[] }) => {
+  const stats = statRows.map((s) => ({ value: s.value, label: s.label, icon: getIcon(s.icon) }));
   const team = members.map((m) => ({
     name: m.name,
     role: m.role,
@@ -58,36 +54,38 @@ const TeamPage = ({ members }: { members: TeamMember[] }) => {
            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
         </section>
 
-        {/* Stats Section */}
-        <section className="py-16 bg-muted/30">
-          <div className="container-premium">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <motion.div
-                    key={stat.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="text-center"
-                  >
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-secondary/10 mb-4">
-                      <Icon className="w-7 h-7 text-secondary" />
-                    </div>
-                    <div className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-2">
-                      {stat.value}
-                    </div>
-                    <div className="text-muted-foreground text-sm font-medium">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                );
-              })}
+        {/* Stats Section (hidden when no numbers are shown) */}
+        {stats.length > 0 && (
+          <section className="py-16 bg-muted/30">
+            <div className="container-premium">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                {stats.map((stat, index) => {
+                  const Icon = stat.icon;
+                  return (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="text-center"
+                    >
+                      <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-secondary/10 mb-4">
+                        <Icon className="w-7 h-7 text-secondary" />
+                      </div>
+                      <div className="font-display text-3xl lg:text-4xl font-bold text-foreground mb-2">
+                        {stat.value}
+                      </div>
+                      <div className="text-muted-foreground text-sm font-medium">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Team Grid */}
         <section className="py-24">
