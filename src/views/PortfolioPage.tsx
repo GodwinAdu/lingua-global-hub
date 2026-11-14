@@ -6,61 +6,13 @@ import { ExternalLink } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CTA from '@/components/sections/CTA';
+import type { PortfolioItem } from '@/lib/content/site-types';
 
-const categories = ['All', 'Translation', 'Voice-over', 'Interpretation', 'Media Production'];
 
-const projects = [
-  {
-    title: 'Annual Report Translation',
-    category: 'Translation',
-    client: 'Global Development Bank',
-    description: 'Comprehensive translation of annual reports into 12 African languages.',
-  },
-  {
-    title: 'E-Learning Narration',
-    category: 'Voice-over',
-    client: 'EdTech Africa',
-    description: 'Multi-language voice-over for educational platform reaching 5M students.',
-  },
-  {
-    title: 'International Summit',
-    category: 'Interpretation',
-    client: 'African Union',
-    description: 'Simultaneous interpretation services for heads of state summit.',
-  },
-  {
-    title: 'Brand Campaign Localization',
-    category: 'Translation',
-    client: 'Multinational FMCG',
-    description: 'Full campaign localization across 8 West African markets.',
-  },
-  {
-    title: 'Documentary Series',
-    category: 'Media Production',
-    client: 'National Broadcasting',
-    description: 'Complete audio production for 10-part documentary series.',
-  },
-  {
-    title: 'Medical Conference',
-    category: 'Interpretation',
-    client: 'WHO Regional Office',
-    description: 'Technical interpretation for healthcare professionals summit.',
-  },
-  {
-    title: 'Radio Commercial Campaign',
-    category: 'Voice-over',
-    client: 'Telecom Provider',
-    description: 'Regional radio campaign with voice-over in 15 local languages.',
-  },
-  {
-    title: 'Corporate Video Series',
-    category: 'Media Production',
-    client: 'Energy Corporation',
-    description: 'Script writing and production for investor communications.',
-  },
-];
 
-const PortfolioPage = () => {
+const PortfolioPage = ({ items: projects }: { items: PortfolioItem[] }) => {
+  // Filter tabs come from the categories actually used.
+  const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category).filter(Boolean)))];
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredProjects = activeCategory === 'All' 

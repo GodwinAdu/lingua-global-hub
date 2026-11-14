@@ -16,103 +16,20 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CTA from '@/components/sections/CTA';
 import { Button } from '@/components/ui/button';
+import type { Service } from '@/lib/content/site-types';
+import { getIcon } from '@/lib/content/icons';
 
-// Import service images
-import translationImg from '@/assets/service-translation.jpg';
-import interpretationImg from '@/assets/service-interpretation.jpg';
-import voiceoverImg from '@/assets/service-voiceover.jpg';
-import jingleImg from '@/assets/service-jingle.jpg';
-import editingImg from '@/assets/service-editing.jpg';
-import scriptwritingImg from '@/assets/service-scriptwriting.jpg';
 
-const services = [
-  {
-    id: 'translation',
-    icon: Languages,
-    title: 'Translation Services',
-    description: 'Accurate, culturally-sensitive translations that preserve meaning and intent across 50+ languages.',
-    image: translationImg.src,
-    features: [
-      'Document translation (legal, medical, technical)',
-      'Website and software localization',
-      'Marketing and advertising translation',
-      'Certified translation for official documents',
-      'Post-editing of machine translation',
-    ],
-  },
-  {
-    id: 'interpretation',
-    icon: Mic2,
-    title: 'Interpretation Services',
-    description: 'Professional interpretation for conferences, meetings, and events with seamless communication.',
-    image: interpretationImg.src,
-    features: [
-      'Simultaneous interpretation',
-      'Consecutive interpretation',
-      'Whispered interpretation',
-      'Remote/virtual interpretation',
-      'Liaison interpretation',
-    ],
-  },
-  {
-    id: 'voiceover',
-    icon: PlayCircle,
-    title: 'Voice-over Production',
-    description: 'Studio-quality voice-over in multiple languages for all your audio and video content needs.',
-    image: voiceoverImg.src,
-    features: [
-      'Commercial voice-over',
-      'Documentary narration',
-      'E-learning modules',
-      'Corporate video narration',
-      'Character voices for animation',
-    ],
-  },
-  {
-    id: 'jingle',
-    icon: Music,
-    title: 'Jingle Recording',
-    description: 'Custom jingle creation and recording with professional vocalists and sound engineering.',
-    image: jingleImg.src,
-    features: [
-      'Original jingle composition',
-      'Jingle adaptation and translation',
-      'Professional studio recording',
-      'Multi-language versions',
-      'Full production and mastering',
-    ],
-  },
-  {
-    id: 'editing',
-    icon: FileEdit,
-    title: 'Editing & Proofreading',
-    description: 'Comprehensive editing services ensuring your content is polished, accurate, and impactful.',
-    image: editingImg.src,
-    features: [
-      'Copy editing',
-      'Proofreading',
-      'Content review',
-      'Style consistency checks',
-      'Quality assurance',
-    ],
-  },
-  {
-    id: 'scriptwriting',
-    icon: PenTool,
-    title: 'Script Writing',
-    description: 'Creative and professional script development for all media formats and purposes.',
-    image: scriptwritingImg.src,
-    features: [
-      'Commercial scripts',
-      'Corporate video scripts',
-      'Documentary scripts',
-      'Radio drama and podcast scripts',
-      'Presentation scripts',
-    ],
-  },
-];
 
-const ServicesPage = () => {
+const ServicesPage = ({ items }: { items: Service[] }) => {
+  const services = items.map((s) => ({
+    id: s.slug,
+    icon: getIcon(s.icon),
+    title: s.title,
+    description: s.summary || s.card_description,
+    image: s.image_url || '/placeholder.svg',
+    features: s.features,
+  }));
   return (
     <div className="min-h-screen">
       <Navbar />

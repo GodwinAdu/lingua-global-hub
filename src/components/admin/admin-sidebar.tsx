@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
+import { Briefcase, FolderOpen, Quote, Settings, UsersRound, ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -44,8 +44,20 @@ const NAV: { label: string; items: NavItem[] }[] = [
     ],
   },
   {
+    label: 'Website',
+    items: [
+      { title: 'Services', href: '/admin/services', icon: Briefcase, minRole: 'editor' },
+      { title: 'Team', href: '/admin/team', icon: UsersRound, minRole: 'editor' },
+      { title: 'Portfolio', href: '/admin/portfolio', icon: FolderOpen, minRole: 'editor' },
+      { title: 'Testimonials', href: '/admin/testimonials', icon: Quote, minRole: 'editor' },
+    ],
+  },
+  {
     label: 'Administration',
-    items: [{ title: 'Users & roles', href: '/admin/users', icon: Users, minRole: 'super_admin' }],
+    items: [
+      { title: 'Users & roles', href: '/admin/users', icon: Users, minRole: 'super_admin' },
+      { title: 'Site settings', href: '/admin/settings', icon: Settings, minRole: 'super_admin' },
+    ],
   },
 ];
 

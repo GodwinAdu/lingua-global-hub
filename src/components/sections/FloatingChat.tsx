@@ -3,8 +3,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X } from 'lucide-react';
 import { useState } from 'react';
+import { useSiteSettings } from '@/components/layout/site-data';
+import { whatsappHref } from '@/lib/content/site-types';
 
 export const FloatingChat = () => {
+  const settings = useSiteSettings();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -48,7 +51,7 @@ export const FloatingChat = () => {
               </div>
               
               <a
-                href="https://wa.me/233242178378"
+                href={whatsappHref(settings.whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full bg-[#25D366] hover:bg-[#20BA5A] text-white font-semibold py-3 px-4 rounded-xl transition-colors text-center"

@@ -3,13 +3,15 @@
 import { motion } from 'framer-motion';
 import { MapPin, Navigation, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useSiteSettings } from '@/components/layout/site-data';
 
 const InteractiveMap = () => {
+  const settings = useSiteSettings();
   const location = {
-    lat: 5.7507,
-    lng: -0.0977,
-    address: 'HNO. BE 37, Dandellon Street, Danfa, Accra',
-    digitalAddress: 'GM-244-5169'
+    lat: settings.map_lat ?? 5.7507,
+    lng: settings.map_lng ?? -0.0977,
+    address: settings.address,
+    digitalAddress: settings.digital_address,
   };
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${location.lat},${location.lng}`;

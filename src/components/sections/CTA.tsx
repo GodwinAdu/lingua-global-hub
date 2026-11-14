@@ -5,8 +5,11 @@ import { useRef } from 'react';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useSiteSettings } from '@/components/layout/site-data';
+import { whatsappHref } from '@/lib/content/site-types';
 
 export const CTA = () => {
+  const settings = useSiteSettings();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -108,7 +111,7 @@ export const CTA = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button variant="hero-secondary" size="xl" asChild>
-                  <a href="https://wa.me/233242178378" target="_blank" rel="noopener noreferrer">
+                  <a href={whatsappHref(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-5 h-5" />
                     Chat on WhatsApp
                   </a>

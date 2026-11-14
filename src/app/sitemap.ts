@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getPublishedPosts } from '@/lib/content/posts';
-import { serviceSummaries } from '@/data/services';
+import { getServices } from '@/lib/content/site';
 import { absoluteUrl } from '@/lib/site';
 
 const staticRoutes = [
@@ -17,10 +17,10 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await getPublishedPosts();
+  const [posts, services] = await Promise.all([getPublishedPosts(), getServices()]);
   return [
     ...staticRoutes.map((path) => ({ url: absoluteUrl(path) })),
-    ...serviceSummaries.map((s) => ({ url: absoluteUrl(`/services/${s.id}`) })),
+    ...services.map((s) => ({ url: absoluteUrl(`/services/${s.slug}`) })),
     ...posts.map((post) => ({ url: absoluteUrl(`/blog/${post.slug}`), lastModified: post.publishedAt })),
   ];
 }

@@ -13,59 +13,10 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import type { Service } from '@/lib/content/site-types';
+import { getIcon } from '@/lib/content/icons';
 
-// Import service images
-import translationImg from '@/assets/service-translation.jpg';
-import interpretationImg from '@/assets/service-interpretation.jpg';
-import voiceoverImg from '@/assets/service-voiceover.jpg';
-import jingleImg from '@/assets/service-jingle.jpg';
-import editingImg from '@/assets/service-editing.jpg';
-import scriptwritingImg from '@/assets/service-scriptwriting.jpg';
 
-const services = [
-  {
-    icon: Languages,
-    title: 'Translation',
-    description: 'Accurate translations in 50+ Ghanaian languages including Akan, Ga, Ewe, Dagbani, and major international languages for documents, websites, and marketing materials.',
-    image: translationImg.src,
-    href: '/services/translation',
-  },
-  {
-    icon: Mic2,
-    title: 'Interpretation',
-    description: 'Professional simultaneous and consecutive interpretation in Ghanaian languages for conferences, meetings, community events, and official proceedings.',
-    image: interpretationImg.src,
-    href: '/services/interpretation',
-  },
-  {
-    icon: PlayCircle,
-    title: 'Voice-over',
-    description: 'Studio-quality voice-over production in multiple Ghanaian languages for radio, TV commercials, documentaries, and educational content.',
-    image: voiceoverImg.src,
-    href: '/services/voiceover',
-  },
-  {
-    icon: Music,
-    title: 'Jingle Recording',
-    description: 'Custom jingle creation and recording in local languages with professional vocalists who understand Ghanaian musical traditions and sound engineering.',
-    image: jingleImg.src,
-    href: '/services/jingle',
-  },
-  {
-    icon: FileEdit,
-    title: 'Language Documentation',
-    description: 'Comprehensive documentation and preservation of indigenous Ghanaian languages, including grammar guides, dictionaries, and digital archives.',
-    image: editingImg.src,
-    href: '/services/editing',
-  },
-  {
-    icon: PenTool,
-    title: 'Script Writing',
-    description: 'Creative script development in Ghanaian languages for commercials, educational videos, cultural programs, and multimedia productions.',
-    image: scriptwritingImg.src,
-    href: '/services/scriptwriting',
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -91,7 +42,14 @@ const itemVariants = {
   },
 };
 
-export const Services = () => {
+export const Services = ({ items }: { items: Service[] }) => {
+  const services = items.map((s) => ({
+    icon: getIcon(s.icon),
+    title: s.card_title || s.title,
+    description: s.card_description || s.summary,
+    image: s.image_url || '/placeholder.svg',
+    href: `/services/${s.slug}`,
+  }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 

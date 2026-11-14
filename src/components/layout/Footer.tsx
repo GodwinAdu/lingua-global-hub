@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Globe, Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram, Youtube, Music2 } from 'lucide-react';
+import { useSiteSettings } from '@/components/layout/site-data';
+import { telHref } from '@/lib/content/site-types';
 import { motion } from 'framer-motion';
 
 const footerLinks = {
@@ -27,6 +29,17 @@ const footerLinks = {
 };
 
 export const Footer = () => {
+  const settings = useSiteSettings();
+  const socials = [
+    { url: settings.linkedin_url, Icon: Linkedin, label: 'LinkedIn' },
+    { url: settings.twitter_url, Icon: Twitter, label: 'X (Twitter)' },
+    { url: settings.facebook_url, Icon: Facebook, label: 'Facebook' },
+    { url: settings.instagram_url, Icon: Instagram, label: 'Instagram' },
+    { url: settings.youtube_url, Icon: Youtube, label: 'YouTube' },
+    { url: settings.tiktok_url, Icon: Music2, label: 'TikTok' },
+  ].filter((s): s is typeof s & { url: string } => Boolean(s.url));
+  const phones = [settings.phone_primary, settings.phone_secondary].filter(Boolean);
+
   // Read the clock after mount: a render-time `new Date()` would freeze at build time.
   const [year, setYear] = useState<number | null>(null);
   useEffect(() => setYear(new Date().getFullYear()), []);
@@ -78,10 +91,13 @@ export const Footer = () => {
               Professional language and media solutions for businesses, institutions, and organizations worldwide.
             </p>
             <div className="flex gap-3">
-              {[Linkedin, Twitter, Facebook].map((Icon, index) => (
+              {socials.map(({ url, Icon, label }, index) => (
                 <motion.a
-                  key={index}
-                  href="#"
+                  key={label}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
                   className="w-10 h-10 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-secondary transition-all duration-300"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -173,7 +189,7 @@ export const Footer = () => {
               >
                 <MapPin className="w-4 h-4 mt-0.5 text-accent flex-shrink-0" />
                 <span className="text-primary-foreground/70 text-sm group-hover:text-primary-foreground/90 transition-colors">
-                  HNO. BE 37, Dandellon Street, Danfa, Accra, Greater Accra Region, Ghana
+                  {settings.address}
                 </span>
               </motion.li>
               <motion.li 
@@ -182,18 +198,15 @@ export const Footer = () => {
               >
                 <Phone className="w-4 h-4 text-accent flex-shrink-0" />
                 <div className="flex flex-col gap-1">
-                  <a
-                    href="tel:+233242178378"
-                    className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
-                  >
-                    +233 24 217 8378
-                  </a>
-                  <a
-                    href="tel:+233548218019"
-                    className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
-                  >
-                    +233 54 821 8019
-                  </a>
+                  {phones.map((phone) => (
+                    <a
+                      key={phone}
+                      href={telHref(phone)}
+                      className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
+                    >
+                      {phone}
+                    </a>
+                  ))}
                 </div>
               </motion.li>
               <motion.li 
@@ -202,10 +215,10 @@ export const Footer = () => {
               >
                 <Mail className="w-4 h-4 text-accent flex-shrink-0" />
                 <a
-                  href="mailto:firstlingualconsult@gmail.com"
+                  href={`mailto:${settings.email}`}
                   className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors"
                 >
-                  firstlingualconsult@gmail.com
+                  {settings.email}
                 </a>
               </motion.li>
             </ul>

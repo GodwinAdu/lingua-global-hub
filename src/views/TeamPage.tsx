@@ -4,51 +4,8 @@ import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Users, Linkedin, Mail, Award, Globe2, Languages } from 'lucide-react';
+import type { TeamMember } from '@/lib/content/site-types';
 
-const team = [
-  {
-    name: 'Dr. Amara Okafor',
-    role: 'Founder & CEO',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop',
-    bio: 'PhD in Linguistics with 15+ years in language services',
-    specialties: ['Strategic Leadership', 'Business Development', 'Quality Assurance'],
-  },
-  {
-    name: 'Michael Chen',
-    role: 'Chief Operations Officer',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
-    bio: 'MBA with expertise in international operations',
-    specialties: ['Operations Management', 'Process Optimization', 'Team Leadership'],
-  },
-  {
-    name: 'Sarah Williams',
-    role: 'Head of Translation',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop',
-    bio: 'Certified translator in 8 languages',
-    specialties: ['Translation', 'Localization', 'Quality Control'],
-  },
-  {
-    name: 'David Mensah',
-    role: 'Lead Interpreter',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop',
-    bio: 'UN-certified simultaneous interpreter',
-    specialties: ['Simultaneous Interpretation', 'Conference Services', 'Training'],
-  },
-  {
-    name: 'Fatima Hassan',
-    role: 'Media Production Director',
-    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=400&fit=crop',
-    bio: 'Award-winning voice-over artist and producer',
-    specialties: ['Voice-over', 'Audio Production', 'Script Writing'],
-  },
-  {
-    name: 'James Okonkwo',
-    role: 'Technology Director',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    bio: 'Expert in translation technology and AI',
-    specialties: ['CAT Tools', 'AI Integration', 'Tech Innovation'],
-  },
-];
 
 const stats = [
   { value: '50+', label: 'Team Members', icon: Users },
@@ -57,7 +14,16 @@ const stats = [
   { value: '20+', label: 'Certifications', icon: Award },
 ];
 
-const TeamPage = () => {
+const TeamPage = ({ members }: { members: TeamMember[] }) => {
+  const team = members.map((m) => ({
+    name: m.name,
+    role: m.role,
+    bio: m.bio,
+    image: m.image_url || '/placeholder.svg',
+    specialties: m.specialties,
+    linkedin: m.linkedin_url,
+    email: m.email,
+  }));
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -165,22 +131,30 @@ const TeamPage = () => {
                       
                       {/* Social Links */}
                       <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <motion.a
-                          href="#"
-                          className="w-10 h-10 rounded-lg bg-secondary/90 flex items-center justify-center hover:bg-secondary transition-colors"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <Linkedin className="w-5 h-5 text-white" />
-                        </motion.a>
-                        <motion.a
-                          href="#"
-                          className="w-10 h-10 rounded-lg bg-secondary/90 flex items-center justify-center hover:bg-secondary transition-colors"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <Mail className="w-5 h-5 text-white" />
-                        </motion.a>
+                        {member.linkedin && (
+                          <motion.a
+                            href={member.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${member.name} on LinkedIn`}
+                            className="w-10 h-10 rounded-lg bg-secondary/90 flex items-center justify-center hover:bg-secondary transition-colors"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            <Linkedin className="w-5 h-5 text-white" />
+                          </motion.a>
+                        )}
+                        {member.email && (
+                          <motion.a
+                            href={`mailto:${member.email}`}
+                            aria-label={`Email ${member.name}`}
+                            className="w-10 h-10 rounded-lg bg-secondary/90 flex items-center justify-center hover:bg-secondary transition-colors"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            <Mail className="w-5 h-5 text-white" />
+                          </motion.a>
+                        )}
                       </div>
                     </div>
 

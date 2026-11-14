@@ -1,8 +1,9 @@
-import { NewsTickerProvider } from '@/components/layout/news-ticker-context';
+import { SiteDataProvider } from '@/components/layout/site-data';
 import { getTickerItems } from '@/lib/content/posts';
+import { getSiteSettings } from '@/lib/content/site';
 
-// Public site chrome. Headlines are cached (tag "posts") and refresh when a post is published.
+// Public site chrome. Both reads are cached and refresh when edited in the dashboard.
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const items = await getTickerItems();
-  return <NewsTickerProvider items={items}>{children}</NewsTickerProvider>;
+  const [ticker, settings] = await Promise.all([getTickerItems(), getSiteSettings()]);
+  return <SiteDataProvider value={{ ticker, settings }}>{children}</SiteDataProvider>;
 }

@@ -15,8 +15,9 @@ import Process from '@/components/sections/Process';
 import Testimonials from '@/components/sections/Testimonials';
 import CTA from '@/components/sections/CTA';
 import FloatingChat from '@/components/sections/FloatingChat';
+import type { Service, Testimonial } from '@/lib/content/site-types';
 
-const Index = () => {
+const Index = ({ services, testimonials }: { services: Service[]; testimonials: Testimonial[] }) => {
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -26,12 +27,12 @@ const Index = () => {
         <LanguageMarquee />
         <GhanaLanguages />
         <About />
-        <Services />
+        <Services items={services} />
         <FeaturesShowcase />
         <TrustBadges />
         <WhyChooseUs />
         <Process />
-        <Testimonials />
+        {testimonials.length > 0 && <Testimonials items={testimonials} />}
         <CTA />
       </main>
       <Footer />

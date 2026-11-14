@@ -10,31 +10,27 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
+import { useSiteSettings } from '@/components/layout/site-data';
+import { whatsappHref } from '@/lib/content/site-types';
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: 'Visit Our Office',
-    details: ['HNO. BE 37, Dandellon Street', 'Danfa, Accra', 'P.O. Box AF 1350, Adenta', 'Digital Address: GM-244-5169'],
-  },
-  {
-    icon: Phone,
-    title: 'Call Us',
-    details: ['+233 24 217 8378', '+233 54 821 8019'],
-  },
-  {
-    icon: Mail,
-    title: 'Email Us',
-    details: ['firstlingualconsult@gmail.com'],
-  },
-  {
-    icon: Clock,
-    title: 'Working Hours',
-    details: ['Monday - Friday: 9AM - 6PM', 'Saturday: 10AM - 2PM'],
-  },
-];
 
 const ContactPage = () => {
+  const settings = useSiteSettings();
+  // Address lines: street, town (split at the first comma pair), P.O. box, digital address.
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: 'Visit Our Office',
+      details: [
+        settings.address,
+        settings.po_box,
+        settings.digital_address && `Digital Address: ${settings.digital_address}`,
+      ].filter(Boolean),
+    },
+    { icon: Phone, title: 'Call Us', details: [settings.phone_primary, settings.phone_secondary].filter(Boolean) },
+    { icon: Mail, title: 'Email Us', details: [settings.email].filter(Boolean) },
+    { icon: Clock, title: 'Working Hours', details: settings.working_hours },
+  ].filter((info) => info.details.length > 0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -73,7 +69,7 @@ const ContactPage = () => {
     } catch (error) {
       toast({
         title: "❌ Connection Error",
-        description: "Unable to reach server. Please check your connection or contact us directly at firstlingualconsult@gmail.com",
+        description: `Unable to reach server. Please check your connection or contact us directly at ${settings.email}`,
         variant: "destructive",
       });
     } finally {
@@ -268,7 +264,7 @@ const ContactPage = () => {
                     Get instant responses to your inquiries via WhatsApp.
                   </p>
                   <Button variant="outline" asChild>
-                    <a href="https://wa.me/233242178378" target="_blank" rel="noopener noreferrer">
+                    <a href={whatsappHref(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
                       Start Chat
                     </a>
                   </Button>

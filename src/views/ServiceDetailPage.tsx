@@ -21,229 +21,27 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CTA from '@/components/sections/CTA';
 import { Button } from '@/components/ui/button';
+import type { Service } from '@/lib/content/site-types';
+import { getIcon } from '@/lib/content/icons';
 
-// Import service images
-import translationImg from '@/assets/service-translation.jpg';
-import interpretationImg from '@/assets/service-interpretation.jpg';
-import voiceoverImg from '@/assets/service-voiceover.jpg';
-import jingleImg from '@/assets/service-jingle.jpg';
-import editingImg from '@/assets/service-editing.jpg';
-import scriptwritingImg from '@/assets/service-scriptwriting.jpg';
 
-const servicesData = {
-  translation: {
-    icon: Languages,
-    title: 'Translation Services',
-    subtitle: 'Breaking Language Barriers with Precision',
-    description: 'Our translation services go beyond simple word-for-word conversion. We deliver culturally-adapted content that resonates with your target audience while maintaining the integrity of your original message.',
-    image: translationImg.src,
-    features: [
-      'Document translation (legal, medical, technical)',
-      'Website and software localization',
-      'Marketing and advertising translation',
-      'Certified translation for official documents',
-      'Post-editing of machine translation',
-      'Transcreation for creative content',
-    ],
-    stats: [
-      { value: '50+', label: 'Languages', icon: Globe },
-      { value: '99%', label: 'Accuracy Rate', icon: Award },
-      { value: '24h', label: 'Turnaround', icon: Clock },
-      { value: '200+', label: 'Translators', icon: Users },
-    ],
-    details: [
-      {
-        title: 'Industry Expertise',
-        content: 'Our translators specialize in various industries including legal, medical, financial, technical, and marketing sectors. This specialization ensures accurate terminology and context-appropriate translations.',
-      },
-      {
-        title: 'Quality Assurance',
-        content: 'Every translation undergoes a rigorous three-step quality process: translation, editing, and proofreading (TEP). Our senior linguists review all deliverables to ensure consistency and accuracy.',
-      },
-      {
-        title: 'Cultural Adaptation',
-        content: 'We don\'t just translate words—we adapt your content for cultural relevance. Our localization experts ensure your message resonates with local audiences while maintaining brand consistency.',
-      },
-    ],
-  },
-  interpretation: {
-    icon: Mic2,
-    title: 'Interpretation Services',
-    subtitle: 'Seamless Communication in Real-Time',
-    description: 'Our professional interpreters facilitate clear communication in any setting, from high-stakes international conferences to intimate business meetings. We ensure every word is conveyed with precision and cultural sensitivity.',
-    image: interpretationImg.src,
-    features: [
-      'Simultaneous interpretation',
-      'Consecutive interpretation',
-      'Whispered interpretation (chuchotage)',
-      'Remote/virtual interpretation',
-      'Liaison interpretation',
-      'Court and legal interpretation',
-    ],
-    stats: [
-      { value: '30+', label: 'Languages', icon: Globe },
-      { value: '500+', label: 'Events Covered', icon: Award },
-      { value: '100%', label: 'Reliability', icon: Clock },
-      { value: '50+', label: 'Interpreters', icon: Users },
-    ],
-    details: [
-      {
-        title: 'Conference Interpretation',
-        content: 'Our simultaneous interpreters are experienced in handling large-scale international conferences, summits, and multilateral meetings with multiple language requirements.',
-      },
-      {
-        title: 'Business Meetings',
-        content: 'For negotiations, board meetings, and corporate events, our consecutive and liaison interpreters ensure smooth communication between all parties.',
-      },
-      {
-        title: 'Remote Interpretation',
-        content: 'Our state-of-the-art remote interpretation platform enables seamless virtual meetings with professional interpreters, supporting your hybrid and online events.',
-      },
-    ],
-  },
-  voiceover: {
-    icon: PlayCircle,
-    title: 'Voice-over Production',
-    subtitle: 'Bringing Your Content to Life',
-    description: 'From commercials to documentaries, our voice-over services deliver studio-quality audio in any language. Our diverse talent pool ensures the perfect voice for your brand and audience.',
-    image: voiceoverImg.src,
-    features: [
-      'Commercial voice-over',
-      'Documentary narration',
-      'E-learning and training modules',
-      'Corporate video narration',
-      'Character voices for animation',
-      'IVR and phone system recordings',
-    ],
-    stats: [
-      { value: '40+', label: 'Languages', icon: Globe },
-      { value: '300+', label: 'Voice Artists', icon: Users },
-      { value: '48h', label: 'Delivery', icon: Clock },
-      { value: '1000+', label: 'Projects', icon: Award },
-    ],
-    details: [
-      {
-        title: 'Professional Studio',
-        content: 'Our recording facilities feature industry-standard equipment and acoustically-treated studios, ensuring broadcast-quality audio for every project.',
-      },
-      {
-        title: 'Diverse Talent Pool',
-        content: 'Access our extensive roster of professional voice artists across ages, accents, and styles. We match the perfect voice to your brand personality and target audience.',
-      },
-      {
-        title: 'Full Post-Production',
-        content: 'Our audio engineers provide complete post-production services including editing, mixing, sound effects, and music integration for a polished final product.',
-      },
-    ],
-  },
-  jingle: {
-    icon: Music,
-    title: 'Jingle Recording',
-    subtitle: 'Memorable Sounds for Your Brand',
-    description: 'Create lasting impressions with custom jingles that capture your brand essence. Our composers and vocalists craft catchy, memorable audio that resonates with your audience.',
-    image: jingleImg.src,
-    features: [
-      'Original jingle composition',
-      'Jingle adaptation and translation',
-      'Professional studio recording',
-      'Multi-language versions',
-      'Full production and mastering',
-      'Radio and TV commercial music',
-    ],
-    stats: [
-      { value: '20+', label: 'Languages', icon: Globe },
-      { value: '100+', label: 'Jingles Created', icon: Music },
-      { value: '50+', label: 'Vocalists', icon: Users },
-      { value: '15+', label: 'Years Experience', icon: Award },
-    ],
-    details: [
-      {
-        title: 'Creative Composition',
-        content: 'Our composers work closely with you to understand your brand, target audience, and campaign objectives, creating original music that perfectly represents your message.',
-      },
-      {
-        title: 'Multi-Language Adaptation',
-        content: 'We adapt jingles across multiple languages while maintaining the original melody, rhythm, and emotional impact—ensuring consistent brand presence across markets.',
-      },
-      {
-        title: 'Professional Production',
-        content: 'From initial concept to final master, our production team handles every aspect including arrangement, recording, mixing, and mastering to broadcast standards.',
-      },
-    ],
-  },
-  editing: {
-    icon: FileEdit,
-    title: 'Editing & Proofreading',
-    subtitle: 'Polishing Your Content to Perfection',
-    description: 'Ensure your written content is flawless with our comprehensive editing and proofreading services. Our expert editors refine your text for clarity, consistency, and impact.',
-    image: editingImg.src,
-    features: [
-      'Copy editing',
-      'Proofreading',
-      'Substantive/developmental editing',
-      'Style guide compliance',
-      'Quality assurance review',
-      'Consistency checking',
-    ],
-    stats: [
-      { value: '99.9%', label: 'Error-Free', icon: Award },
-      { value: '24h', label: 'Turnaround', icon: Clock },
-      { value: '100+', label: 'Editors', icon: Users },
-      { value: '50+', label: 'Industries', icon: Globe },
-    ],
-    details: [
-      {
-        title: 'Copy Editing',
-        content: 'Our copy editors focus on grammar, spelling, punctuation, and syntax while ensuring your content flows naturally and adheres to your style guidelines.',
-      },
-      {
-        title: 'Proofreading',
-        content: 'The final quality check before publication, our proofreaders catch any remaining errors and ensure formatting consistency across your documents.',
-      },
-      {
-        title: 'Style Compliance',
-        content: 'Whether you follow AP, Chicago, or your own corporate style guide, our editors ensure consistent application throughout your content.',
-      },
-    ],
-  },
-  scriptwriting: {
-    icon: PenTool,
-    title: 'Script Writing',
-    subtitle: 'Crafting Compelling Narratives',
-    description: 'Transform your ideas into powerful scripts that captivate audiences. Our experienced writers create engaging content for any medium, from commercials to documentaries.',
-    image: scriptwritingImg.src,
-    features: [
-      'Commercial and advertising scripts',
-      'Corporate video scripts',
-      'Documentary scripts',
-      'Radio drama and podcast scripts',
-      'Presentation scripts',
-      'Training and e-learning scripts',
-    ],
-    stats: [
-      { value: '500+', label: 'Scripts Written', icon: PenTool },
-      { value: '50+', label: 'Writers', icon: Users },
-      { value: '20+', label: 'Industries', icon: Globe },
-      { value: '10+', label: 'Years Experience', icon: Award },
-    ],
-    details: [
-      {
-        title: 'Strategic Messaging',
-        content: 'Our writers understand the art of persuasion. We craft scripts that align with your marketing objectives and effectively communicate your key messages.',
-      },
-      {
-        title: 'Audience-Centric Approach',
-        content: 'We research and understand your target audience to create scripts that resonate emotionally and drive the desired action.',
-      },
-      {
-        title: 'Collaborative Process',
-        content: 'From concept development to final revisions, we work closely with you at every stage to ensure the script perfectly captures your vision.',
-      },
-    ],
-  },
-};
 
-const ServiceDetailPage = ({ serviceId }: { serviceId: string }) => {
+const ServiceDetailPage = ({ serviceId, items }: { serviceId: string; items: Service[] }) => {
+  const servicesData = Object.fromEntries(
+    items.map((s) => [
+      s.slug,
+      {
+        icon: getIcon(s.icon),
+        title: s.title,
+        subtitle: s.subtitle,
+        description: s.description,
+        image: s.image_url || '/placeholder.svg',
+        features: s.features,
+        stats: s.stats.map((st) => ({ ...st, icon: getIcon(st.icon) })),
+        details: s.details,
+      },
+    ]),
+  );
   const service = servicesData[serviceId as keyof typeof servicesData];
 
   if (!service) {

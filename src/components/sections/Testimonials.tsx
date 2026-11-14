@@ -4,35 +4,10 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import type { Testimonial } from '@/lib/content/site-types';
 
-const testimonials = [
-  {
-    quote: "First Grade Lingua Consult's expertise in Ghanaian languages has been invaluable. Their Akan and Ewe translations helped us reach communities we couldn't connect with before.",
-    author: 'Kwame Mensah',
-    role: 'Program Director',
-    company: 'Ghana Health Education Initiative',
-  },
-  {
-    quote: "The voice-over quality in Ga and Twi exceeded our expectations. The team's cultural understanding made our radio campaign authentic and impactful across Greater Accra.",
-    author: 'Ama Osei',
-    role: 'Marketing Manager',
-    company: 'Ghana Broadcasting Corporation',
-  },
-  {
-    quote: "Their interpretation services in Dagbani during our Northern Region conference were flawless. Professional, culturally sensitive, and highly skilled native speakers.",
-    author: 'Dr. Fatima Alhassan',
-    role: 'Regional Coordinator',
-    company: 'Ministry of Local Government',
-  },
-  {
-    quote: "First Grade's language documentation work is preserving our linguistic heritage. Their commitment to accuracy in documenting indigenous languages is unmatched in Ghana.",
-    author: 'Prof. Kofi Agyekum',
-    role: 'Director',
-    company: 'Institute of African Studies, University of Ghana',
-  },
-];
 
-export const Testimonials = () => {
+export const Testimonials = ({ items: testimonials }: { items: Testimonial[] }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [currentIndex, setCurrentIndex] = useState(0);

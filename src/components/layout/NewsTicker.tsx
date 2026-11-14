@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Newspaper } from 'lucide-react';
-import { useTickerItems } from '@/components/layout/news-ticker-context';
+import { useTickerItems } from '@/components/layout/site-data';
 
 const NewsTicker = () => {
   const blogPosts = useTickerItems();
