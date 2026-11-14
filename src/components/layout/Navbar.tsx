@@ -12,7 +12,7 @@ const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Services', href: '/services' },
-  // { name: 'Team', href: '/team' },
+  { name: 'Team', href: '/team' },
   { name: 'Portfolio', href: '/portfolio' },
   { name: 'Blog', href: '/blog' },
   { name: 'Ebooks', href: '/ebooks' },
@@ -108,7 +108,7 @@ export const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation with advanced hover effects */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2">
             {navLinks.map((link, index) => {
               const isActive = pathname === link.href;
               return (
@@ -174,7 +174,7 @@ export const Navbar = () => {
 
           {/* CTA Button with shimmer effect */}
           <motion.div 
-            className="hidden lg:flex items-center gap-4"
+            className="hidden xl:flex items-center gap-4"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
@@ -213,7 +213,7 @@ export const Navbar = () => {
           {/* Mobile Menu Button with animation */}
           <motion.button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden p-2.5 rounded-xl transition-all duration-300 relative z-10 ${
+            className={`xl:hidden p-2.5 rounded-xl transition-all duration-300 relative z-10 ${
               isScrolled ? 'bg-muted/50' : 'bg-primary-foreground/10'
             }`}
             aria-label="Toggle menu"
@@ -270,7 +270,7 @@ export const Navbar = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute top-full left-0 right-0 mt-2 mx-4 lg:hidden  backdrop-blur-2xl border border-border/50 rounded-2xl shadow-premium-xl overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 mt-2 mx-4 xl:hidden backdrop-blur-2xl border border-border/50 rounded-2xl shadow-premium-xl overflow-hidden z-50"
             >
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-accent/5 pointer-events-none" />

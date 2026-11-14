@@ -57,10 +57,10 @@ export default async function DashboardPage({ searchParams }: PageProps<'/admin'
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Welcome{firstName ? `, ${firstName}` : ''}</h1>
-          <p className="flex items-center gap-2 text-muted-foreground">
+          <div className="flex items-center gap-2 text-muted-foreground">
             <Badge variant="secondary">{ROLE_LABELS[user.role]}</Badge>
             {ROLE_DESCRIPTIONS[user.role]}
-          </p>
+          </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" asChild>
