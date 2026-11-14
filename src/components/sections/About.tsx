@@ -1,17 +1,17 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Award, Users, Globe2, Clock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
 
-const stats = [
-  { value: '50+', label: 'Ghanaian Languages', icon: Globe2 },
-  { value: '500+', label: 'Projects Delivered', icon: Award },
-  { value: '100+', label: 'Corporate Clients', icon: Users },
-  { value: '10+', label: 'Years Experience', icon: Clock },
-];
 
-export const About = () => {
+export const About = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  const stats = section.items.map((item) => ({ value: item.value, label: item.title, icon: getIcon(item.icon) }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -54,13 +54,13 @@ export const About = () => {
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              About Us
+              {c.eyebrow}
             </motion.span>
             
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
-              Preserving Ghana's{' '}
+              {c.title}{' '}
               <span className="relative inline-block">
-                <span className="gradient-text-sunset">Linguistic Heritage</span>
+                <span className="gradient-text-sunset">{c.highlight}</span>
                 <motion.span
                   className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-secondary/20 via-accent/20 to-secondary/20 -z-10 rounded"
                   initial={{ scaleX: 0 }}
@@ -76,9 +76,7 @@ export const About = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              First Grade Lingua Consult is Ghana's premier language and media consultancy, 
-              dedicated to documenting, preserving, and promoting the rich linguistic diversity 
-              of Ghana's 50+ indigenous languages while bridging communication across cultures.
+              {c.paragraph1}
             </motion.p>
             
             <motion.p 
@@ -87,10 +85,7 @@ export const About = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              From Akan to Dagbani, Ga to Ewe, we combine deep cultural understanding with 
-              cutting-edge technology to deliver language solutions that honor tradition while 
-              embracing innovation. We serve government agencies, NGOs, cultural institutions, 
-              and businesses committed to linguistic inclusivity.
+              {c.paragraph2}
             </motion.p>
             
             <motion.div
@@ -101,8 +96,8 @@ export const About = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Button variant="premium" size="lg" className="shadow-premium hover:shadow-glow" asChild>
-                <Link to="/about">
-                  Learn Our Story
+                <Link href="/about">
+                  {c.button_label}
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}

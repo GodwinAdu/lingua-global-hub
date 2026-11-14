@@ -1,9 +1,18 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowRight, Play, Globe, Languages, Mic, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import heroBg from '@/assets/hero-bg.jpg';
+import Link from 'next/link';
+import type { HomeSection } from '@/lib/content/home';
+import { lines } from '@/lib/content/home';
+
+// Deterministic 0..1 value so server and client render identical particle positions.
+const seeded = (i: number, salt: number) => {
+  const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+};
 
 const floatingIcons = [
   { Icon: Globe, delay: 0, x: '8%', y: '25%', size: 'w-14 h-14' },
@@ -58,7 +67,9 @@ const AnimatedText = ({ text, className }: { text: string; className?: string })
   );
 };
 
-export const Hero = () => {
+export const Hero = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  const trusted = lines(c.trusted);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -77,7 +88,7 @@ export const Hero = () => {
         style={{ y, scale }}
       >
         <img 
-          src={heroBg} 
+          src={c.image_url || '/images/hero-bg.jpg'} 
           alt="" 
           className="w-full h-full object-cover"
         />
@@ -148,8 +159,8 @@ export const Hero = () => {
             key={i}
             className="absolute w-2 h-2 rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${seeded(i, 1) * 100}%`,
+              top: `${seeded(i, 2) * 100}%`,
               background: i % 2 === 0 ? 'hsl(var(--accent))' : 'hsl(var(--secondary))',
             }}
             animate={{
@@ -158,9 +169,9 @@ export const Hero = () => {
               scale: [0, 1.5, 0],
             }}
             transition={{
-              duration: 4 + Math.random() * 3,
+              duration: 4 + seeded(i, 3) * 3,
               repeat: Infinity,
-              delay: Math.random() * 3,
+              delay: seeded(i, 4) * 3,
               ease: 'easeInOut',
             }}
           />
@@ -195,7 +206,7 @@ export const Hero = () => {
               transition={{ duration: 2, repeat: Infinity }}
             />
             <span className="text-sm text-primary-foreground/80 font-medium">
-              Ghana's Premier Language Consultancy
+              {c.badge}
             </span>
           </motion.div>
 
@@ -212,7 +223,7 @@ export const Hero = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="block"
             >
-              Professional Language
+              {c.title_line1}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 40 }}
@@ -220,7 +231,7 @@ export const Hero = () => {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="block"
             >
-             & Media Solutions for{' '}
+             {c.title_line2}{' '}
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 40 }}
@@ -228,7 +239,7 @@ export const Hero = () => {
               transition={{ duration: 0.8, delay: 0.7 }}
               className="relative inline-block"
             >
-              <span className="relative z-10 text-accent">Ghana & Beyond</span>
+              <span className="relative z-10 text-accent">{c.highlight}</span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
@@ -245,9 +256,7 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.9 }}
             className="text-lg md:text-xl text-primary-foreground/70 leading-relaxed max-w-2xl mb-10"
           >
-            Specializing in Ghana's diverse languages including Akan, Ga, Ewe, Dagbani, and 50+ more. 
-            We deliver exceptional translation, interpretation, voice-over, and media production services 
-            to preserve and promote linguistic heritage across Ghana and Africa.
+            {c.subtitle}
           </motion.p>
 
           {/* CTA Buttons with Stagger */}
@@ -262,8 +271,8 @@ export const Hero = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Button variant="hero-primary" size="xl" asChild>
-                <Link to="/contact">
-                  Request a Quote
+                <Link href={c.primary_href || '/contact'}>
+                  {c.primary_label}
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -278,9 +287,9 @@ export const Hero = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Button variant="hero-secondary" size="xl" asChild>
-                <Link to="/services">
+                <Link href={c.secondary_href || '/services'}>
                   <Play className="w-4 h-4" />
-                  Explore Our Services
+                  {c.secondary_label}
                 </Link>
               </Button>
             </motion.div>
@@ -294,10 +303,10 @@ export const Hero = () => {
             className="mt-16 pt-10 border-t border-primary-foreground/10"
           >
             <p className="text-sm text-primary-foreground/50 mb-6 uppercase tracking-wider font-medium">
-              Trusted by Industry Leaders
+              {c.trusted_label}
             </p>
             <div className="flex flex-wrap gap-x-12 gap-y-6 items-center">
-              {['Ghana Gov Agencies', 'NGOs', 'Cultural Institutions', 'Media Houses', 'Corporate Clients'].map((client, index) => (
+              {trusted.map((client, index) => (
                 <motion.div
                   key={client}
                   initial={{ opacity: 0, y: 20 }}

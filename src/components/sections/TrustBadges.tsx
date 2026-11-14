@@ -1,35 +1,21 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Award, CheckCircle, Shield, Star } from 'lucide-react';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
 
-const badges = [
-  {
-    icon: Award,
-    title: 'ISO 9001:2015',
-    subtitle: 'Quality Management',
-    color: 'from-blue-500 to-blue-600',
-  },
-  {
-    icon: Shield,
-    title: 'ISO 27001',
-    subtitle: 'Information Security',
-    color: 'from-purple-500 to-purple-600',
-  },
-  {
-    icon: CheckCircle,
-    title: 'ATA Certified',
-    subtitle: 'Translation Standards',
-    color: 'from-green-500 to-green-600',
-  },
-  {
-    icon: Star,
-    title: '5-Star Rated',
-    subtitle: 'Client Satisfaction',
-    color: 'from-yellow-500 to-orange-500',
-  },
-];
+const COLORS = ["from-blue-500 to-blue-600", "from-purple-500 to-purple-600", "from-green-500 to-green-600", "from-yellow-500 to-orange-500"];
 
-export const TrustBadges = () => {
+export const TrustBadges = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  const badges = section.items.map((item, i) => ({
+    icon: getIcon(item.icon),
+    title: item.title,
+    subtitle: item.description,
+    color: COLORS[i % COLORS.length],
+  }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -42,7 +28,7 @@ export const TrustBadges = () => {
           className="text-center mb-12"
         >
           <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-            Trusted & Certified
+            {c.eyebrow}
           </span>
         </motion.div>
 

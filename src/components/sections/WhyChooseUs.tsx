@@ -1,41 +1,15 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Shield, Zap, HeartHandshake, BadgeCheck, Clock4, Headphones } from 'lucide-react';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
 
-const features = [
-  {
-    icon: BadgeCheck,
-    title: 'Native Language Experts',
-    description: 'Our team includes native speakers of all major Ghanaian languages with deep cultural understanding and linguistic expertise.',
-  },
-  {
-    icon: Shield,
-    title: 'Cultural Authenticity',
-    description: 'We preserve cultural context and nuances, ensuring translations honor the traditions and values of each language community.',
-  },
-  {
-    icon: Zap,
-    title: 'Language Documentation',
-    description: 'Specialized in documenting and preserving endangered Ghanaian languages for future generations.',
-  },
-  {
-    icon: HeartHandshake,
-    title: 'Community-Focused',
-    description: 'We work closely with local communities to ensure linguistic accuracy and cultural sensitivity in every project.',
-  },
-  {
-    icon: Clock4,
-    title: 'Ghana-Wide Coverage',
-    description: 'From Greater Accra to Northern Region, we provide services across all 16 regions of Ghana.',
-  },
-  {
-    icon: Headphones,
-    title: 'Dedicated Support',
-    description: 'Personal project managers who understand both local and international communication needs guide you through every step.',
-  },
-];
 
-export const WhyChooseUs = () => {
+export const WhyChooseUs = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  const features = section.items.map((item) => ({ icon: getIcon(item.icon), title: item.title, description: item.description }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -81,12 +55,12 @@ export const WhyChooseUs = () => {
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            Why Choose Us
+            {c.eyebrow}
           </motion.span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            The First Grade{' '}
+            {c.title}{' '}
             <span className="relative inline-block">
-              <span className="gradient-text-gold">Advantage</span>
+              <span className="gradient-text-gold">{c.highlight}</span>
               <motion.span
                 className="absolute -bottom-2 left-0 right-0 h-3 bg-accent/20 -z-10 rounded"
                 initial={{ scaleX: 0 }}
@@ -96,8 +70,7 @@ export const WhyChooseUs = () => {
             </span>
           </h2>
           <p className="text-lg text-primary-foreground/70 leading-relaxed">
-            Experience Ghana's premier language consultancy. We combine linguistic expertise 
-            with deep cultural knowledge to preserve and promote our nation's linguistic heritage.
+            {c.intro}
           </p>
         </motion.div>
 

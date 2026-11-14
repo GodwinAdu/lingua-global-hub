@@ -1,35 +1,21 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { MessageSquare, FileSearch, Settings, CheckCircle } from 'lucide-react';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
 
-const steps = [
-  {
-    number: '01',
-    icon: MessageSquare,
-    title: 'Consultation',
-    description: 'We begin with a detailed discussion to understand your project requirements, goals, and timeline.',
-  },
-  {
-    number: '02',
-    icon: FileSearch,
-    title: 'Analysis & Quote',
-    description: 'Our experts analyze your materials and provide a comprehensive quote with transparent pricing.',
-  },
-  {
-    number: '03',
-    icon: Settings,
-    title: 'Production',
-    description: 'Our skilled team executes the project with precision, maintaining constant quality control.',
-  },
-  {
-    number: '04',
-    icon: CheckCircle,
-    title: 'Delivery & Review',
-    description: 'We deliver on time and work with you to ensure complete satisfaction with the final product.',
-  },
-];
 
-export const Process = () => {
+export const Process = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  // Steps are numbered by position, so reordering keeps 01, 02, 03...
+  const steps = section.items.map((item, i) => ({
+    number: String(i + 1).padStart(2, '0'),
+    icon: getIcon(item.icon),
+    title: item.title,
+    description: item.description,
+  }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -59,14 +45,14 @@ export const Process = () => {
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            Our Process
+            {c.eyebrow}
           </motion.span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            How We{' '}
-            <span className="gradient-text">Work</span>
+            {c.title}{' '}
+            <span className="gradient-text">{c.highlight}</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            A streamlined, transparent process designed to deliver exceptional results every time.
+            {c.intro}
           </p>
         </motion.div>
 

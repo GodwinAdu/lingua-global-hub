@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { 
@@ -9,54 +11,22 @@ import {
   Globe2,
   ArrowRight 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
 
-const features = [
-  {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description: '24-48 hour turnaround on most projects',
-    gradient: 'from-blue-500 to-cyan-500',
-    size: 'large',
-  },
-  {
-    icon: Shield,
-    title: 'ISO Certified',
-    description: 'Quality management standards',
-    gradient: 'from-purple-500 to-pink-500',
-    size: 'small',
-  },
-  {
-    icon: Clock,
-    title: '24/7 Support',
-    description: 'Round-the-clock assistance',
-    gradient: 'from-orange-500 to-red-500',
-    size: 'small',
-  },
-  {
-    icon: Award,
-    title: 'Award Winning',
-    description: 'Industry recognized excellence',
-    gradient: 'from-yellow-500 to-orange-500',
-    size: 'medium',
-  },
-  {
-    icon: Headphones,
-    title: 'Dedicated Manager',
-    description: 'Personal project oversight',
-    gradient: 'from-green-500 to-emerald-500',
-    size: 'medium',
-  },
-  {
-    icon: Globe2,
-    title: 'Global Reach',
-    description: '50+ languages, 100+ countries',
-    gradient: 'from-indigo-500 to-purple-500',
-    size: 'large',
-  },
-];
+const GRADIENTS = ["from-blue-500 to-cyan-500", "from-purple-500 to-pink-500", "from-orange-500 to-red-500", "from-yellow-500 to-orange-500", "from-green-500 to-emerald-500", "from-indigo-500 to-purple-500"];
+const SIZES = ["large", "small", "small", "medium", "medium", "large"];
 
-export const FeaturesShowcase = () => {
+export const FeaturesShowcase = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  const features = section.items.map((item, i) => ({
+    icon: getIcon(item.icon),
+    title: item.title,
+    description: item.description,
+    gradient: GRADIENTS[i % GRADIENTS.length],
+    size: SIZES[i % SIZES.length],
+  }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -86,14 +56,14 @@ export const FeaturesShowcase = () => {
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            Why We're Different
+            {c.eyebrow}
           </motion.span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Built for{' '}
-            <span className="gradient-text">Excellence</span>
+            {c.title}{' '}
+            <span className="gradient-text">{c.highlight}</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Every detail designed to deliver exceptional results
+            {c.intro}
           </p>
         </motion.div>
 
@@ -152,10 +122,10 @@ export const FeaturesShowcase = () => {
           className="text-center mt-12"
         >
           <Link
-            to="/about"
+            href="/about"
             className="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all"
           >
-            Discover More About Us
+            {c.button_label}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>

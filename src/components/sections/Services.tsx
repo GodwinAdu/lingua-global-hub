@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { 
@@ -9,61 +11,13 @@ import {
   PenTool,
   ArrowRight
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import type { Service } from '@/lib/content/site-types';
+import { getIcon } from '@/lib/content/icons';
+import type { HomeSection } from '@/lib/content/home';
 
-// Import service images
-import translationImg from '@/assets/service-translation.jpg';
-import interpretationImg from '@/assets/service-interpretation.jpg';
-import voiceoverImg from '@/assets/service-voiceover.jpg';
-import jingleImg from '@/assets/service-jingle.jpg';
-import editingImg from '@/assets/service-editing.jpg';
-import scriptwritingImg from '@/assets/service-scriptwriting.jpg';
 
-const services = [
-  {
-    icon: Languages,
-    title: 'Translation',
-    description: 'Accurate translations in 50+ Ghanaian languages including Akan, Ga, Ewe, Dagbani, and major international languages for documents, websites, and marketing materials.',
-    image: translationImg,
-    href: '/services/translation',
-  },
-  {
-    icon: Mic2,
-    title: 'Interpretation',
-    description: 'Professional simultaneous and consecutive interpretation in Ghanaian languages for conferences, meetings, community events, and official proceedings.',
-    image: interpretationImg,
-    href: '/services/interpretation',
-  },
-  {
-    icon: PlayCircle,
-    title: 'Voice-over',
-    description: 'Studio-quality voice-over production in multiple Ghanaian languages for radio, TV commercials, documentaries, and educational content.',
-    image: voiceoverImg,
-    href: '/services/voiceover',
-  },
-  {
-    icon: Music,
-    title: 'Jingle Recording',
-    description: 'Custom jingle creation and recording in local languages with professional vocalists who understand Ghanaian musical traditions and sound engineering.',
-    image: jingleImg,
-    href: '/services/jingle',
-  },
-  {
-    icon: FileEdit,
-    title: 'Language Documentation',
-    description: 'Comprehensive documentation and preservation of indigenous Ghanaian languages, including grammar guides, dictionaries, and digital archives.',
-    image: editingImg,
-    href: '/services/editing',
-  },
-  {
-    icon: PenTool,
-    title: 'Script Writing',
-    description: 'Creative script development in Ghanaian languages for commercials, educational videos, cultural programs, and multimedia productions.',
-    image: scriptwritingImg,
-    href: '/services/scriptwriting',
-  },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -84,12 +38,20 @@ const itemVariants = {
     rotateX: 0,
     transition: { 
       duration: 0.7,
-      ease: [0.6, 0.05, 0.01, 0.9]
+      ease: [0.6, 0.05, 0.01, 0.9] as const
     },
   },
 };
 
-export const Services = () => {
+export const Services = ({ items, section }: { items: Service[]; section: HomeSection }) => {
+  const c = section.content;
+  const services = items.map((s) => ({
+    icon: getIcon(s.icon),
+    title: s.card_title || s.title,
+    description: s.card_description || s.summary,
+    image: s.image_url || '/placeholder.svg',
+    href: `/services/${s.slug}`,
+  }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -109,7 +71,7 @@ export const Services = () => {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold text-secondary uppercase tracking-wider mb-4"
           >
-            Our Services
+            {c.eyebrow}
           </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -117,7 +79,7 @@ export const Services = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6"
           >
-            Comprehensive Language Documentation & Media Solutions
+            {c.title}
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -125,8 +87,7 @@ export const Services = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed"
           >
-            From translation to voice production in Ghana's diverse languages, we provide end-to-end services 
-            that help preserve linguistic heritage and ensure your message resonates across cultures.
+            {c.intro}
           </motion.p>
         </motion.div>
 
@@ -148,7 +109,7 @@ export const Services = () => {
                 whileHover={{ y: -8 }}
                 transition={{ duration: 0.3 }}
               >
-                <Link to={service.href}>
+                <Link href={service.href}>
                   <div className="relative h-full rounded-2xl bg-card border border-border overflow-hidden hover:border-secondary/50 transition-all duration-500 hover:shadow-premium-lg">
                     {/* Gradient overlay on hover */}
                     <motion.div
@@ -238,8 +199,8 @@ export const Services = () => {
             whileTap={{ scale: 0.98 }}
           >
             <Button variant="premium" size="lg" asChild>
-              <Link to="/services">
-                View All Services
+              <Link href="/services">
+                {c.button_label}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>

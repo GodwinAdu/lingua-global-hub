@@ -1,13 +1,13 @@
+'use client';
+
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { TrendingUp, Users, Globe2, Award } from 'lucide-react';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
+import { parseCount } from '@/lib/content/home';
 
-const stats = [
-  { value: 50, suffix: '+', label: 'Ghanaian Languages', icon: Globe2, color: 'text-accent' },
-  { value: 500, suffix: '+', label: 'Projects Completed', icon: Award, color: 'text-secondary' },
-  { value: 100, suffix: '+', label: 'Happy Clients', icon: Users, color: 'text-accent' },
-  { value: 10, suffix: '+', label: 'Years Experience', icon: TrendingUp, color: 'text-secondary' },
-];
+const COLORS = ["text-accent", "text-secondary", "text-accent", "text-secondary"];
 
 const AnimatedCounter = ({ value, suffix }: { value: number; suffix: string }) => {
   const ref = useRef<HTMLSpanElement>(null);
@@ -37,7 +37,11 @@ const AnimatedCounter = ({ value, suffix }: { value: number; suffix: string }) =
   );
 };
 
-export const StatsCounter = () => {
+export const StatsCounter = ({ section }: { section: HomeSection }) => {
+  const stats = section.items.map((item, i) => {
+    const { number, prefix, suffix } = parseCount(item.value);
+    return { value: number, prefix, suffix, raw: item.value, label: item.title, icon: getIcon(item.icon), color: COLORS[i % COLORS.length] };
+  });
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -60,7 +64,7 @@ export const StatsCounter = () => {
             const Icon = stat.icon;
             return (
               <motion.div
-                key={stat.label}
+                key={`${stat.label}-${index}`}
                 initial={{ opacity: 0, y: 30, scale: 0.9 }}
                 animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -73,7 +77,7 @@ export const StatsCounter = () => {
                   <Icon className={`w-8 h-8 ${stat.color}`} />
                 </motion.div>
                 <div className="font-display text-4xl lg:text-5xl font-bold text-primary-foreground mb-2">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                  {stat.value === null ? stat.raw : <>{stat.prefix}<AnimatedCounter value={stat.value} suffix={stat.suffix} /></>}
                 </div>
                 <div className="text-primary-foreground/70 text-sm font-medium">
                   {stat.label}

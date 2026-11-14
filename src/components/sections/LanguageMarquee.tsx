@@ -1,17 +1,17 @@
+'use client';
+
 import { motion } from 'framer-motion';
+import type { HomeSection } from '@/lib/content/home';
 
-const languages = [
-  'Akan (Twi)', 'Ga', 'Ewe', 'Dagbani', 'Dangme', 'Nzema',
-  'Gonja', 'Kasem', 'Fante', 'Dagaare', 'Hausa', 'English',
-  'French', 'Arabic', 'Portuguese', 'Spanish', 'Swahili', 'Mandarin'
-];
 
-export const LanguageMarquee = () => {
+export const LanguageMarquee = ({ section }: { section: HomeSection }) => {
+  const languages = section.items.map((i) => i.title);
+  const c = section.content;
   return (
     <section className="py-12 bg-muted/30 overflow-hidden border-y border-border/50">
       <div className="mb-6 text-center">
         <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-          Ghana's Languages & Beyond - We Speak Your Language
+          {c.label}
         </span>
       </div>
       

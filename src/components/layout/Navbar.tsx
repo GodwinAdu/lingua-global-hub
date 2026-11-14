@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Menu, X, Globe, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,9 +12,10 @@ const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Services', href: '/services' },
-  // { name: 'Team', href: '/team' },
+  { name: 'Team', href: '/team' },
   { name: 'Portfolio', href: '/portfolio' },
   { name: 'Blog', href: '/blog' },
+  { name: 'Ebooks', href: '/ebooks' },
   { name: 'Contact', href: '/contact' },
 ];
 
@@ -19,7 +23,7 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const location = useLocation();
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const navbarOpacity = useTransform(scrollY, [0, 50], [0.7, 0.95]);
 
@@ -33,7 +37,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [location]);
+  }, [pathname]);
 
   return (
     <>
@@ -68,7 +72,7 @@ export const Navbar = () => {
       <nav className="container-premium relative">
         <div className="flex items-center justify-between h-16">
           {/* Logo with advanced animation */}
-          <Link to="/" className="flex items-center gap-3 group relative z-10">
+          <Link href="/" className="flex items-center gap-3 group relative z-10">
             <motion.div 
               className="relative"
               whileHover={{ scale: 1.05 }}
@@ -104,9 +108,9 @@ export const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation with advanced hover effects */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2">
             {navLinks.map((link, index) => {
-              const isActive = location.pathname === link.href;
+              const isActive = pathname === link.href;
               return (
                 <motion.div
                   key={link.name}
@@ -117,7 +121,7 @@ export const Navbar = () => {
                   onHoverEnd={() => setHoveredLink(null)}
                 >
                   <Link
-                    to={link.href}
+                    href={link.href}
                     className="relative px-5 py-2.5 text-sm font-semibold transition-all duration-300 rounded-xl group"
                   >
                     {/* Hover background */}
@@ -170,7 +174,7 @@ export const Navbar = () => {
 
           {/* CTA Button with shimmer effect */}
           <motion.div 
-            className="hidden lg:flex items-center gap-4"
+            className="hidden xl:flex items-center gap-4"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
@@ -185,7 +189,7 @@ export const Navbar = () => {
                 className="relative overflow-hidden group shadow-gold hover:shadow-glow-lg"
                 asChild
               >
-                <Link to="/contact" className="relative z-10">
+                <Link href="/contact" className="relative z-10">
                   <span className="relative z-10">Request a Quote</span>
                   <motion.span
                     className="relative z-10"
@@ -209,7 +213,7 @@ export const Navbar = () => {
           {/* Mobile Menu Button with animation */}
           <motion.button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden p-2.5 rounded-xl transition-all duration-300 relative z-10 ${
+            className={`xl:hidden p-2.5 rounded-xl transition-all duration-300 relative z-10 ${
               isScrolled ? 'bg-muted/50' : 'bg-primary-foreground/10'
             }`}
             aria-label="Toggle menu"
@@ -266,14 +270,14 @@ export const Navbar = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute top-full left-0 right-0 mt-2 mx-4 lg:hidden  backdrop-blur-2xl border border-border/50 rounded-2xl shadow-premium-xl overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 mt-2 mx-4 xl:hidden backdrop-blur-2xl border border-border/50 rounded-2xl shadow-premium-xl overflow-hidden z-50"
             >
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-accent/5 pointer-events-none" />
               
               <div className="relative p-6 space-y-2">
                 {navLinks.map((link, index) => {
-                  const isActive = location.pathname === link.href;
+                  const isActive = pathname === link.href;
                   return (
                     <motion.div
                       key={link.name}
@@ -282,7 +286,7 @@ export const Navbar = () => {
                       transition={{ delay: index * 0.08, duration: 0.3 }}
                     >
                       <Link
-                        to={link.href}
+                        href={link.href}
                         className={`block px-5 py-4 rounded-xl text-base font-semibold transition-all duration-300 relative overflow-hidden group ${
                           isActive
                             ? 'bg-gradient-to-br from-secondary/15 to-accent/10 text-secondary shadow-md'
@@ -322,7 +326,7 @@ export const Navbar = () => {
                     className="w-full relative overflow-hidden group shadow-gold"
                     asChild
                   >
-                    <Link to="/contact">
+                    <Link href="/contact">
                       <span className="relative z-10">Request a Quote</span>
                       <ArrowRight className="w-4 h-4 relative z-10" />
                       
