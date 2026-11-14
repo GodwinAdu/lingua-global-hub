@@ -15,6 +15,7 @@ const navLinks = [
   // { name: 'Team', href: '/team' },
   { name: 'Portfolio', href: '/portfolio' },
   { name: 'Blog', href: '/blog' },
+  { name: 'Ebooks', href: '/ebooks' },
   { name: 'Contact', href: '/contact' },
 ];
 

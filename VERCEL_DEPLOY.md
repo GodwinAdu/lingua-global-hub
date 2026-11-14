@@ -12,7 +12,8 @@ Set these in Vercel > Project Settings > Environment Variables (see `.env.exampl
 | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`, `EMAIL_TO` | SMTP settings for the contact form |
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase project (dashboard/CMS) |
 | `SUPABASE_SECRET_KEY` | Server-only Supabase key. Never prefix with `NEXT_PUBLIC_`. |
-| `PAYSTACK_SECRET_KEY` | Server-only Paystack key for paid ebooks |
+| `PAYSTACK_SECRET_KEY` | Server-only Paystack key for paid ebooks (`sk_live_...` in production) |
+| `PAYSTACK_WEBHOOK_SECRET` | Optional webhook signing secret (`whsec_...`). Set the Paystack webhook URL to `https://<domain>/api/paystack/webhook`. See `docs/EBOOKS_AND_PAYSTACK.md`. |
 
 ## Local development
 
