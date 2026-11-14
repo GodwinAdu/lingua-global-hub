@@ -1,4 +1,7 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { Globe, Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -19,10 +22,15 @@ const footerLinks = {
     { name: 'Privacy Policy', href: '/privacy-policy' },
     { name: 'Terms of Service', href: '/terms-of-service' },
     { name: 'Cookie Policy', href: '/cookie-policy' },
+    { name: 'Staff Sign In', href: '/admin/login' },
   ],
 };
 
 export const Footer = () => {
+  // Read the clock after mount: a render-time `new Date()` would freeze at build time.
+  const [year, setYear] = useState<number | null>(null);
+  useEffect(() => setYear(new Date().getFullYear()), []);
+
   return (
     <footer className="bg-primary text-primary-foreground relative overflow-hidden">
       {/* Animated background elements */}
@@ -43,7 +51,7 @@ export const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <Link to="/" className="flex items-center gap-3 mb-6 group">
+            <Link href="/" className="flex items-center gap-3 mb-6 group">
               <motion.div 
                 className="relative"
                 whileHover={{ scale: 1.05 }}
@@ -108,7 +116,7 @@ export const Footer = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <Link
-                    to={link.href}
+                    href={link.href}
                     className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
                     {link.name}
@@ -138,7 +146,7 @@ export const Footer = () => {
                   transition={{ delay: index * 0.05 }}
                 >
                   <Link
-                    to={link.href}
+                    href={link.href}
                     className="text-primary-foreground/70 hover:text-primary-foreground text-sm transition-colors duration-200 hover:translate-x-1 inline-block"
                   >
                     {link.name}
@@ -214,9 +222,9 @@ export const Footer = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            © {new Date().getFullYear()} First Grade Lingua Consult. All rights reserved.
+            © {year} First Grade Lingua Consult. All rights reserved.
           </motion.p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {footerLinks.legal.map((link, index) => (
               <motion.div
                 key={link.name}
@@ -226,7 +234,7 @@ export const Footer = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Link
-                  to={link.href}
+                  href={link.href}
                   className="text-primary-foreground/50 hover:text-primary-foreground/70 text-sm transition-colors"
                 >
                   {link.name}

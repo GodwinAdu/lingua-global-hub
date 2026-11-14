@@ -1,5 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Menu, X, Globe, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,7 +22,7 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const location = useLocation();
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const navbarOpacity = useTransform(scrollY, [0, 50], [0.7, 0.95]);
 
@@ -33,7 +36,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [location]);
+  }, [pathname]);
 
   return (
     <>
@@ -68,7 +71,7 @@ export const Navbar = () => {
       <nav className="container-premium relative">
         <div className="flex items-center justify-between h-16">
           {/* Logo with advanced animation */}
-          <Link to="/" className="flex items-center gap-3 group relative z-10">
+          <Link href="/" className="flex items-center gap-3 group relative z-10">
             <motion.div 
               className="relative"
               whileHover={{ scale: 1.05 }}
@@ -106,7 +109,7 @@ export const Navbar = () => {
           {/* Desktop Navigation with advanced hover effects */}
           <div className="hidden lg:flex items-center gap-2">
             {navLinks.map((link, index) => {
-              const isActive = location.pathname === link.href;
+              const isActive = pathname === link.href;
               return (
                 <motion.div
                   key={link.name}
@@ -117,7 +120,7 @@ export const Navbar = () => {
                   onHoverEnd={() => setHoveredLink(null)}
                 >
                   <Link
-                    to={link.href}
+                    href={link.href}
                     className="relative px-5 py-2.5 text-sm font-semibold transition-all duration-300 rounded-xl group"
                   >
                     {/* Hover background */}
@@ -185,7 +188,7 @@ export const Navbar = () => {
                 className="relative overflow-hidden group shadow-gold hover:shadow-glow-lg"
                 asChild
               >
-                <Link to="/contact" className="relative z-10">
+                <Link href="/contact" className="relative z-10">
                   <span className="relative z-10">Request a Quote</span>
                   <motion.span
                     className="relative z-10"
@@ -273,7 +276,7 @@ export const Navbar = () => {
               
               <div className="relative p-6 space-y-2">
                 {navLinks.map((link, index) => {
-                  const isActive = location.pathname === link.href;
+                  const isActive = pathname === link.href;
                   return (
                     <motion.div
                       key={link.name}
@@ -282,7 +285,7 @@ export const Navbar = () => {
                       transition={{ delay: index * 0.08, duration: 0.3 }}
                     >
                       <Link
-                        to={link.href}
+                        href={link.href}
                         className={`block px-5 py-4 rounded-xl text-base font-semibold transition-all duration-300 relative overflow-hidden group ${
                           isActive
                             ? 'bg-gradient-to-br from-secondary/15 to-accent/10 text-secondary shadow-md'
@@ -322,7 +325,7 @@ export const Navbar = () => {
                     className="w-full relative overflow-hidden group shadow-gold"
                     asChild
                   >
-                    <Link to="/contact">
+                    <Link href="/contact">
                       <span className="relative z-10">Request a Quote</span>
                       <ArrowRight className="w-4 h-4 relative z-10" />
                       

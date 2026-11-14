@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { TrendingUp, Users, Globe2, Award } from 'lucide-react';

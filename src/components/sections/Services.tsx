@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { 
@@ -9,7 +11,7 @@ import {
   PenTool,
   ArrowRight
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 // Import service images
@@ -25,42 +27,42 @@ const services = [
     icon: Languages,
     title: 'Translation',
     description: 'Accurate translations in 50+ Ghanaian languages including Akan, Ga, Ewe, Dagbani, and major international languages for documents, websites, and marketing materials.',
-    image: translationImg,
+    image: translationImg.src,
     href: '/services/translation',
   },
   {
     icon: Mic2,
     title: 'Interpretation',
     description: 'Professional simultaneous and consecutive interpretation in Ghanaian languages for conferences, meetings, community events, and official proceedings.',
-    image: interpretationImg,
+    image: interpretationImg.src,
     href: '/services/interpretation',
   },
   {
     icon: PlayCircle,
     title: 'Voice-over',
     description: 'Studio-quality voice-over production in multiple Ghanaian languages for radio, TV commercials, documentaries, and educational content.',
-    image: voiceoverImg,
+    image: voiceoverImg.src,
     href: '/services/voiceover',
   },
   {
     icon: Music,
     title: 'Jingle Recording',
     description: 'Custom jingle creation and recording in local languages with professional vocalists who understand Ghanaian musical traditions and sound engineering.',
-    image: jingleImg,
+    image: jingleImg.src,
     href: '/services/jingle',
   },
   {
     icon: FileEdit,
     title: 'Language Documentation',
     description: 'Comprehensive documentation and preservation of indigenous Ghanaian languages, including grammar guides, dictionaries, and digital archives.',
-    image: editingImg,
+    image: editingImg.src,
     href: '/services/editing',
   },
   {
     icon: PenTool,
     title: 'Script Writing',
     description: 'Creative script development in Ghanaian languages for commercials, educational videos, cultural programs, and multimedia productions.',
-    image: scriptwritingImg,
+    image: scriptwritingImg.src,
     href: '/services/scriptwriting',
   },
 ];
@@ -84,7 +86,7 @@ const itemVariants = {
     rotateX: 0,
     transition: { 
       duration: 0.7,
-      ease: [0.6, 0.05, 0.01, 0.9]
+      ease: [0.6, 0.05, 0.01, 0.9] as const
     },
   },
 };
@@ -148,7 +150,7 @@ export const Services = () => {
                 whileHover={{ y: -8 }}
                 transition={{ duration: 0.3 }}
               >
-                <Link to={service.href}>
+                <Link href={service.href}>
                   <div className="relative h-full rounded-2xl bg-card border border-border overflow-hidden hover:border-secondary/50 transition-all duration-500 hover:shadow-premium-lg">
                     {/* Gradient overlay on hover */}
                     <motion.div
@@ -238,7 +240,7 @@ export const Services = () => {
             whileTap={{ scale: 0.98 }}
           >
             <Button variant="premium" size="lg" asChild>
-              <Link to="/services">
+              <Link href="/services">
                 View All Services
                 <ArrowRight className="w-4 h-4" />
               </Link>

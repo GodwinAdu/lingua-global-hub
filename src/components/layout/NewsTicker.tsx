@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Newspaper } from 'lucide-react';
 import { blogPosts } from '@/data/blogPosts';
@@ -32,7 +34,7 @@ const NewsTicker = () => {
             {tickerItems.map((post, index) => (
               <Link
                 key={`${post.id}-${index}`}
-                to={`/blog/${post.slug}`}
+                href={`/blog/${post.slug}`}
                 className="inline-flex items-center gap-3 text-xs text-primary-foreground/90 hover:text-secondary transition-colors duration-200 group"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary flex-shrink-0" />

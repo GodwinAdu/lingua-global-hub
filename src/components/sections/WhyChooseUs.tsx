@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Shield, Zap, HeartHandshake, BadgeCheck, Clock4, Headphones } from 'lucide-react';

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { MapPin, Navigation, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';

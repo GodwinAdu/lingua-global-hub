@@ -1,8 +1,10 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Award, Users, Globe2, Clock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const stats = [
   { value: '50+', label: 'Ghanaian Languages', icon: Globe2 },
@@ -101,7 +103,7 @@ export const About = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Button variant="premium" size="lg" className="shadow-premium hover:shadow-glow" asChild>
-                <Link to="/about">
+                <Link href="/about">
                   Learn Our Story
                   <motion.span
                     animate={{ x: [0, 5, 0] }}

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { 
@@ -9,7 +11,7 @@ import {
   Globe2,
   ArrowRight 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const features = [
   {
@@ -152,7 +154,7 @@ export const FeaturesShowcase = () => {
           className="text-center mt-12"
         >
           <Link
-            to="/about"
+            href="/about"
             className="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all"
           >
             Discover More About Us

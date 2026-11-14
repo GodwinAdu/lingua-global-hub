@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Globe2, Users, BookOpen, Mic } from 'lucide-react';

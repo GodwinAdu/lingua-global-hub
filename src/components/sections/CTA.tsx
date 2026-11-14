@@ -1,8 +1,10 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export const CTA = () => {
   const ref = useRef(null);
@@ -81,7 +83,7 @@ export const CTA = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button variant="hero-primary" size="xl" className="shadow-glow-lg" asChild>
-                  <Link to="/contact">
+                  <Link href="/contact">
                     <span className="relative z-10">Request a Quote</span>
                     <motion.span
                       className="relative z-10"

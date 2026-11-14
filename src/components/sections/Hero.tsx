@@ -1,8 +1,16 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowRight, Play, Globe, Languages, Mic, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+
+// Deterministic 0..1 value so server and client render identical particle positions.
+const seeded = (i: number, salt: number) => {
+  const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+};
 import heroBg from '@/assets/hero-bg.jpg';
 
 const floatingIcons = [
@@ -77,7 +85,7 @@ export const Hero = () => {
         style={{ y, scale }}
       >
         <img 
-          src={heroBg} 
+          src={heroBg.src} 
           alt="" 
           className="w-full h-full object-cover"
         />
@@ -148,8 +156,8 @@ export const Hero = () => {
             key={i}
             className="absolute w-2 h-2 rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${seeded(i, 1) * 100}%`,
+              top: `${seeded(i, 2) * 100}%`,
               background: i % 2 === 0 ? 'hsl(var(--accent))' : 'hsl(var(--secondary))',
             }}
             animate={{
@@ -158,9 +166,9 @@ export const Hero = () => {
               scale: [0, 1.5, 0],
             }}
             transition={{
-              duration: 4 + Math.random() * 3,
+              duration: 4 + seeded(i, 3) * 3,
               repeat: Infinity,
-              delay: Math.random() * 3,
+              delay: seeded(i, 4) * 3,
               ease: 'easeInOut',
             }}
           />
@@ -262,7 +270,7 @@ export const Hero = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Button variant="hero-primary" size="xl" asChild>
-                <Link to="/contact">
+                <Link href="/contact">
                   Request a Quote
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
@@ -278,7 +286,7 @@ export const Hero = () => {
               whileTap={{ scale: 0.98 }}
             >
               <Button variant="hero-secondary" size="xl" asChild>
-                <Link to="/services">
+                <Link href="/services">
                   <Play className="w-4 h-4" />
                   Explore Our Services
                 </Link>

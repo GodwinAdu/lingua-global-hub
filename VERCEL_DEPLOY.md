@@ -1,50 +1,29 @@
 # Vercel Deployment Guide
 
-## Setup
+The site is a Next.js 16 (App Router) app. Vercel detects it automatically; no `vercel.json` is needed.
 
-1. Install Vercel CLI (optional for local testing):
+## Environment variables
+
+Set these in Vercel > Project Settings > Environment Variables (see `.env.example`):
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Production URL, e.g. `https://firstgradelingua.com`. Used for canonical URLs, sitemap, Open Graph and share links. |
+| `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_FROM`, `EMAIL_TO` | SMTP settings for the contact form |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase project (dashboard/CMS) |
+| `SUPABASE_SECRET_KEY` | Server-only Supabase key. Never prefix with `NEXT_PUBLIC_`. |
+| `PAYSTACK_SECRET_KEY` | Server-only Paystack key for paid ebooks |
+
+## Local development
+
 ```bash
-npm i -g vercel
+cp .env.example .env.local   # fill in values
+pnpm install
+pnpm dev                     # http://localhost:3000
 ```
 
-2. Configure environment variables in Vercel dashboard:
-   - Go to Project Settings > Environment Variables
-   - Add these variables:
-     - `EMAIL_HOST` = smtp.gmail.com
-     - `EMAIL_PORT` = 587
-     - `EMAIL_USER` = your-email@gmail.com
-     - `EMAIL_PASS` = your-app-password
-     - `EMAIL_FROM` = your-email@gmail.com
-     - `EMAIL_TO` = info@firstgradelingua.com
+The contact form API (`src/app/api/contact/route.ts`) runs inside `next dev`; `vercel dev` is no longer needed.
 
 ## Deploy
 
-### Option 1: Deploy via Vercel Dashboard
-1. Push code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy
-
-### Option 2: Deploy via CLI
-```bash
-vercel --prod
-```
-
-## Local Development
-
-The contact form will work with Vercel's dev server:
-```bash
-vercel dev
-```
-
-Or use the regular dev server (API won't work locally without vercel dev):
-```bash
-npm run dev
-```
-
-## How it works
-
-- `/api/contact.js` is a serverless function
-- Automatically deployed to `/api/contact` endpoint
-- Works on both Vercel and local with `vercel dev`
-- No separate server needed!
+Push the branch to GitHub and import it in Vercel, or run `vercel --prod`.

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Award, CheckCircle, Shield, Star } from 'lucide-react';
