@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Search, Calendar, Clock, User, Globe, Tag, ArrowRight, BookOpen } from 'lucide-react';
+import { Search, Calendar, Clock, User, Globe, Tag, ArrowRight, BookOpen, Flame, Eye, Heart, MessageCircle } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FloatingChat from '@/components/sections/FloatingChat';
@@ -36,6 +36,13 @@ const BlogPage = ({ posts: blogPosts, categories }: Props) => {
       return matchesSearch && matchesCategory && matchesLanguage;
     });
   }, [blogPosts, searchQuery, selectedCategory, selectedLanguage]);
+
+  // Most popular: views plus weighted likes and comments. Shown once there's real activity.
+  const popular = useMemo(() => {
+    const score = (p: BlogPost) => (p.stats?.views ?? 0) + 5 * (p.stats?.likes ?? 0) + 10 * (p.stats?.comments ?? 0);
+    return blogPosts.filter((p) => score(p) > 0).sort((a, b) => score(b) - score(a)).slice(0, 4);
+  }, [blogPosts]);
+  const browsing = searchQuery !== '' || selectedCategory !== 'all' || selectedLanguage !== 'all';
 
   return (
     <div className="min-h-screen">
@@ -148,6 +155,32 @@ const BlogPage = ({ posts: blogPosts, categories }: Props) => {
         {/* Blog Posts Grid */}
         <section className="py-16 bg-background">
           <div className="container-premium">
+            {/* Most popular (hidden while searching or filtering) */}
+            {!browsing && popular.length >= 2 && (
+              <div className="mb-14">
+                <h2 className="mb-5 flex items-center gap-2 font-display text-xl font-bold">
+                  <Flame className="h-5 w-5 text-accent" /> Most popular
+                </h2>
+                <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {popular.map((post, i) => (
+                    <li key={post.id}>
+                      <Link href={`/blog/${post.slug}`} className="group flex h-full gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-secondary/50">
+                        <span className="font-display text-3xl font-bold text-muted-foreground/40 tabular-nums">{i + 1}</span>
+                        <span className="min-w-0">
+                          <span className="line-clamp-2 font-semibold leading-snug group-hover:text-secondary">{post.title}</span>
+                          <span className="mt-2 flex gap-3 text-xs text-muted-foreground">
+                            <span className="inline-flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{post.stats?.views ?? 0}</span>
+                            <span className="inline-flex items-center gap-1"><Heart className="h-3.5 w-3.5" />{post.stats?.likes ?? 0}</span>
+                            <span className="inline-flex items-center gap-1"><MessageCircle className="h-3.5 w-3.5" />{post.stats?.comments ?? 0}</span>
+                          </span>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
             {/* Results count */}
             <motion.p
               initial={{ opacity: 0 }}

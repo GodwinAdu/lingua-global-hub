@@ -54,6 +54,7 @@ export default async function EditPostPage({ params, searchParams }: PageProps<'
         author_title: post.author_title,
         seo_title: post.seo_title ?? '',
         seo_description: post.seo_description ?? '',
+        comments_enabled: post.comments_enabled ?? true,
         status,
       }}
     />

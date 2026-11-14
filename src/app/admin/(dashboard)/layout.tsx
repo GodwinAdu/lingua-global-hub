@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { requireStaff } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -18,11 +19,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 async function AdminShell({ children }: { children: React.ReactNode }) {
   const user = await requireStaff();
+  const newComments = await countRecentComments();
 
   return (
     <SidebarProvider>
       <AdminSidebar
         user={{ email: user.email, fullName: user.fullName, avatarUrl: user.avatarUrl, role: user.role }}
+        newComments={newComments}
       />
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
@@ -53,4 +56,16 @@ function DashboardSkeleton() {
       </div>
     </div>
   );
+}
+
+/** Visitor comments in the last 24 hours, for the sidebar badge. */
+async function countRecentComments(): Promise<number> {
+  const supabase = await createClient();
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { count } = await supabase
+    .from('comments')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_staff', false)
+    .gte('created_at', since);
+  return count ?? 0;
 }

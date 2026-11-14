@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { House, BookOpen, Receipt, Briefcase, FolderOpen, Quote, Settings, UsersRound, ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
+import { MessageSquare, House, BookOpen, Receipt, Briefcase, FolderOpen, Quote, Settings, UsersRound, ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +12,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
@@ -40,6 +41,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
     label: 'Content',
     items: [
       { title: 'Posts & news', href: '/admin/posts', icon: Newspaper, minRole: 'author' },
+      { title: 'Comments', href: '/admin/comments', icon: MessageSquare, minRole: 'editor' },
       { title: 'Categories', href: '/admin/categories', icon: Tags, minRole: 'editor' },
     ],
   },
@@ -71,7 +73,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
 
 export type SidebarUser = { email: string; fullName: string | null; avatarUrl: string | null; role: Role };
 
-export function AdminSidebar({ user }: { user: SidebarUser }) {
+export function AdminSidebar({ user, newComments = 0 }: { user: SidebarUser; newComments?: number }) {
   const pathname = usePathname();
   const name = user.fullName || user.email;
   const initials = name
@@ -120,6 +122,9 @@ export function AdminSidebar({ user }: { user: SidebarUser }) {
                           <span>{item.title}</span>
                         </Link>
                       </SidebarMenuButton>
+                      {item.href === '/admin/comments' && newComments > 0 && (
+                        <SidebarMenuBadge title="Comments in the last 24 hours">{newComments}</SidebarMenuBadge>
+                      )}
                     </SidebarMenuItem>
                   ))}
                 </SidebarMenu>

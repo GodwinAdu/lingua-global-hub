@@ -20,6 +20,8 @@ export interface BlogPost {
   publishedAt: string;
   readingTime: string;
   tags: string[];
+  /** Counts as of the last cache refresh (daily / on publish); live counts load on the post page. */
+  stats?: { views: number; likes: number; comments: number };
   seoTitle?: string | null;
   seoDescription?: string | null;
 }

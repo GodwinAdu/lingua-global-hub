@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,6 +45,7 @@ export type PostFormValues = {
   author_title: string;
   seo_title: string;
   seo_description: string;
+  comments_enabled: boolean;
   status: PostStatus;
 };
 
@@ -95,6 +97,7 @@ export function PostForm({ initial, categories, canPublish, canDelete, savedMess
       <input type="hidden" name="gallery_urls" value={JSON.stringify(values.gallery_urls)} />
       <input type="hidden" name="category_id" value={values.category_id} />
       <input type="hidden" name="language" value={values.language} />
+      <input type="hidden" name="comments_enabled" value={values.comments_enabled ? 'true' : 'false'} />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -202,6 +205,10 @@ export function PostForm({ initial, categories, canPublish, canDelete, savedMess
                 </Select>
                 <FieldError message={err.language} />
               </div>
+              <label className="flex items-center justify-between gap-3 text-sm font-medium">
+                Allow comments
+                <Switch checked={values.comments_enabled} onCheckedChange={(c) => set('comments_enabled', c)} aria-label="Allow comments" />
+              </label>
               <div className="space-y-2">
                 <Label htmlFor="tags">Tags</Label>
                 <Input

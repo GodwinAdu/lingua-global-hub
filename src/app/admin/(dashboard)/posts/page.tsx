@@ -37,7 +37,7 @@ export default async function PostsPage({ searchParams }: PageProps<'/admin/post
   const supabase = await createClient();
   let request = supabase
     .from('posts')
-    .select('id, title, slug, status, language, author_name, author_id, updated_at, published_at, category:categories(label)')
+    .select('id, title, slug, status, language, author_name, author_id, updated_at, published_at, view_count, like_count, comment_count, category:categories(label)')
     .order('updated_at', { ascending: false })
     .limit(200);
   if (status !== 'all') request = request.eq('status', status);
@@ -56,6 +56,9 @@ export default async function PostsPage({ searchParams }: PageProps<'/admin/post
       author_id: string | null;
       updated_at: string;
       published_at: string | null;
+      view_count: number;
+      like_count: number;
+      comment_count: number;
       category: { label: string } | null;
     }[]
   >();
@@ -124,6 +127,7 @@ export default async function PostsPage({ searchParams }: PageProps<'/admin/post
                 <TableHead className="hidden md:table-cell">Category</TableHead>
                 <TableHead className="hidden md:table-cell">Author</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead className="hidden lg:table-cell text-right">Views · Likes · Comments</TableHead>
                 <TableHead className="hidden sm:table-cell text-right">Updated</TableHead>
               </TableRow>
             </TableHeader>
@@ -140,6 +144,9 @@ export default async function PostsPage({ searchParams }: PageProps<'/admin/post
                   <TableCell className="hidden md:table-cell text-muted-foreground">{post.author_name || '—'}</TableCell>
                   <TableCell>
                     <StatusBadge status={post.status} />
+                  </TableCell>
+                  <TableCell className="hidden lg:table-cell text-right text-sm tabular-nums text-muted-foreground">
+                    {post.status === 'published' ? `${post.view_count} · ${post.like_count} · ${post.comment_count}` : '—'}
                   </TableCell>
                   <TableCell className="hidden sm:table-cell text-right text-sm text-muted-foreground">
                     {dateFmt(post.updated_at)}

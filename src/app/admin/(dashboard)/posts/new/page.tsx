@@ -34,6 +34,7 @@ export default async function NewPostPage() {
         author_title: user.jobTitle ?? '',
         seo_title: '',
         seo_description: '',
+        comments_enabled: true,
         status: 'draft',
       }}
     />

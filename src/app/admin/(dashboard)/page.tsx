@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ExternalLink, FilePen, Plus, ShieldAlert, Users } from 'lucide-react';
+import { ExternalLink, Eye, FilePen, Heart, MessageSquare, Plus, ShieldAlert, Users } from 'lucide-react';
 import { requireStaff } from '@/lib/auth';
 import { hasRole, ROLE_DESCRIPTIONS, ROLE_LABELS } from '@/lib/roles';
 import { createClient } from '@/lib/supabase/server';
@@ -34,11 +34,12 @@ export default async function DashboardPage({ searchParams }: PageProps<'/admin'
     .limit(5);
   if (!isEditor) recentQuery = recentQuery.eq('author_id', user.id);
 
-  const [published, review, drafts, recent] = await Promise.all([
+  const [published, review, drafts, recent, engagement] = await Promise.all([
     count('published'),
     count('review'),
     count('draft'),
     recentQuery,
+    isEditor ? loadEngagement(supabase) : Promise.resolve(null),
   ]);
 
   const firstName = user.fullName?.split(' ')[0];
@@ -107,6 +108,39 @@ export default async function DashboardPage({ searchParams }: PageProps<'/admin'
         ))}
       </div>
 
+      {engagement && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Readers · last 30 days</CardTitle>
+            <CardDescription>
+              {engagement.views30.toLocaleString()} views · {engagement.totals.likes.toLocaleString()} likes and{' '}
+              {engagement.totals.comments.toLocaleString()} comments in total
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {engagement.top.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No views yet. Share a post to get started.</p>
+            ) : (
+              <ol className="divide-y">
+                {engagement.top.map((p, i) => (
+                  <li key={p.id} className="flex items-center gap-3 py-2.5 text-sm">
+                    <span className="w-5 text-muted-foreground tabular-nums">{i + 1}</span>
+                    <Link href={`/admin/posts/${p.id}`} className="min-w-0 flex-1 truncate font-medium hover:underline">
+                      {p.title}
+                    </Link>
+                    <span className="flex shrink-0 gap-3 tabular-nums text-muted-foreground">
+                      <span className="inline-flex items-center gap-1"><Eye className="h-3.5 w-3.5" />{p.views}</span>
+                      <span className="inline-flex items-center gap-1"><Heart className="h-3.5 w-3.5" />{p.likes}</span>
+                      <span className="inline-flex items-center gap-1"><MessageSquare className="h-3.5 w-3.5" />{p.comments}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid gap-4 lg:grid-cols-[1fr_300px]">
         <Card>
           <CardHeader>
@@ -148,4 +182,31 @@ export default async function DashboardPage({ searchParams }: PageProps<'/admin'
       </div>
     </div>
   );
+}
+
+type Supabase = Awaited<ReturnType<typeof createClient>>;
+
+/** 30-day views per post (grouped in the database) plus all-time likes and comments. */
+async function loadEngagement(supabase: Supabase) {
+  const [{ data: views }, { data: posts }] = await Promise.all([
+    supabase.rpc('post_views_since', { days: 30 }),
+    supabase.from('posts').select('id, title, like_count, comment_count').eq('status', 'published'),
+  ]);
+  const byId = new Map((posts ?? []).map((p) => [p.id, p]));
+  const viewRows = (views ?? []) as { post_id: string; views: number }[];
+  const top = viewRows
+    .filter((v) => byId.has(v.post_id))
+    .slice(0, 5)
+    .map((v) => {
+      const p = byId.get(v.post_id)!;
+      return { id: p.id, title: p.title, views: Number(v.views), likes: p.like_count, comments: p.comment_count };
+    });
+  return {
+    views30: viewRows.reduce((n, v) => n + Number(v.views), 0),
+    totals: {
+      likes: (posts ?? []).reduce((n, p) => n + p.like_count, 0),
+      comments: (posts ?? []).reduce((n, p) => n + p.comment_count, 0),
+    },
+    top,
+  };
 }

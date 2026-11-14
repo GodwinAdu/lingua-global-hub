@@ -16,18 +16,24 @@ import {
   Linkedin,
   Copy,
   CheckCheck,
+  MessageCircle,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FloatingChat from '@/components/sections/FloatingChat';
 import { Button } from '@/components/ui/button';
 import type { BlogCategory, BlogPost } from '@/lib/content/types';
+import { CommentsSection, EngagementBar, PostEngagementProvider, ReadingProgress } from '@/components/blog/post-engagement';
 
 type Props = { post: BlogPost; relatedPosts: BlogPost[]; categories: BlogCategory[] };
 
 const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Props) => {
   const [copied, setCopied] = useState(false);
+  const [canNativeShare, setCanNativeShare] = useState(false);
+  // navigator.share only exists in the browser; checking after mount avoids a hydration mismatch.
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time feature detection
+  useEffect(() => setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function'), []);
 
   const postUrl = absoluteUrl(`/blog/${post.slug}`);
 
@@ -42,7 +48,9 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
 
 
   return (
+    <PostEngagementProvider slug={post.slug}>
     <div className="min-h-screen">
+      <ReadingProgress />
       <Navbar />
       <main>
         {/* Hero Section */}
@@ -196,6 +204,8 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                     </div>
                   </div>
 
+                  <EngagementBar />
+
                   {/* Author Card */}
                   <div className="mt-8 p-6 rounded-2xl bg-card border border-border">
                     <div className="flex items-center gap-4">
@@ -210,6 +220,8 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                       </div>
                     </div>
                   </div>
+
+                  <CommentsSection />
                 </motion.article>
 
                 {/* Sidebar */}
@@ -226,6 +238,15 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                       Share Article
                     </h3>
                     <div className="grid grid-cols-2 gap-2">
+                      <a
+                        href={`https://wa.me/?text=${shareTitle}%20${shareUrl}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="col-span-2 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-[#25D366]/10 text-[#128C4B] hover:bg-[#25D366]/20 transition-colors text-sm font-medium"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        WhatsApp
+                      </a>
                       <a
                         href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
                         target="_blank"
@@ -270,6 +291,16 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                         )}
                       </button>
                     </div>
+                    {canNativeShare && (
+                      <button
+                        type="button"
+                        onClick={() => navigator.share({ title: post.title, text: post.excerpt, url: postUrl }).catch(() => {})}
+                        className="mt-2 flex w-full items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-border text-sm font-medium hover:bg-muted transition-colors"
+                      >
+                        <Share2 className="w-4 h-4" />
+                        More sharing options
+                      </button>
+                    )}
 
                     {/* Article Info */}
                     <div className="mt-6 pt-4 border-t border-border space-y-3">
@@ -347,6 +378,7 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
       <Footer />
       <FloatingChat />
     </div>
+    </PostEngagementProvider>
   );
 };
 

@@ -106,6 +106,7 @@ export async function savePost(_prev: PostFormState, formData: FormData): Promis
     author_title: str(formData, 'author_title', 120) || user.jobTitle || '',
     seo_title: str(formData, 'seo_title', 200) || null,
     seo_description: str(formData, 'seo_description', 300) || null,
+    comments_enabled: formData.get('comments_enabled') !== 'false',
   };
 
   const result = id
