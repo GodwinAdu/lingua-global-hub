@@ -3,39 +3,20 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Globe2, Users, BookOpen, Mic } from 'lucide-react';
+import type { HomeSection } from '@/lib/content/home';
+import { getIcon } from '@/lib/content/icons';
 
-const languageGroups = [
-  {
-    name: 'Akan Languages',
-    languages: ['Twi (Asante)', 'Twi (Akuapem)', 'Fante', 'Bono', 'Wassa'],
-    speakers: '9+ million',
-    icon: Users,
-    color: 'from-blue-500 to-cyan-500',
-  },
-  {
-    name: 'Ga-Dangme Languages',
-    languages: ['Ga', 'Dangme '],
-    speakers: '1.5+ million',
-    icon: Globe2,
-    color: 'from-green-500 to-emerald-500',
-  },
-  {
-    name: 'Ewe Languages',
-    languages: ['Ewe', 'Anlo', 'Tongu'],
-    speakers: '3+ million',
-    icon: BookOpen,
-    color: 'from-purple-500 to-pink-500',
-  },
-  {
-    name: 'Gur Languages',
-    languages: ['Dagbani', 'Dagaare', 'Gonja', 'Kasem', 'Mampruli', 'Kusaal'],
-    speakers: '4+ million',
-    icon: Mic,
-    color: 'from-orange-500 to-red-500',
-  },
-];
+const COLORS = ["from-blue-500 to-cyan-500", "from-green-500 to-emerald-500", "from-purple-500 to-pink-500", "from-orange-500 to-red-500"];
 
-export const GhanaLanguages = () => {
+export const GhanaLanguages = ({ section }: { section: HomeSection }) => {
+  const c = section.content;
+  const languageGroups = section.items.map((item, i) => ({
+    name: item.title,
+    languages: item.items,
+    speakers: item.value,
+    icon: getIcon(item.icon),
+    color: COLORS[i % COLORS.length],
+  }));
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -63,7 +44,7 @@ export const GhanaLanguages = () => {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold text-secondary uppercase tracking-wider mb-4"
           >
-            Ghana's Linguistic Diversity
+            {c.eyebrow}
           </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -71,7 +52,7 @@ export const GhanaLanguages = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6"
           >
-            50+ Languages, One Mission
+            {c.title}
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -79,8 +60,7 @@ export const GhanaLanguages = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed"
           >
-            We specialize in documenting and translating across all major Ghanaian language families, 
-            preserving the rich linguistic heritage of our nation.
+            {c.intro}
           </motion.p>
         </motion.div>
 
@@ -140,10 +120,7 @@ export const GhanaLanguages = () => {
           className="text-center p-8 rounded-2xl bg-muted/50 border border-border"
         >
           <p className="text-muted-foreground leading-relaxed">
-            <span className="font-semibold text-foreground">Plus 40+ additional languages</span> including 
-            Nzema, Ahanta, Sefwi, Buli, Konkomba, Nawuri, and many more indigenous languages across Ghana's 
-            diverse regions. We also provide services in major international languages including English, 
-            French, Arabic, Portuguese, and Spanish.
+            <span className="font-semibold text-foreground">{c.extra_title}</span> {c.extra_text}
           </p>
         </motion.div>
       </div>

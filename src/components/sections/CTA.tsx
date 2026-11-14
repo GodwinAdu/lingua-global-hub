@@ -5,10 +5,13 @@ import { useRef } from 'react';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { useSiteSettings } from '@/components/layout/site-data';
+import { useCtaSection, useSiteSettings } from '@/components/layout/site-data';
 import { whatsappHref } from '@/lib/content/site-types';
+import type { HomeSection } from '@/lib/content/home';
 
-export const CTA = () => {
+export const CTA = ({ section }: { section?: HomeSection } = {}) => {
+  const shared = useCtaSection();
+  const c = (section ?? shared).content;
   const settings = useSiteSettings();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
@@ -52,9 +55,9 @@ export const CTA = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6"
             >
-              Ready to Preserve Ghana's{' '}
+              {c.title}{' '}
               <span className="relative inline-block">
-                <span className="gradient-text-gold">Linguistic Heritage</span>
+                <span className="gradient-text-gold">{c.highlight}</span>
                 <motion.span
                   className="absolute -bottom-2 left-0 right-0 h-3 bg-accent/30 -z-10 rounded"
                   initial={{ scaleX: 0 }}
@@ -62,7 +65,7 @@ export const CTA = () => {
                   transition={{ duration: 0.8, delay: 0.5 }}
                 />
               </span>
-              ?
+              {c.suffix}
             </motion.h2>
             
             <motion.p
@@ -71,8 +74,7 @@ export const CTA = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-primary-foreground/70 mb-10 max-w-2xl mx-auto"
             >
-              Let's discuss how we can help document, translate, and promote Ghana's diverse languages. 
-              Get a free consultation and quote today.
+              {c.text}
             </motion.p>
             
             <motion.div
@@ -87,7 +89,7 @@ export const CTA = () => {
               >
                 <Button variant="hero-primary" size="xl" className="shadow-glow-lg" asChild>
                   <Link href="/contact">
-                    <span className="relative z-10">Request a Quote</span>
+                    <span className="relative z-10">{c.primary_label}</span>
                     <motion.span
                       className="relative z-10"
                       animate={{ x: [0, 5, 0] }}
@@ -113,7 +115,7 @@ export const CTA = () => {
                 <Button variant="hero-secondary" size="xl" asChild>
                   <a href={whatsappHref(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="w-5 h-5" />
-                    Chat on WhatsApp
+                    {c.whatsapp_label}
                   </a>
                 </Button>
               </motion.div>

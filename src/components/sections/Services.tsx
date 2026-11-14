@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import type { Service } from '@/lib/content/site-types';
 import { getIcon } from '@/lib/content/icons';
+import type { HomeSection } from '@/lib/content/home';
 
 
 
@@ -42,7 +43,8 @@ const itemVariants = {
   },
 };
 
-export const Services = ({ items }: { items: Service[] }) => {
+export const Services = ({ items, section }: { items: Service[]; section: HomeSection }) => {
+  const c = section.content;
   const services = items.map((s) => ({
     icon: getIcon(s.icon),
     title: s.card_title || s.title,
@@ -69,7 +71,7 @@ export const Services = ({ items }: { items: Service[] }) => {
             transition={{ duration: 0.5 }}
             className="inline-block text-sm font-semibold text-secondary uppercase tracking-wider mb-4"
           >
-            Our Services
+            {c.eyebrow}
           </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -77,7 +79,7 @@ export const Services = ({ items }: { items: Service[] }) => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6"
           >
-            Comprehensive Language Documentation & Media Solutions
+            {c.title}
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -85,8 +87,7 @@ export const Services = ({ items }: { items: Service[] }) => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg text-muted-foreground leading-relaxed"
           >
-            From translation to voice production in Ghana's diverse languages, we provide end-to-end services 
-            that help preserve linguistic heritage and ensure your message resonates across cultures.
+            {c.intro}
           </motion.p>
         </motion.div>
 
@@ -199,7 +200,7 @@ export const Services = ({ items }: { items: Service[] }) => {
           >
             <Button variant="premium" size="lg" asChild>
               <Link href="/services">
-                View All Services
+                {c.button_label}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>

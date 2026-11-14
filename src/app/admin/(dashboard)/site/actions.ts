@@ -8,6 +8,8 @@ import { createClient } from '@/lib/supabase/server';
 import { slugify } from '@/lib/content/html';
 import { ICON_NAMES } from '@/lib/content/icons';
 import { SITE_TAGS } from '@/lib/content/site';
+import { HOME_TAG } from '@/lib/content/home-data';
+import { HOME_SECTION_KEYS, HOME_SECTIONS } from '@/lib/content/home';
 
 export type ActionState = { error?: string; success?: string; fieldErrors?: Record<string, string> } | undefined;
 
@@ -18,6 +20,7 @@ const TABLES = {
   team_stats: SITE_TAGS.team,
   portfolio_items: SITE_TAGS.portfolio,
   testimonials: SITE_TAGS.testimonials,
+  home_items: HOME_TAG,
 } as const;
 export type ContentTable = keyof typeof TABLES;
 
@@ -129,7 +132,18 @@ const teamStatSchema = z.object({
   icon: z.string().refine((v) => ICON_NAMES.includes(v), 'Choose an icon.'),
 });
 
+// Each section's form only sends the fields it uses; the rest default to empty.
+const homeItemSchema = z.object({
+  section: z.enum(HOME_SECTION_KEYS),
+  title: text(160).default(''),
+  description: text(600).default(''),
+  value: text(40).default(''),
+  icon: z.string().default('').refine((v) => v === '' || ICON_NAMES.includes(v), 'Choose an icon.'),
+  items: z.string().default('').pipe(lines(30, 80)),
+});
+
 const SCHEMAS = {
+  home_items: homeItemSchema,
   team_members: teamSchema,
   team_stats: teamStatSchema,
   portfolio_items: portfolioSchema,
@@ -220,7 +234,13 @@ export async function moveItem(table: string, id: number, direction: 'up' | 'dow
   if (!isTable(table)) return { error: 'Unknown content type.' };
   const supabase = await createClient();
 
-  const { data: rows, error } = await supabase.from(table).select('id, sort_order').order('sort_order').order('id');
+  let query = supabase.from(table).select('id, sort_order').order('sort_order').order('id');
+  if (table === 'home_items') {
+    const { data: row } = await supabase.from('home_items').select('section').eq('id', id).maybeSingle();
+    if (!row) return { error: 'Item not found.' };
+    query = query.eq('section', row.section);
+  }
+  const { data: rows, error } = await query;
   if (error || !rows) return { error: 'Could not reorder.' };
 
   const index = rows.findIndex((r) => r.id === id);
@@ -301,4 +321,57 @@ export async function saveSettings(_prev: ActionState, formData: FormData): Prom
   updateTag(SITE_TAGS.settings);
   refresh();
   return { success: 'Settings saved. The website is updated.' };
+}
+
+// ---------------------------------------------------------------------------
+// Home page sections
+// ---------------------------------------------------------------------------
+const imageOrEmpty = imageUrl.transform((v) => v ?? '');
+const internalPath = z
+  .string()
+  .trim()
+  .max(200)
+  .refine((v) => v === '' || /^\/[^/\s]*/.test(v) || /^https:\/\/\S+$/.test(v), 'Use a page path like /contact or a full https:// link.');
+
+export async function saveHomeSection(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  await requireStaff('editor');
+  const key = String(formData.get('section') ?? '');
+  const def = HOME_SECTIONS.find((s) => s.key === key);
+  if (!def) return { error: 'Unknown section.' };
+
+  const content: Record<string, string> = {};
+  const fieldErrors: Record<string, string> = {};
+  for (const f of def.fields) {
+    const raw = String(formData.get(f.name) ?? '');
+    const schema =
+      f.type === 'image' ? imageOrEmpty
+      : f.name.endsWith('_href') ? internalPath
+      : f.type === 'lines' ? z.string().max(2000).transform((v) => v.split('\n').map((l) => l.trim()).filter(Boolean).slice(0, 20).join('\n'))
+      : text(f.maxLength ?? 2000);
+    const parsed = schema.safeParse(raw);
+    if (!parsed.success) fieldErrors[f.name] = parsed.error.issues[0]?.message ?? 'Invalid value.';
+    else content[f.name] = parsed.data;
+  }
+  if (Object.keys(fieldErrors).length) return { error: 'Fix the highlighted fields.', fieldErrors };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.from('home_sections').update({ content }).eq('key', key).select('key').maybeSingle();
+  if (error) return dbError(error);
+  if (!data) return { error: "You don't have permission to change the home page." };
+
+  updateTag(HOME_TAG);
+  refresh();
+  return { success: 'Saved. The home page is updated.' };
+}
+
+export async function setHomeSectionVisible(key: string, isVisible: boolean): Promise<ActionState> {
+  await requireStaff('editor');
+  if (!(HOME_SECTION_KEYS as readonly string[]).includes(key)) return { error: 'Unknown section.' };
+  const supabase = await createClient();
+  const { data, error } = await supabase.from('home_sections').update({ is_visible: isVisible }).eq('key', key).select('key').maybeSingle();
+  if (error) return dbError(error);
+  if (!data) return { error: "You don't have permission to change the home page." };
+  updateTag(HOME_TAG);
+  refresh();
+  return { success: isVisible ? 'Section shown on the home page.' : 'Section hidden from the home page.' };
 }

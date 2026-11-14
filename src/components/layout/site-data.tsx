@@ -3,8 +3,9 @@
 import { createContext, useContext } from 'react';
 import type { TickerItem } from '@/lib/content/types';
 import type { SiteSettings } from '@/lib/content/site-types';
+import type { HomeSection } from '@/lib/content/home';
 
-type SiteData = { ticker: TickerItem[]; settings: SiteSettings };
+type SiteData = { ticker: TickerItem[]; settings: SiteSettings; cta: HomeSection };
 
 const SiteDataContext = createContext<SiteData | null>(null);
 
@@ -25,4 +26,9 @@ export function useTickerItems() {
 
 export function useSiteSettings() {
   return useSiteData().settings;
+}
+
+/** Call-to-action band content (edited under Website > Home page), shared by every page that shows it. */
+export function useCtaSection() {
+  return useSiteData().cta;
 }

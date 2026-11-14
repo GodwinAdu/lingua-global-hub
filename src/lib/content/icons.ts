@@ -25,6 +25,15 @@ import {
   TrendingUp,
   Users,
   Video,
+  BadgeCheck,
+  CheckCircle,
+  Clock4,
+  FileSearch,
+  Globe2,
+  Mic,
+  Settings,
+  Shield,
+  Zap,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -56,6 +65,15 @@ export const ICONS: Record<string, LucideIcon> = {
   Star,
   TrendingUp,
   Video,
+  BadgeCheck,
+  CheckCircle,
+  Clock4,
+  FileSearch,
+  Globe2,
+  Mic,
+  Settings,
+  Shield,
+  Zap,
 };
 
 export const ICON_NAMES = Object.keys(ICONS);

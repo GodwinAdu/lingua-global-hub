@@ -1,7 +1,8 @@
 import Index from '@/views/Index';
 import { getServices, getTestimonials } from '@/lib/content/site';
+import { getHomePage } from '@/lib/content/home-data';
 
 export default async function Page() {
-  const [services, testimonials] = await Promise.all([getServices(), getTestimonials()]);
-  return <Index services={services} testimonials={testimonials} />;
+  const [home, services, testimonials] = await Promise.all([getHomePage(), getServices(), getTestimonials()]);
+  return <Index home={home} services={services} testimonials={testimonials} />;
 }

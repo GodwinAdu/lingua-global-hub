@@ -15,25 +15,32 @@ import Process from '@/components/sections/Process';
 import Testimonials from '@/components/sections/Testimonials';
 import CTA from '@/components/sections/CTA';
 import FloatingChat from '@/components/sections/FloatingChat';
+import type { HomePage } from '@/lib/content/home';
 import type { Service, Testimonial } from '@/lib/content/site-types';
 
-const Index = ({ services, testimonials }: { services: Service[]; testimonials: Testimonial[] }) => {
+type Props = { home: HomePage; services: Service[]; testimonials: Testimonial[] };
+
+const Index = ({ home, services, testimonials }: Props) => {
+  // A section shows when it's switched on and, for list sections, has something to list.
+  const show = (key: keyof HomePage, needsItems = false) =>
+    home[key].visible && (!needsItems || home[key].items.length > 0);
+
   return (
     <div className="min-h-screen">
       <Navbar />
       <main>
-        <Hero />
-        <StatsCounter />
-        <LanguageMarquee />
-        <GhanaLanguages />
-        <About />
-        <Services items={services} />
-        <FeaturesShowcase />
-        <TrustBadges />
-        <WhyChooseUs />
-        <Process />
-        {testimonials.length > 0 && <Testimonials items={testimonials} />}
-        <CTA />
+        {show('hero') && <Hero section={home.hero} />}
+        {show('stats', true) && <StatsCounter section={home.stats} />}
+        {show('marquee', true) && <LanguageMarquee section={home.marquee} />}
+        {show('ghana_languages') && <GhanaLanguages section={home.ghana_languages} />}
+        {show('about') && <About section={home.about} />}
+        {show('services') && services.length > 0 && <Services items={services} section={home.services} />}
+        {show('features', true) && <FeaturesShowcase section={home.features} />}
+        {show('trust', true) && <TrustBadges section={home.trust} />}
+        {show('why', true) && <WhyChooseUs section={home.why} />}
+        {show('process', true) && <Process section={home.process} />}
+        {show('testimonials') && testimonials.length > 0 && <Testimonials items={testimonials} section={home.testimonials} />}
+        {show('cta') && <CTA section={home.cta} />}
       </main>
       <Footer />
       <FloatingChat />

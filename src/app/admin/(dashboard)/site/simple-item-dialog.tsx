@@ -17,7 +17,7 @@ import { saveSimpleItem, type ActionState } from './actions';
 export type FieldDef = {
   name: string;
   label: string;
-  type?: 'text' | 'textarea' | 'image' | 'email' | 'url' | 'icon';
+  type?: 'text' | 'textarea' | 'image' | 'email' | 'url' | 'icon' | 'lines';
   placeholder?: string;
   hint?: string;
   maxLength?: number;
@@ -31,19 +31,22 @@ export function SimpleItemDialog({
   fields,
   initial,
   imageFolder = 'site',
+  hidden,
 }: {
-  table: 'team_members' | 'team_stats' | 'portfolio_items' | 'testimonials';
+  table: 'team_members' | 'team_stats' | 'portfolio_items' | 'testimonials' | 'home_items';
+  /** Extra hidden fields, e.g. the home page section an item belongs to. */
+  hidden?: Record<string, string>;
   title: string;
   fields: FieldDef[];
-  initial?: { id: number } & Record<string, string>;
+  initial?: { id: number; [field: string]: string | number };
   imageFolder?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState<Record<string, string>>(() =>
-    Object.fromEntries(fields.filter((f) => f.type === 'image').map((f) => [f.name, initial?.[f.name] ?? ''])),
+    Object.fromEntries(fields.filter((f) => f.type === 'image').map((f) => [f.name, String(initial?.[f.name] ?? '')])),
   );
   const [icons, setIcons] = useState<Record<string, string>>(() =>
-    Object.fromEntries(fields.filter((f) => f.type === 'icon').map((f) => [f.name, initial?.[f.name] || 'Users'])),
+    Object.fromEntries(fields.filter((f) => f.type === 'icon').map((f) => [f.name, String(initial?.[f.name] || 'Users')])),
   );
   const [state, action] = useActionState(async (prev: ActionState, fd: FormData) => {
     const result = await saveSimpleItem(prev, fd);
@@ -77,6 +80,9 @@ export function SimpleItemDialog({
         <form action={action} className="space-y-4">
           <input type="hidden" name="table" value={table} />
           {initial && <input type="hidden" name="id" value={initial.id} />}
+          {Object.entries(hidden ?? {}).map(([k, v]) => (
+            <input key={k} type="hidden" name={k} value={v} />
+          ))}
           {fields.map((f) => {
             const id = `${table}-${initial?.id ?? 'new'}-${f.name}`;
             return (
@@ -116,8 +122,8 @@ export function SimpleItemDialog({
                       aspect="aspect-[4/3] max-w-[240px]"
                     />
                   </>
-                ) : f.type === 'textarea' ? (
-                  <Textarea id={id} name={f.name} defaultValue={initial?.[f.name] ?? ''} maxLength={f.maxLength} rows={4} placeholder={f.placeholder} required={f.required} />
+                ) : f.type === 'textarea' || f.type === 'lines' ? (
+                  <Textarea id={id} name={f.name} defaultValue={initial?.[f.name] ?? ''} maxLength={f.maxLength} rows={f.type === 'lines' ? 6 : 4} placeholder={f.placeholder} required={f.required} />
                 ) : (
                   <Input
                     id={id}

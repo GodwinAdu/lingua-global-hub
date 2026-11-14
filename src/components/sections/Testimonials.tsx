@@ -5,9 +5,11 @@ import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { Testimonial } from '@/lib/content/site-types';
+import type { HomeSection } from '@/lib/content/home';
 
 
-export const Testimonials = ({ items: testimonials }: { items: Testimonial[] }) => {
+export const Testimonials = ({ items: testimonials, section }: { items: Testimonial[]; section: HomeSection }) => {
+  const c = section.content;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -46,14 +48,14 @@ export const Testimonials = ({ items: testimonials }: { items: Testimonial[] }) 
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            Testimonials
+            {c.eyebrow}
           </motion.span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            What Our Clients{' '}
-            <span className="gradient-text">Say</span>
+            {c.title}{' '}
+            <span className="gradient-text">{c.highlight}</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Hear from organizations across Ghana who trust us with their language needs.
+            {c.intro}
           </p>
         </motion.div>
 
