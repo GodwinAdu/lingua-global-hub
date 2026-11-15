@@ -2,6 +2,7 @@
 
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { clearMustChangePassword } from '@/lib/staff-accounts';
 import { absoluteUrl } from '@/lib/site';
 
 export type FormState = { error?: string; success?: string } | undefined;
@@ -57,7 +58,8 @@ export async function setPassword(_prev: FormState, formData: FormData): Promise
   }
 
   const { error } = await supabase.auth.updateUser({ password });
-  if (error) return { error: error.message };
+  if (error) return { error: friendlyPasswordError(error.message) };
+  await clearMustChangePassword(String(data.claims.sub));
   redirect('/admin');
 }
 
@@ -65,4 +67,10 @@ export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect('/admin/login');
+}
+
+function friendlyPasswordError(message: string): string {
+  if (/different from the old password/i.test(message)) return 'Choose a new password, not the one you were given.';
+  if (/weak|pwned|leaked/i.test(message)) return 'That password is too easy to guess. Try a longer one.';
+  return message;
 }

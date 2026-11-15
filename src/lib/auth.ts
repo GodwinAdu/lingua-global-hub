@@ -12,6 +12,7 @@ export type StaffUser = {
   jobTitle: string | null;
   avatarUrl: string | null;
   role: Role | null;
+  mustChangePassword: boolean;
 };
 
 /**
@@ -30,7 +31,7 @@ export const getCurrentUser = cache(async (): Promise<StaffUser | null> => {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('id, email, full_name, job_title, avatar_url, role')
+    .select('id, email, full_name, job_title, avatar_url, role, must_change_password')
     .eq('id', userId)
     .maybeSingle();
 
@@ -43,6 +44,7 @@ export const getCurrentUser = cache(async (): Promise<StaffUser | null> => {
     jobTitle: profile.job_title,
     avatarUrl: profile.avatar_url,
     role: isRole(profile.role) ? profile.role : null,
+    mustChangePassword: Boolean(profile.must_change_password),
   };
 });
 
@@ -52,8 +54,15 @@ export const getCurrentUser = cache(async (): Promise<StaffUser | null> => {
  */
 export async function requireStaff(required: Role = 'author'): Promise<StaffUser & { role: Role }> {
   const user = await getCurrentUser();
-  if (!user) redirect('/admin/login');
+  if (!user) {
+    // A valid session without a profile means the account was deleted: clear the cookies,
+    // or the proxy would bounce between /admin/login and /admin.
+    const { data } = await (await createClient()).auth.getClaims();
+    redirect(data?.claims ? '/auth/signout?reason=removed' : '/admin/login');
+  }
   if (!user.role) redirect('/admin/no-access');
+  // Accounts given a generated password must choose their own first.
+  if (user.mustChangePassword) redirect('/admin/set-password?required=1');
   if (!hasRole(user.role, required)) redirect('/admin?denied=1');
   return user as StaffUser & { role: Role };
 }

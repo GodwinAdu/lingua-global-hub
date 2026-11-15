@@ -33,7 +33,9 @@ export function LoginForm() {
           state ??
           (searchParams.get('error') === 'link'
             ? { error: 'That link is invalid or has expired. Request a new one.' }
-            : undefined)
+            : searchParams.get('error') === 'removed'
+              ? { error: 'Your account was removed. Contact a site administrator if this is a mistake.' }
+              : undefined)
         }
       />
       <SubmitButton className="w-full" pendingText="Signing in…">

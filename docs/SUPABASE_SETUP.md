@@ -10,7 +10,7 @@ In `.env.local` (and later in Vercel > Settings > Environment Variables):
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Project Settings > API |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Project Settings > API Keys > Publishable key (`sb_publishable_...`) |
-| `SUPABASE_SECRET_KEY` | Project Settings > API Keys > Secret keys (`sb_secret_...`). **Server-only.** Needed to invite users and change roles. |
+| `SUPABASE_SECRET_KEY` | Project Settings > API Keys > Secret keys (`sb_secret_...`). **Server-only.** Needed to add, reset and delete users and change roles. |
 
 Never put real values in `.env.example`; that file is committed.
 
@@ -43,7 +43,7 @@ Authentication > URL Configuration:
 
 Authentication > Sign In / Providers > **Allow new users to sign up: off**.
 
-Staff are added by invitation from the dashboard, which still works with sign-up off. New accounts get no role (no access) until a super admin grants one.
+Staff are added from the dashboard (**Users & roles > Add user**), which still works with sign-up off. No email is needed: see "Adding staff" below.
 
 ## 5. Custom SMTP, then email templates
 
@@ -53,15 +53,7 @@ Staff are added by invitation from the dashboard, which still works with sign-up
 - Username: the Gmail address, password: a Gmail [app password](https://myaccount.google.com/apppasswords) (the same one as `EMAIL_PASS`)
 - Sender email: the Gmail address, sender name: `First Grade Lingua Consult`
 
-Then Authentication > Emails > Templates. Replace the link in these two templates so it goes through the app's `/auth/confirm` route. Invites won't work without this: the default invite link puts the session in the URL fragment, which the server can't read.
-
-**Invite user**
-
-```html
-<h2>You have been invited</h2>
-<p>You have been invited to the First Grade Lingua Consult dashboard.</p>
-<p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next=/admin/set-password">Accept the invite and set your password</a></p>
-```
+Then Authentication > Emails > Templates. Replace the link in the reset template so it goes through the app's `/auth/confirm` route. "Forgot password" emails won't work without this: the default link puts the session in the URL fragment, which the server can't read. This step is optional: a super admin can always reset a password from **Users & roles** without email.
 
 **Reset password**
 
@@ -79,7 +71,18 @@ Then Authentication > Emails > Templates. Replace the link in these two template
    update public.profiles set role = 'super_admin' where email = 'you@example.com';
    ```
 
-3. Sign in at `/admin/login`. Invite everyone else from **Users & roles**.
+3. Sign in at `/admin/login`. Add everyone else from **Users & roles**.
+
+## Adding staff
+
+Super admins only, in **Users & roles**:
+
+- **Add user**: enter the name, email and role. The dashboard generates a temporary password and shows it once. Copy it, or use "Copy message to send" / "Send on WhatsApp". The password is not stored anywhere you can view later.
+- On first sign-in the user must choose their own password before they can use the dashboard. The list shows a "Temporary password" badge until they do.
+- **⋯ > Reset password**: generates a new temporary password. Their old password stops working and they must choose a new one at next sign-in (or immediately, if they're already signed in).
+- **⋯ > Delete user**: removes the account. Their posts stay, with the author name kept. If they're signed in, they're signed out on their next page load.
+
+You can't delete yourself or the last super admin, and there is no actions menu on your own row.
 
 ## Roles
 

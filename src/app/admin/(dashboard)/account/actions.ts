@@ -3,6 +3,7 @@
 import { refresh } from 'next/cache';
 import { requireStaff } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
+import { clearMustChangePassword } from '@/lib/staff-accounts';
 
 export type ActionState = { error?: string; success?: string } | undefined;
 
@@ -24,7 +25,7 @@ export async function updateProfile(_prev: ActionState, formData: FormData): Pro
 }
 
 export async function changePassword(_prev: ActionState, formData: FormData): Promise<ActionState> {
-  await requireStaff();
+  const user = await requireStaff();
   const password = String(formData.get('password') ?? '');
   const confirm = String(formData.get('confirm') ?? '');
   if (password.length < 8) return { error: 'Use at least 8 characters.' };
@@ -33,5 +34,6 @@ export async function changePassword(_prev: ActionState, formData: FormData): Pr
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return { error: error.message };
+  await clearMustChangePassword(user.id);
   return { success: 'Password changed.' };
 }

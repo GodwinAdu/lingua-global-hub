@@ -6,7 +6,9 @@ import { isRole, ROLE_DESCRIPTIONS, ROLE_LABELS, ROLES, type Role } from '@/lib/
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { InviteUserDialog } from './invite-user-dialog';
+import { AddUserDialog } from './add-user-dialog';
+import { UserActions } from './user-actions';
+import { absoluteUrl } from '@/lib/site';
 import { RoleSelect } from './role-select';
 
 export const metadata: Metadata = { title: 'Users & roles' };
@@ -23,7 +25,7 @@ export default async function UsersPage() {
 
   const { data: profiles, error } = await supabase
     .from('profiles')
-    .select('id, email, full_name, job_title, role, created_at')
+    .select('id, email, full_name, job_title, role, created_at, must_change_password')
     .order('created_at', { ascending: true });
 
   // Sign-in status comes from the Auth admin API, which needs the secret key.
@@ -44,16 +46,16 @@ export default async function UsersPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Users &amp; roles</h1>
-          <p className="text-muted-foreground">Invite staff and control what each person can do.</p>
+          <p className="text-muted-foreground">Add staff, reset passwords and control what each person can do.</p>
         </div>
-        <InviteUserDialog disabled={!adminReady} />
+        <AddUserDialog disabled={!adminReady} loginUrl={absoluteUrl('/admin/login')} />
       </div>
 
       {!adminReady && (
         <Alert>
           <AlertTitle>Secret key not configured</AlertTitle>
           <AlertDescription>
-            Add <code>SUPABASE_SECRET_KEY</code> to <code>.env.local</code> (and Vercel) to invite users and change
+            Add <code>SUPABASE_SECRET_KEY</code> to <code>.env.local</code> (and Vercel) to add users, reset passwords and change
             roles.
           </AlertDescription>
         </Alert>
@@ -72,6 +74,7 @@ export default async function UsersPage() {
                 <TableHead>User</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="w-48">Role</TableHead>
+                <TableHead className="w-12"><span className="sr-only">Actions</span></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -88,13 +91,24 @@ export default async function UsersPage() {
                       {p.full_name && <div className="text-sm text-muted-foreground">{p.email}</div>}
                     </TableCell>
                     <TableCell>
-                      <StatusBadge info={info} />
+                      <StatusBadge info={info} mustChange={p.must_change_password} />
                     </TableCell>
                     <TableCell>
                       {p.id === me.id ? (
                         <Badge variant="secondary">{role ? ROLE_LABELS[role] : 'No access'}</Badge>
                       ) : (
                         <RoleSelect userId={p.id} role={role} disabled={!adminReady} />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {p.id !== me.id && (
+                        <UserActions
+                          userId={p.id}
+                          name={p.full_name || p.email}
+                          email={p.email}
+                          loginUrl={absoluteUrl('/admin/login')}
+                          disabled={!adminReady}
+                        />
                       )}
                     </TableCell>
                   </TableRow>
@@ -117,8 +131,9 @@ export default async function UsersPage() {
   );
 }
 
-function StatusBadge({ info }: { info?: AuthInfo }) {
+function StatusBadge({ info, mustChange }: { info?: AuthInfo; mustChange?: boolean }) {
   if (!info) return <span className="text-sm text-muted-foreground">—</span>;
+  if (mustChange) return <Badge variant="outline">Temporary password</Badge>;
   if (info.lastSignInAt) {
     const date = new Date(info.lastSignInAt).toLocaleDateString('en-GB', {
       day: 'numeric',

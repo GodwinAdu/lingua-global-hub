@@ -168,7 +168,7 @@ export default async function DashboardPage({ searchParams }: PageProps<'/admin'
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Team</CardTitle>
-              <CardDescription>Invite editors and authors, and control what they can do.</CardDescription>
+              <CardDescription>Add editors and authors, and control what they can do.</CardDescription>
             </CardHeader>
             <CardContent>
               <Button variant="outline" asChild className="w-full">

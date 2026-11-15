@@ -6,14 +6,17 @@ import { Label } from '@/components/ui/label';
 import { FormMessage, SubmitButton } from '@/components/admin/submit-button';
 import { setPassword } from '../actions';
 
-// Reached from an invite or password-reset email via /auth/confirm, which signs the user in first.
+// Reached from an invite/reset email (via /auth/confirm), or after signing in with a temporary
+// password from a super admin (requireStaff redirects here until a new password is set).
 export default function SetPasswordPage() {
   const [state, formAction] = useActionState(setPassword, undefined);
 
   return (
     <>
-      <h1 className="text-xl font-semibold">Set your password</h1>
-      <p className="mb-6 mt-1 text-sm text-muted-foreground">Use at least 8 characters.</p>
+      <h1 className="text-xl font-semibold">Choose your password</h1>
+      <p className="mb-6 mt-1 text-sm text-muted-foreground">
+        Pick a new password that only you know (at least 8 characters). The temporary one you were given stops working.
+      </p>
       <form action={formAction} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="password">New password</Label>
