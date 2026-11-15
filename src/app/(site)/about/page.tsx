@@ -1,12 +1,18 @@
 import type { Metadata } from 'next';
 import View from '@/views/AboutPage';
+import { pageMetadata } from '@/lib/seo/server';
+import { JsonLd } from '@/components/seo/json-ld';
+import { breadcrumbJsonLd, graph } from '@/lib/seo/jsonld';
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn about First Grade Lingua Consult, Ghana's premier language and media consultancy, our mission, values and team.",
-  alternates: { canonical: '/about' },
-};
+export function generateMetadata(): Promise<Metadata> {
+  return pageMetadata('about');
+}
 
 export default function Page() {
-  return <View />;
+  return (
+    <>
+      <JsonLd data={graph(breadcrumbJsonLd([['About', '/about']]))} />
+      <View />
+    </>
+  );
 }

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import type { HomeSection } from '@/lib/content/home';
 import { lines } from '@/lib/content/home';
+import { SiteImage } from '@/components/seo/site-image';
 
 // Deterministic 0..1 value so server and client render identical particle positions.
 const seeded = (i: number, salt: number) => {
@@ -87,11 +88,7 @@ export const Hero = ({ section }: { section: HomeSection }) => {
         className="absolute inset-0 z-0"
         style={{ y, scale }}
       >
-        <img 
-          src={c.image_url || '/images/hero-bg.jpg'} 
-          alt="" 
-          className="w-full h-full object-cover"
-        />
+        <SiteImage src={c.image_url || '/images/hero-bg.jpg'} alt="" fill preload sizes="100vw" quality={75} className="object-cover" />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-primary/70" />
       </motion.div>

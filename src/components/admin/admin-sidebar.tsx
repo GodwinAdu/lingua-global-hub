@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MessageSquare, House, BookOpen, Receipt, Briefcase, FolderOpen, Quote, Settings, UsersRound, ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
+import { SearchCheck, MessageSquare, House, BookOpen, Receipt, Briefcase, FolderOpen, Quote, Settings, UsersRound, ChevronsUpDown, ExternalLink, Globe, LayoutDashboard, LogOut, Newspaper, Tags, UserCog, Users, type LucideIcon } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -53,6 +53,7 @@ const NAV: { label: string; items: NavItem[] }[] = [
       { title: 'Team', href: '/admin/team', icon: UsersRound, minRole: 'editor' },
       { title: 'Portfolio', href: '/admin/portfolio', icon: FolderOpen, minRole: 'editor' },
       { title: 'Testimonials', href: '/admin/testimonials', icon: Quote, minRole: 'editor' },
+      { title: 'SEO', href: '/admin/seo', icon: SearchCheck, minRole: 'editor' },
     ],
   },
   {

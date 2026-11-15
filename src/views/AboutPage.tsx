@@ -7,6 +7,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CTA from '@/components/sections/CTA';
 import aboutTeamImg from '@/assets/about-team.jpg';
+import { SiteImage } from '@/components/seo/site-image';
 
 const values = [
   {
@@ -132,11 +133,13 @@ const AboutPage = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="relative"
               >
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
-                  <img 
-                    src={aboutTeamImg.src} 
-                    alt="Our professional team"
-                    className="w-full h-full object-cover"
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
+                  <SiteImage
+                    src={aboutTeamImg.src}
+                    alt="The First Grade Lingua Consult team at work"
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover"
                   />
                 </div>
                 {/* Stats overlay */}

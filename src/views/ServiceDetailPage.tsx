@@ -23,6 +23,7 @@ import CTA from '@/components/sections/CTA';
 import { Button } from '@/components/ui/button';
 import type { Service } from '@/lib/content/site-types';
 import { getIcon } from '@/lib/content/icons';
+import { SiteImage } from '@/components/seo/site-image';
 
 
 
@@ -70,11 +71,7 @@ const ServiceDetailPage = ({ serviceId, items }: { serviceId: string; items: Ser
         {/* Hero Section */}
         <section className="pt-32 pb-20 bg-primary text-primary-foreground relative overflow-hidden">
           <div className="absolute inset-0">
-            <img 
-              src={service.image} 
-              alt={service.title}
-              className="w-full h-full object-cover opacity-20"
-            />
+            <SiteImage src={service.image} alt="" fill preload sizes="100vw" className="object-cover opacity-20" />
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/80" />
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_hsl(217_91%_50%_/_0.15)_0%,_transparent_50%)]" />
@@ -206,11 +203,13 @@ const ServiceDetailPage = ({ serviceId, items }: { serviceId: string; items: Ser
                 transition={{ duration: 0.8 }}
                 className="relative"
               >
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
-                  <img 
-                    src={service.image} 
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
+                  <SiteImage
+                    src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover"
                   />
                 </div>
                 {/* Floating accent */}

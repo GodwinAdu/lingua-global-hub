@@ -9,8 +9,11 @@ import Footer from '@/components/layout/Footer';
 import { fileLabel, getEbook, getEbooks } from '@/lib/ebooks/catalog';
 import { formatPrice } from '@/lib/ebooks/orders';
 import { languageLabel } from '@/lib/content/types';
-import { absoluteUrl, siteConfig } from '@/lib/site';
+import { absoluteUrl } from '@/lib/site';
+import { breadcrumbJsonLd, ORG_ID } from '@/lib/seo/jsonld';
+import { alternates, ogImage, seoDescription, seoTitle, usableShareImage } from '@/lib/seo/og';
 import { GetEbookForm } from './get-ebook-form';
+import { SiteImage } from '@/components/seo/site-image';
 
 export async function generateStaticParams() {
   const books = await getEbooks();
@@ -21,18 +24,20 @@ export async function generateMetadata({ params }: PageProps<'/ebooks/[slug]'>):
   const { slug } = await params;
   const book = await getEbook(slug);
   if (!book) return { title: 'Ebook Not Found', robots: { index: false } };
-  const description = book.description.slice(0, 160);
+  const description = seoDescription(book.description || `${book.title}: ebook from First Grade Lingua Consult.`);
+  const image = usableShareImage(book.cover_image_url) ?? ogImage(book.title, 'Ebook');
   return {
-    title: book.title,
+    title: seoTitle(book.title),
     description,
-    alternates: { canonical: `/ebooks/${book.slug}` },
+    alternates: alternates(`/ebooks/${book.slug}`),
     openGraph: {
       type: 'book',
       title: book.title,
       description,
       url: `/ebooks/${book.slug}`,
-      ...(book.cover_image_url && { images: [{ url: book.cover_image_url }] }),
+      images: [{ url: image, alt: book.title }],
     },
+    twitter: { card: 'summary_large_image', title: book.title, description, images: [image] },
   };
 }
 
@@ -55,6 +60,9 @@ async function Book({ params }: Pick<PageProps<'/ebooks/[slug]'>, 'params'>) {
   const price = formatPrice(book.price_pesewas, book.currency);
   const jsonLd = {
     '@context': 'https://schema.org',
+    '@graph': [] as unknown[],
+  };
+  const bookLd = {
     '@type': 'Book',
     name: book.title,
     author: book.author ? { '@type': 'Person', name: book.author } : undefined,
@@ -62,7 +70,7 @@ async function Book({ params }: Pick<PageProps<'/ebooks/[slug]'>, 'params'>) {
     bookFormat: 'https://schema.org/EBook',
     numberOfPages: book.pages ?? undefined,
     image: book.cover_image_url ? absoluteUrl(book.cover_image_url) : undefined,
-    publisher: { '@type': 'Organization', name: siteConfig.name },
+    publisher: { '@id': ORG_ID },
     offers: {
       '@type': 'Offer',
       price: (book.price_pesewas / 100).toFixed(2),
@@ -71,6 +79,7 @@ async function Book({ params }: Pick<PageProps<'/ebooks/[slug]'>, 'params'>) {
       url: absoluteUrl(`/ebooks/${book.slug}`),
     },
   };
+  jsonLd['@graph'].push(bookLd, breadcrumbJsonLd([['Ebooks', '/ebooks'], [book.title, `/ebooks/${book.slug}`]]));
 
   return (
     <div className="min-h-screen">
@@ -83,10 +92,9 @@ async function Book({ params }: Pick<PageProps<'/ebooks/[slug]'>, 'params'>) {
         </Link>
         <div className="grid gap-10 lg:grid-cols-[300px_1fr_340px]">
           <div className="mx-auto w-full max-w-[300px]">
-            <div className="aspect-[2/3] overflow-hidden rounded-xl border bg-muted shadow-premium-lg">
+            <div className="relative aspect-[2/3] overflow-hidden rounded-xl border bg-muted shadow-premium-lg">
               {book.cover_image_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={book.cover_image_url} alt={book.title} className="h-full w-full object-cover" />
+                <SiteImage src={book.cover_image_url} alt={`${book.title} cover`} fill preload sizes="300px" className="object-cover" />
               ) : (
                 <div className="flex h-full items-center justify-center p-6 text-center font-display text-xl font-bold text-muted-foreground">
                   {book.title}

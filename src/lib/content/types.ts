@@ -18,6 +18,7 @@ export interface BlogPost {
     role: string;
   };
   publishedAt: string;
+  updatedAt?: string;
   readingTime: string;
   tags: string[];
   /** Counts as of the last cache refresh (daily / on publish); live counts load on the post page. */

@@ -1,6 +1,7 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
+import { useActionState, useEffect, useState } from 'react';
+import { ImageField } from '@/components/admin/image-field';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,6 +22,7 @@ type FieldProps = {
 
 export function SettingsForm({ settings }: { settings: SiteSettings }) {
   const [state, action] = useActionState(saveSettings, undefined);
+  const [shareImage, setShareImage] = useState(settings.default_share_image_url ?? '');
   const err = state?.fieldErrors ?? {};
 
   useEffect(() => {
@@ -73,6 +75,28 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           <SettingField settings={settings} errors={err} name="linkedin_url" label="LinkedIn" type="url" placeholder="https://linkedin.com/company/…" />
           <SettingField settings={settings} errors={err} name="youtube_url" label="YouTube" type="url" placeholder="https://youtube.com/@…" />
           <SettingField settings={settings} errors={err} name="tiktok_url" label="TikTok" type="url" placeholder="https://tiktok.com/@…" />
+        </CardContent>
+      </Card>
+
+      <Card id="search">
+        <CardHeader>
+          <CardTitle className="text-base">Search engines</CardTitle>
+          <CardDescription>Helps Google show the business correctly and lets you prove you own the site.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2">
+            <SettingField settings={settings} errors={err} name="business_description" label="Business description" textarea hint="One or two sentences about what the business does and where. Used in Google's business information." />
+          </div>
+          <SettingField settings={settings} errors={err} name="google_site_verification" label="Google Search Console code" hint="Search Console → Add property → HTML tag. Paste the code or the whole tag." />
+          <SettingField settings={settings} errors={err} name="bing_site_verification" label="Bing Webmaster code" hint="Optional. Paste the code or the whole tag." />
+          <SettingField settings={settings} errors={err} name="founded_year" label="Year founded" placeholder="e.g. 2015" />
+          <div className="space-y-2 sm:col-span-2">
+            <Label>Default share image</Label>
+            <input type="hidden" name="default_share_image_url" value={shareImage} />
+            <ImageField value={shareImage} onChange={setShareImage} folder="seo" aspect="aspect-[1200/630]" className="max-w-md" label="Upload 1200×630 image" />
+            <p className="text-xs text-muted-foreground">Used for pages without their own image. Without one, a branded card is generated.</p>
+            {err.default_share_image_url && <p className="text-sm text-destructive">{err.default_share_image_url}</p>}
+          </div>
         </CardContent>
       </Card>
 

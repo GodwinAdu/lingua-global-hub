@@ -7,17 +7,21 @@ import { ExpiredLinkNotice } from '@/components/ebooks/expired-link-notice';
 import { getEbooks } from '@/lib/ebooks/catalog';
 import { formatPrice } from '@/lib/ebooks/orders';
 import { languageLabel } from '@/lib/content/types';
+import { pageMetadata } from '@/lib/seo/server';
+import { JsonLd } from '@/components/seo/json-ld';
+import { breadcrumbJsonLd, graph } from '@/lib/seo/jsonld';
+import { SiteImage } from '@/components/seo/site-image';
 
-export const metadata: Metadata = {
-  title: 'Ebooks',
-  description: 'Free and paid ebooks from First Grade Lingua Consult, in English and Ghanaian languages.',
-  alternates: { canonical: '/ebooks' },
-};
+export function generateMetadata(): Promise<Metadata> {
+  return pageMetadata('ebooks');
+}
 
 export default async function EbooksPage() {
   const ebooks = await getEbooks();
 
   return (
+    <>
+      <JsonLd data={graph(breadcrumbJsonLd([['Ebooks', '/ebooks']]))} />
     <EbookPageShell title="Ebooks" intro="Download and read our books on language, culture and communication. No account needed.">
       <Suspense>
         <ExpiredLinkNotice />
@@ -31,10 +35,9 @@ export default async function EbooksPage() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {ebooks.map((book) => (
             <Link key={book.id} href={`/ebooks/${book.slug}`} className="group block">
-              <div className="aspect-[2/3] overflow-hidden rounded-xl border bg-muted shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-premium-lg">
+              <div className="relative aspect-[2/3] overflow-hidden rounded-xl border bg-muted shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-premium-lg">
                 {book.cover_image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={book.cover_image_url} alt={book.title} className="h-full w-full object-cover" />
+                  <SiteImage src={book.cover_image_url} alt={`${book.title} cover`} fill sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
                 ) : (
                   <div className="flex h-full items-center justify-center p-6 text-center font-display text-lg font-bold text-muted-foreground">
                     {book.title}
@@ -54,5 +57,6 @@ export default async function EbooksPage() {
         </div>
       )}
     </EbookPageShell>
+    </>
   );
 }

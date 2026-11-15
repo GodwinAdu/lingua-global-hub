@@ -121,9 +121,9 @@ export const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h4 className="font-display font-bold text-sm uppercase tracking-wider mb-6 text-accent">
+            <h2 className="font-display font-bold text-sm uppercase tracking-wider mb-6 text-accent">
               Services
-            </h4>
+            </h2>
             <ul className="space-y-3">
               {footerLinks.services.map((link, index) => (
                 <motion.li 
@@ -151,9 +151,9 @@ export const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h4 className="font-display font-bold text-sm uppercase tracking-wider mb-6 text-accent">
+            <h2 className="font-display font-bold text-sm uppercase tracking-wider mb-6 text-accent">
               Company
-            </h4>
+            </h2>
             <ul className="space-y-3">
               {footerLinks.company.map((link, index) => (
                 <motion.li 
@@ -181,9 +181,9 @@ export const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h4 className="font-display font-bold text-sm uppercase tracking-wider mb-6 text-accent">
+            <h2 className="font-display font-bold text-sm uppercase tracking-wider mb-6 text-accent">
               Contact
-            </h4>
+            </h2>
             <ul className="space-y-4">
               <motion.li 
                 className="flex items-start gap-3 group"

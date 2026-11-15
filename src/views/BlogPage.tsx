@@ -10,6 +10,7 @@ import FloatingChat from '@/components/sections/FloatingChat';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { blogLanguages, type BlogCategory, type BlogPost } from '@/lib/content/types';
+import { SiteImage } from '@/components/seo/site-image';
 
 type Props = { posts: BlogPost[]; categories: BlogCategory[] };
 
@@ -211,10 +212,12 @@ const BlogPage = ({ posts: blogPosts, categories }: Props) => {
                         <div className="rounded-2xl overflow-hidden bg-card border border-border hover:shadow-premium-lg transition-all duration-500 hover:-translate-y-1">
                           {/* Cover Image */}
                           <div className="relative aspect-[16/10] overflow-hidden">
-                            <img
+                            <SiteImage
                               src={post.coverImage}
                               alt={post.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                              fill
+                              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                              className="object-cover group-hover:scale-105 transition-transform duration-700"
                             />
                             {/* Language Badge */}
                             <div className="absolute top-4 left-4 flex gap-2">

@@ -4,7 +4,10 @@ import { notFound } from 'next/navigation';
 import BlogDetailPage from '@/views/BlogDetailPage';
 import { getCategories, getPublishedPost, getPublishedPosts, getRelatedPosts } from '@/lib/content/posts';
 import { htmlToText } from '@/lib/content/html';
-import { absoluteUrl, siteConfig } from '@/lib/site';
+import { absoluteUrl } from '@/lib/site';
+import { JsonLd } from '@/components/seo/json-ld';
+import { breadcrumbJsonLd, graph, ORG_ID } from '@/lib/seo/jsonld';
+import { alternates, ogImage, seoDescription, seoTitle, usableShareImage } from '@/lib/seo/og';
 
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();
@@ -18,24 +21,28 @@ export async function generateMetadata({ params }: PageProps<'/blog/[slug]'>): P
   if (!post) return { title: 'Article Not Found', robots: { index: false } };
 
   const title = post.seoTitle || post.title;
-  const description = post.seoDescription || post.excerpt || htmlToText(post.content).slice(0, 160);
+  const description = seoDescription(post.seoDescription || post.excerpt || htmlToText(post.content));
+  // Cover photo if there is one; otherwise a generated card with the headline (SVG placeholders don't preview).
+  const image = usableShareImage(post.coverImage) ?? ogImage(post.title, post.language === 'twi' ? 'Nsɛm · News' : 'Blog & News');
 
   return {
-    title,
+    title: seoTitle(title),
     description,
     keywords: post.tags,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: alternates(`/blog/${post.slug}`),
     openGraph: {
       type: 'article',
       title,
       description,
       url: `/blog/${post.slug}`,
-      images: [{ url: post.coverImage }],
+      images: [{ url: image, alt: post.title }],
+      locale: post.language === 'twi' ? 'tw_GH' : 'en_GH',
       publishedTime: post.publishedAt,
+      ...(post.updatedAt && { modifiedTime: post.updatedAt }),
       authors: [post.author.name],
       tags: post.tags,
     },
-    twitter: { card: 'summary_large_image', title, description, images: [post.coverImage] },
+    twitter: { card: 'summary_large_image', title, description, images: [image] },
   };
 }
 
@@ -56,25 +63,30 @@ async function Article({ params }: Pick<PageProps<'/blog/[slug]'>, 'params'>) {
 
   const [relatedPosts, categories] = await Promise.all([getRelatedPosts(post), getCategories()]);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  const url = absoluteUrl(`/blog/${post.slug}`);
+  const category = categories.find((c) => c.id === post.category)?.label;
+  const image = usableShareImage(post.coverImage);
+  const article = {
     '@type': 'NewsArticle',
-    headline: post.title,
+    '@id': `${url}#article`,
+    headline: post.title.slice(0, 110),
     description: post.excerpt,
-    image: [absoluteUrl(post.coverImage)],
+    ...(image && { image: [absoluteUrl(image), ...post.images.slice(1).map((i) => absoluteUrl(i))] }),
     datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
     inLanguage: post.language === 'twi' ? 'tw' : 'en',
-    author: [{ '@type': 'Person', name: post.author.name }],
-    publisher: { '@type': 'Organization', name: siteConfig.name },
-    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    ...(category && { articleSection: category }),
+    ...(post.tags.length && { keywords: post.tags.join(', ') }),
+    wordCount: htmlToText(post.content).split(' ').filter(Boolean).length,
+    author: [{ '@type': 'Person', name: post.author.name, ...(post.author.role && { jobTitle: post.author.role }) }],
+    publisher: { '@id': ORG_ID },
+    isPartOf: { '@id': absoluteUrl('/#website') },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
-      />
+      <JsonLd data={graph(article, breadcrumbJsonLd([['Blog & News', '/blog'], [post.title, `/blog/${post.slug}`]]))} />
       <BlogDetailPage post={post} relatedPosts={relatedPosts} categories={categories} />
     </>
   );

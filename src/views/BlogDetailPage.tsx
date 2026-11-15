@@ -25,6 +25,7 @@ import FloatingChat from '@/components/sections/FloatingChat';
 import { Button } from '@/components/ui/button';
 import type { BlogCategory, BlogPost } from '@/lib/content/types';
 import { CommentsSection, EngagementBar, PostEngagementProvider, ReadingProgress } from '@/components/blog/post-engagement';
+import { SiteImage } from '@/components/seo/site-image';
 
 type Props = { post: BlogPost; relatedPosts: BlogPost[]; categories: BlogCategory[] };
 
@@ -36,6 +37,8 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
   useEffect(() => setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function'), []);
 
   const postUrl = absoluteUrl(`/blog/${post.slug}`);
+  // Twi articles are marked so search engines and screen readers use the right language.
+  const postLang = post.language === 'twi' ? 'tw' : 'en';
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(postUrl);
@@ -56,11 +59,7 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
         {/* Hero Section */}
         <section className="pt-32 pb-16 bg-primary text-primary-foreground relative overflow-hidden">
           <div className="absolute inset-0">
-            <img
-              src={post.coverImage}
-              alt={post.title}
-              className="w-full h-full object-cover opacity-15"
-            />
+            <SiteImage src={post.coverImage} alt="" fill sizes="100vw" className="object-cover opacity-15" />
             <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/95 to-primary/80" />
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,_hsl(217_91%_50%_/_0.15)_0%,_transparent_50%)]" />
@@ -105,6 +104,7 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
 
               {/* Title */}
               <motion.h1
+                lang={postLang}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -158,13 +158,17 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="prose prose-lg max-w-none"
+                  lang={postLang}
                 >
                   {/* Featured Image */}
-                  <div className="rounded-2xl overflow-hidden mb-10 shadow-premium-lg">
-                    <img
+                  <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-10 shadow-premium-lg not-prose">
+                    <SiteImage
                       src={post.coverImage}
                       alt={post.title}
-                      className="w-full h-auto object-cover aspect-[16/9]"
+                      fill
+                      preload
+                      sizes="(min-width: 1024px) 640px, 100vw"
+                      className="object-cover"
                     />
                   </div>
 
@@ -181,10 +185,13 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                       transition={{ delay: index * 0.05 }}
                       className="mt-10 rounded-2xl overflow-hidden shadow-premium-md"
                     >
-                      <img
+                      <SiteImage
                         src={src}
-                        alt={`${post.title} — image ${index + 2}`}
-                        className="w-full h-auto object-contain bg-muted/30 max-h-[400px]"
+                        alt={`${post.title}, image ${index + 2}`}
+                        width={1200}
+                        height={800}
+                        sizes="(min-width: 1024px) 640px, 100vw"
+                        className="w-full h-auto object-contain bg-muted/30 max-h-[400px] not-prose"
                       />
                     </motion.div>
                   ))}
@@ -352,10 +359,12 @@ const BlogDetailPage = ({ post, relatedPosts, categories: blogCategories }: Prop
                     <Link href={`/blog/${related.slug}`} className="block">
                       <div className="rounded-2xl overflow-hidden bg-card border border-border hover:shadow-premium-md transition-all duration-500">
                         <div className="relative aspect-[16/10] overflow-hidden">
-                          <img
+                          <SiteImage
                             src={related.coverImage}
                             alt={related.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            fill
+                            sizes="(min-width: 768px) 33vw, 100vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
                           />
                         </div>
                         <div className="p-5">

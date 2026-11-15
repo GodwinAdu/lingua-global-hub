@@ -59,6 +59,11 @@ export type SiteSettings = {
   tiktok_url: string | null;
   po_box: string;
   working_hours: string[];
+  business_description: string;
+  google_site_verification: string;
+  bing_site_verification: string;
+  default_share_image_url: string | null;
+  founded_year: number | null;
 };
 
 /** "+233 24 217 8378" -> "+233242178378" for tel: links. */

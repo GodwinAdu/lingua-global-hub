@@ -18,6 +18,7 @@ import CTA from '@/components/sections/CTA';
 import { Button } from '@/components/ui/button';
 import type { Service } from '@/lib/content/site-types';
 import { getIcon } from '@/lib/content/icons';
+import { SiteImage } from '@/components/seo/site-image';
 
 
 
@@ -100,14 +101,14 @@ const ServicesPage = ({ items }: { items: Service[] }) => {
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
-                        <motion.img
-                          src={service.image}
-                          alt={service.title}
-                          className="w-full h-full object-cover"
+                      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-premium-lg">
+                        <motion.div
+                          className="absolute inset-0"
                           whileHover={{ scale: 1.1 }}
                           transition={{ duration: 0.6 }}
-                        />
+                        >
+                          <SiteImage src={service.image} alt={service.title} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+                        </motion.div>
                       </div>
                       {/* Accent decorations */}
                       <div className={`absolute -z-10 w-full h-full rounded-2xl bg-secondary/10 ${isEven ? '-bottom-6 -right-6' : '-bottom-6 -left-6'}`} />

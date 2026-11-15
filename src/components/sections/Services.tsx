@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import type { Service } from '@/lib/content/site-types';
 import { getIcon } from '@/lib/content/icons';
 import type { HomeSection } from '@/lib/content/home';
+import { SiteImage } from '@/components/seo/site-image';
 
 
 
@@ -118,13 +119,13 @@ export const Services = ({ items, section }: { items: Service[]; section: HomeSe
                     
                     {/* Image */}
                     <div className="relative h-48 overflow-hidden">
-                      <motion.img
-                        src={service.image}
-                        alt={service.title}
-                        className="w-full h-full object-cover"
+                      <motion.div
+                        className="absolute inset-0"
                         whileHover={{ scale: 1.15 }}
                         transition={{ duration: 0.7, ease: "easeOut" }}
-                      />
+                      >
+                        <SiteImage src={service.image} alt={service.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover" />
+                      </motion.div>
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
                       
                       {/* Icon Overlay with glow */}

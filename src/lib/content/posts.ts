@@ -18,7 +18,7 @@ function publicClient() {
 }
 
 const POST_COLUMNS =
-  'id, slug, title, excerpt, content, cover_image_url, gallery_urls, language, tags, reading_minutes, author_name, author_title, seo_title, seo_description, published_at, view_count, like_count, comment_count, category:categories(slug)';
+  'id, slug, title, excerpt, content, cover_image_url, gallery_urls, language, tags, reading_minutes, author_name, author_title, seo_title, seo_description, published_at, updated_at, view_count, like_count, comment_count, category:categories(slug)';
 
 type PostRow = {
   id: string;
@@ -36,6 +36,7 @@ type PostRow = {
   seo_title: string | null;
   seo_description: string | null;
   published_at: string | null;
+  updated_at: string;
   view_count: number;
   like_count: number;
   comment_count: number;
@@ -57,6 +58,7 @@ function toBlogPost(row: PostRow): BlogPost {
     languageLabel: languageLabel(row.language),
     author: { name: row.author_name || 'First Grade Lingua', role: row.author_title },
     publishedAt: row.published_at ?? '',
+    updatedAt: row.updated_at,
     readingTime: `${row.reading_minutes} min`,
     tags: row.tags,
     stats: { views: row.view_count, likes: row.like_count, comments: row.comment_count },

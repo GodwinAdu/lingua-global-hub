@@ -115,6 +115,7 @@ export const Testimonials = ({ items: testimonials, section }: { items: Testimon
                       variant="outline"
                       size="icon"
                       onClick={prevTestimonial}
+                      aria-label="Previous testimonial"
                       className="rounded-full hover:bg-secondary hover:text-secondary-foreground hover:border-secondary"
                     >
                       <ChevronLeft className="w-5 h-5" />
@@ -125,6 +126,7 @@ export const Testimonials = ({ items: testimonials, section }: { items: Testimon
                       variant="outline"
                       size="icon"
                       onClick={nextTestimonial}
+                      aria-label="Next testimonial"
                       className="rounded-full hover:bg-secondary hover:text-secondary-foreground hover:border-secondary"
                     >
                       <ChevronRight className="w-5 h-5" />
@@ -140,6 +142,8 @@ export const Testimonials = ({ items: testimonials, section }: { items: Testimon
                 <motion.button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
+                  aria-label={`Show testimonial ${index + 1}`}
+                  aria-current={index === currentIndex}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     index === currentIndex
                       ? 'w-8 bg-secondary'

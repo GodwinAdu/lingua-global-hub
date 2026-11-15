@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import { Users, Linkedin, Mail } from 'lucide-react';
 import type { TeamMember, TeamStat } from '@/lib/content/site-types';
 import { getIcon } from '@/lib/content/icons';
+import { SiteImage } from '@/components/seo/site-image';
 
 
 
@@ -118,13 +119,13 @@ const TeamPage = ({ members, stats: statRows }: { members: TeamMember[]; stats: 
                   <div className="relative bg-card rounded-2xl overflow-hidden border border-border hover:border-secondary/50 transition-all duration-500 hover:shadow-premium-lg">
                     {/* Image */}
                     <div className="relative h-80 overflow-hidden">
-                      <motion.img
-                        src={member.image}
-                        alt={member.name}
-                        className="w-full h-full object-cover"
+                      <motion.div
+                        className="absolute inset-0"
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.6 }}
-                      />
+                      >
+                        <SiteImage src={member.image} alt={`${member.name}, ${member.role}`} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover" />
+                      </motion.div>
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                       
                       {/* Social Links */}

@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
 import BlogPage from '@/views/BlogPage';
 import { getCategories, getPublishedPosts } from '@/lib/content/posts';
+import { pageMetadata } from '@/lib/seo/server';
+import { JsonLd } from '@/components/seo/json-ld';
+import { breadcrumbJsonLd, graph } from '@/lib/seo/jsonld';
 
-export const metadata: Metadata = {
-  title: 'Blog & News',
-  description: 'News, culture, education and language articles in Twi and English from First Grade Lingua Consult.',
-  alternates: { canonical: '/blog' },
-};
+export function generateMetadata(): Promise<Metadata> {
+  return pageMetadata('blog');
+}
 
 export default async function Page() {
   const [posts, categories] = await Promise.all([getPublishedPosts(), getCategories()]);
-  return <BlogPage posts={posts} categories={categories} />;
+  return (
+    <>
+      <JsonLd data={graph(breadcrumbJsonLd([['Blog & News', '/blog']]))} />
+      <BlogPage posts={posts} categories={categories} />
+    </>
+  );
 }

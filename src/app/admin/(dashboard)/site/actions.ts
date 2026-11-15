@@ -10,6 +10,8 @@ import { ICON_NAMES } from '@/lib/content/icons';
 import { SITE_TAGS } from '@/lib/content/site';
 import { HOME_TAG } from '@/lib/content/home-data';
 import { HOME_SECTION_KEYS, HOME_SECTIONS } from '@/lib/content/home';
+import { SEO_TAG } from '@/lib/seo/server';
+import { SEO_LIMITS, SEO_PAGE_KEYS } from '@/lib/seo/pages';
 
 export type ActionState = { error?: string; success?: string; fieldErrors?: Record<string, string> } | undefined;
 
@@ -306,6 +308,15 @@ const settingsSchema = z.object({
   instagram_url: optionalHttps,
   youtube_url: optionalHttps,
   tiktok_url: optionalHttps,
+  business_description: text(300),
+  // Accepts the bare code or the whole <meta ... content="..."> tag pasted from Search Console / Bing.
+  google_site_verification: z.string().trim().max(400).transform((v) => v.match(/content=["']([^"']+)["']/)?.[1] ?? v)
+    .refine((v) => /^[A-Za-z0-9_-]{0,100}$/.test(v), 'Paste the verification code (letters, numbers, - and _).'),
+  bing_site_verification: z.string().trim().max(400).transform((v) => v.match(/content=["']([^"']+)["']/)?.[1] ?? v)
+    .refine((v) => /^[A-Za-z0-9_-]{0,100}$/.test(v), 'Paste the verification code (letters, numbers, - and _).'),
+  default_share_image_url: imageUrl,
+  founded_year: z.string().trim().transform((v) => (v === '' ? null : Number(v)))
+    .refine((v) => v === null || (Number.isInteger(v) && v >= 1900 && v <= 2100), 'Enter a year, e.g. 2015.'),
 });
 
 export async function saveSettings(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -319,6 +330,7 @@ export async function saveSettings(_prev: ActionState, formData: FormData): Prom
   if (!data) return { error: "You don't have permission to change site settings." };
 
   updateTag(SITE_TAGS.settings);
+  updateTag(SEO_TAG);
   refresh();
   return { success: 'Settings saved. The website is updated.' };
 }
@@ -374,4 +386,30 @@ export async function setHomeSectionVisible(key: string, isVisible: boolean): Pr
   updateTag(HOME_TAG);
   refresh();
   return { success: isVisible ? 'Section shown on the home page.' : 'Section hidden from the home page.' };
+}
+
+// ---------------------------------------------------------------------------
+// Page SEO (editors)
+// ---------------------------------------------------------------------------
+const pageSeoSchema = z.object({
+  key: z.enum(SEO_PAGE_KEYS),
+  title: text(SEO_LIMITS.title),
+  description: text(SEO_LIMITS.description),
+  image_url: imageUrl,
+});
+
+export async function savePageSeo(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  await requireStaff('editor');
+  const parsed = pageSeoSchema.safeParse(formObject(formData));
+  if (!parsed.success) return fieldErrors(parsed.error);
+  const { key, ...row } = parsed.data;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.from('page_seo').update(row).eq('key', key).select('key').maybeSingle();
+  if (error) return dbError(error);
+  if (!data) return { error: "You don't have permission to change SEO settings." };
+
+  updateTag(SEO_TAG);
+  refresh();
+  return { success: 'Saved. Search engines will pick this up on their next visit.' };
 }
